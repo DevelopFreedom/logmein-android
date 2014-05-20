@@ -18,6 +18,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.net.*;
+import java.io.*;
+
 public class MainActivity extends ActionBarActivity implements OnClickListener{
 	//UI
 	EditText textbox_username, textbox_password;
@@ -113,5 +116,47 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 
 			database.close();
 	}
+	
+    public static void login(String username, String password) throws Exception{
+        System.out.println("Loggin in");
+        //String username = "11uit424", password = "screwYou";
+        String urlParameters = "user="+username+"&password="+password; // "param1=a&param2=b&param3=c";
+
+        String request = "http://172.16.4.201/cgi-bin/login";
+        URL url = new URL(request);
+
+        URLConnection conn = url.openConnection();
+
+        conn.setDoOutput(true);
+
+        OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
+
+        writer.write(urlParameters);
+        writer.flush();
+
+        String line;
+        BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+        while ((line = reader.readLine()) != null) {
+            System.out.println(line);
+        }
+        writer.close();
+        reader.close();
+    }
+
+    public static void logout() throws Exception {
+        System.out.println("Loggin out");
+        URL yahoo = new URL("http://172.16.4.201/cgi-bin/login?cmd=logout");
+        URLConnection yc = yahoo.openConnection();
+        BufferedReader in = new BufferedReader(
+                                new InputStreamReader(
+                                yc.getInputStream()));
+        String inputLine;
+
+        while ((inputLine = in.readLine()) != null)
+            System.out.println(inputLine);
+        in.close();
+    }
+
 
 }
