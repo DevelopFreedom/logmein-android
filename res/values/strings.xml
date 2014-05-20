@@ -11,5 +11,7 @@
     <string name="logmein">LogMeIn</string>
     <string name="edit_password_string">Enter password</string>
     <string name="edit_password_hint">Enter Password</string>
+    <string name="logout">Logout</string>
+    <string name="empty"></string>
 
 </resources>

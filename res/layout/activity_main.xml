@@ -42,7 +42,19 @@
             android:layout_height="wrap_content"
             android:text="@string/logmein" />
 
-    </LinearLayout>
+        <Button
+            android:id="@+id/button_logout"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/logout" />
 
+        <TextView
+            android:id="@+id/debugTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.74"
+            android:text="@string/empty" />
+    </LinearLayout>
 
 </FrameLayout>
