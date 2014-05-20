@@ -1,4 +1,4 @@
-package com.example.logmein;
+package in.shubhamchaudhary.logmein;
 
 
 import android.content.ContentValues;
