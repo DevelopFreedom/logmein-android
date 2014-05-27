@@ -1,12 +1,5 @@
 package in.shubhamchaudhary.logmein;
 
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.URL;
-import java.net.URLConnection;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -35,18 +28,14 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 	SQLiteOpenHelper DBHELPER;
 	SQLiteDatabase database;
 	Cursor cursor;
-	/*
-	//Bypass android.os.NetworkOnMainThreadException
-	StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
-	StrictMode.setThreadPolicy(policy);
-	 */
+	NetworkEngine networkEngine;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		DBHELPER=new dbhelper(this);
+		networkEngine = new NetworkEngine();
 		button_save=(Button)findViewById(R.id.button_save);
 		button_save.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -62,7 +51,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 				System.out.println("Insinde login");
 				try{
 //					login(textbox_username.getText().toString(),textbox_password.getText().toString());
-					login(getUsername(),getPassword());
+					networkEngine.login(getUsername(),getPassword());
 				}catch(Exception e){
 					//TODO
 					System.out.println("Exception message: "+e.toString());
@@ -77,7 +66,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 				Log.d("logout","Insiede Logout");
 				System.out.println("Insiade logout");
 				try{
-					logout();
+					networkEngine.logout();
 				}catch(Exception e){
 					//TODO
 					System.out.println("Exception message: "+e.toString());
@@ -134,79 +123,6 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 	@Override
 	public void onClick(View v) {
 	}
-
-	public void login(final String username, final String password) throws Exception {
-		Thread thread = new Thread(new Runnable(){
-			@Override
-			public void run() {
-				try {
-					login_runner(username,password);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		thread.start();
-	}
-
-	public void login_runner(String username, String password) throws Exception{
-		if (username == null || password == null){
-			Log.wtf("Error", "Either username or password is null");
-			return;
-		}
-		System.out.println("Loggin in with "+username+password);
-		//String username = "11uit424", password = "screwYou";
-		String urlParameters = "user="+username+"&password="+password; // "param1=a&param2=b&param3=c";
-
-		String request = "http://172.16.4.201/cgi-bin/login";
-		URL puServerUrl = new URL(request);
-
-		URLConnection puServerConnection = puServerUrl.openConnection();
-		puServerConnection.setDoOutput(true);
-		OutputStreamWriter writer = new OutputStreamWriter(puServerConnection.getOutputStream());
-		writer.write(urlParameters);
-		writer.flush();
-
-		//Output
-		String line;
-		BufferedReader reader = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
-
-		while ((line = reader.readLine()) != null) {
-			Log.w("html", line);
-		}
-		writer.close();
-		reader.close();
-	}
-
-	public void logout() throws Exception {
-		Thread thread = new Thread(new Runnable(){
-			@Override
-			public void run() {
-				try {
-					logout_runner();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		thread.start();
-	}
-
-	public void logout_runner() throws Exception {
-		System.out.println("Loggin out");
-		URL puServerUrl = new URL("http://172.16.4.201/cgi-bin/login?cmd=logout");
-		URLConnection puServerConnection = puServerUrl.openConnection();
-
-		//Get inputStream and show output
-		BufferedReader htmlBuffer = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
-		//TODO parse output
-		String inputLine;
-		while ((inputLine = htmlBuffer.readLine()) != null){
-			Log.w("html", inputLine);
-		}
-		htmlBuffer.close();
-	}
-
 
 	void saveToDatabase(){
 		// TODO Auto-generated method stub
