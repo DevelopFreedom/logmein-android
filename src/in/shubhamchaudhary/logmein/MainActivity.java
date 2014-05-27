@@ -50,40 +50,8 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 		button_save=(Button)findViewById(R.id.button_save);
 		button_save.setOnClickListener(new View.OnClickListener() {
 	         public void onClick(View v) {
-	        		// TODO Auto-generated method stub
-	     		String a =textbox_username.getText().toString();
-	     		String b=textbox_password.getText().toString();
-	     		try{
-	     			//make a db connect to it add values to it (next task)	
-	     				//WTH
-	     				System.out.print("breakpoint1");
-	     				
-	     				System.out.print("breakpoint 2");
-	     				database=DBHELPER.getWritableDatabase();
-	     				ContentValues values=new ContentValues();
-	     				button_save.setOnClickListener(this);
-	     				if(a!=null && b!=null)
-	     				{
-	     					values.put(dbhelper.USERNAME,a);
-	     					values.put(dbhelper.PASSWORD,b);
-
-	     					database.insert(dbhelper.TABLE,null, values); 
-	     					 String[] columns=new String[]{"USERNAME","PASSWORD"};
-	     						cursor=database.query("INVENTORY", columns, null, null, null,null, null);
-	     						Log.v("Cursor Object", DatabaseUtils.dumpCursorToString(cursor));  
-	     					//Debug message
-	     		            Log.d("tag: main, onClick, try", "database connected and values inserted with primary key");	//Fuck you Vivek
-	     		            Toast.makeText(getApplicationContext(), a+" entered into your inventory", Toast.LENGTH_SHORT).show();
-	     				}
-	     				textbox_username.clearComposingText();
-	     				textbox_password.clearComposingText();
-
-	     			}catch(Exception e){
-	     				System.out.println("ud gaya");
-	     			}
-
-	     			database.close();
-
+	        	 //TODO: Check user input
+	        	 saveToDatabase();
 	         }
 	     });
 		button_login=(Button)findViewById(R.id.button_login);
@@ -93,7 +61,8 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 	        	 Log.d("login","Insiide Login");
 	        	 System.out.println("Insinde login");
 	        	 try{
-	        		 login(textbox_username.getText().toString(),textbox_password.getText().toString());
+//	        		 login(textbox_username.getText().toString(),textbox_password.getText().toString());
+	        		 login(getUsername(),getPassword());
 	        	 }catch(Exception e){
 	        		 //TODO
 	        		 System.out.println("Exception message: "+e.toString());
@@ -182,6 +151,10 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
     
     public void login_runner(String username, String password) throws Exception{
         System.out.println("Loggin in");
+        if (username == null || password == null){
+        	Log.wtf("Error", "Either username or password is null");
+        	return;
+        }
         //String username = "11uit424", password = "screwYou";
         String urlParameters = "user="+username+"&password="+password; // "param1=a&param2=b&param3=c";
 
@@ -232,6 +205,75 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
         	Log.w("html", inputLine);
         }
         htmlBuffer.close();
+    }
+    
+
+    void saveToDatabase(){
+    	// TODO Auto-generated method stub
+    	String a =textbox_username.getText().toString();
+    	String b=textbox_password.getText().toString();
+    	try{
+    		//make a db connect to it add values to it (next task)	
+    		//WTH
+    		System.out.print("breakpoint1");
+
+    		System.out.print("breakpoint 2");
+    		database=DBHELPER.getWritableDatabase();
+    		ContentValues values=new ContentValues();
+    		button_save.setOnClickListener(this);
+    		if(a!=null && b!=null)
+    		{
+    			values.put(dbhelper.USERNAME,a);
+    			values.put(dbhelper.PASSWORD,b);
+
+    			database.insert(dbhelper.TABLE,null, values); 
+    			String[] columns=new String[]{"USERNAME","PASSWORD"};
+    			cursor=database.query("INVENTORY", columns, null, null, null,null, null);
+    			Log.v("Cursor Object", DatabaseUtils.dumpCursorToString(cursor));  
+    			//Debug message
+    			Log.d("tag: main, onClick, try", "database connected and values inserted with primary key");	//Fuck you Vivek
+    			Toast.makeText(getApplicationContext(), a+" entered into your inventory", Toast.LENGTH_SHORT).show();
+    		}
+    		textbox_username.clearComposingText();
+    		textbox_password.clearComposingText();
+
+    	}catch(Exception e){
+    		System.out.println("ud gaya");
+    	}
+
+    	database.close();
+    }
+    String getUsername(){
+    	String username = null;
+    	try{
+    		database=DBHELPER.getReadableDatabase();
+    		String[] columns=new String[]{"USERNAME","PASSWORD"};
+    		cursor=database.query("INVENTORY", columns, null, null, null,null, null);
+    		int indexUsername = cursor.getColumnIndex("USERNAME");
+    		cursor.moveToFirst();
+    		username  = cursor.getString(indexUsername);
+    	}catch(Exception e){
+    		System.out.println("ud gaya");
+    	}
+
+    	database.close();
+    	return username;
+    }
+    String getPassword(){
+    	String password = null;
+    	try{
+    		database=DBHELPER.getReadableDatabase();
+    		String[] columns=new String[]{"USERNAME","PASSWORD"};
+    		cursor=database.query("INVENTORY", columns, null, null, null,null, null);
+    		int indexUsername = cursor.getColumnIndex("USERNAME");
+    		cursor.moveToFirst();
+    		password  = cursor.getString(indexUsername);
+    	}catch(Exception e){
+    		System.out.println("ud gaya");
+    	}
+
+    	database.close();
+    	return password;
     }
 
 
