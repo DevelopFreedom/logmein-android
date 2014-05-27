@@ -34,14 +34,14 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 	TextView debugTextView;
 	SQLiteOpenHelper DBHELPER;
 	SQLiteDatabase database;
-    Cursor cursor;
+	Cursor cursor;
 	/*
 	//Bypass android.os.NetworkOnMainThreadException
 	StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
-	StrictMode.setThreadPolicy(policy); 
-	*/
-	
+	StrictMode.setThreadPolicy(policy);
+	 */
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -49,49 +49,49 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 		DBHELPER=new dbhelper(this);
 		button_save=(Button)findViewById(R.id.button_save);
 		button_save.setOnClickListener(new View.OnClickListener() {
-	         public void onClick(View v) {
-	        	 //TODO: Check user input
-	        	 saveToDatabase();
-	         }
-	     });
+			public void onClick(View v) {
+				//TODO: Check user input
+				saveToDatabase();
+			}
+		});
 		button_login=(Button)findViewById(R.id.button_login);
 		button_login.setOnClickListener(new View.OnClickListener() {
-	         public void onClick(View v) {
-	             // Perform action on click
-	        	 Log.d("login","Insiide Login");
-	        	 System.out.println("Insinde login");
-	        	 try{
-//	        		 login(textbox_username.getText().toString(),textbox_password.getText().toString());
-	        		 login(getUsername(),getPassword());
-	        	 }catch(Exception e){
-	        		 //TODO
-	        		 System.out.println("Exception message: "+e.toString());
-	 			 }
-	         }
-	     });
-		
+			public void onClick(View v) {
+				// Perform action on click
+				Log.d("login","Insiide Login");
+				System.out.println("Insinde login");
+				try{
+//					login(textbox_username.getText().toString(),textbox_password.getText().toString());
+					login(getUsername(),getPassword());
+				}catch(Exception e){
+					//TODO
+					System.out.println("Exception message: "+e.toString());
+				}
+			}
+		});
+
 		button_logout=(Button)findViewById(R.id.button_logout);
 		button_logout.setOnClickListener(new View.OnClickListener() {
-	         public void onClick(View v) {
-	             // Perform action on click
-	        	 Log.d("logout","Insiede Logout");
-	        	 System.out.println("Insiade logout");
-	        	 try{
-	        		 logout();
-	        	 }catch(Exception e){
-	        		 //TODO
-	        		 System.out.println("Exception message: "+e.toString());
-	 			 }
-	         }
-	     });
+			public void onClick(View v) {
+				// Perform action on click
+				Log.d("logout","Insiede Logout");
+				System.out.println("Insiade logout");
+				try{
+					logout();
+				}catch(Exception e){
+					//TODO
+					System.out.println("Exception message: "+e.toString());
+				}
+			}
+		});
 
-        textbox_username=(EditText)findViewById(R.id.edit_username);
-        textbox_password=(EditText)findViewById(R.id.edit_password);
+		textbox_username=(EditText)findViewById(R.id.edit_username);
+		textbox_password=(EditText)findViewById(R.id.edit_password);
 		if (savedInstanceState == null) {
 			getSupportFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
+			.add(R.id.container, new PlaceholderFragment()).commit();
 		}
-		
+
 	}
 
 	@Override
@@ -133,152 +133,153 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 
 	@Override
 	public void onClick(View v) {
+	}
+
+	public void login(final String username, final String password) throws Exception {
+		Thread thread = new Thread(new Runnable(){
+			@Override
+			public void run() {
+				try {
+					login_runner(username,password);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		thread.start();
+	}
+
+	public void login_runner(String username, String password) throws Exception{
+		if (username == null || password == null){
+			Log.wtf("Error", "Either username or password is null");
+			return;
+		}
+		System.out.println("Loggin in with "+username+password);
+		//String username = "11uit424", password = "screwYou";
+		String urlParameters = "user="+username+"&password="+password; // "param1=a&param2=b&param3=c";
+
+		String request = "http://172.16.4.201/cgi-bin/login";
+		URL puServerUrl = new URL(request);
+
+		URLConnection puServerConnection = puServerUrl.openConnection();
+		puServerConnection.setDoOutput(true);
+		OutputStreamWriter writer = new OutputStreamWriter(puServerConnection.getOutputStream());
+		writer.write(urlParameters);
+		writer.flush();
+
+		//Output
+		String line;
+		BufferedReader reader = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
+
+		while ((line = reader.readLine()) != null) {
+			Log.w("html", line);
+		}
+		writer.close();
+		reader.close();
+	}
+
+	public void logout() throws Exception {
+		Thread thread = new Thread(new Runnable(){
+			@Override
+			public void run() {
+				try {
+					logout_runner();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		thread.start();
+	}
+
+	public void logout_runner() throws Exception {
+		System.out.println("Loggin out");
+		URL puServerUrl = new URL("http://172.16.4.201/cgi-bin/login?cmd=logout");
+		URLConnection puServerConnection = puServerUrl.openConnection();
+
+		//Get inputStream and show output
+		BufferedReader htmlBuffer = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
+		//TODO parse output
+		String inputLine;
+		while ((inputLine = htmlBuffer.readLine()) != null){
+			Log.w("html", inputLine);
+		}
+		htmlBuffer.close();
+	}
+
+
+	void saveToDatabase(){
+		// TODO Auto-generated method stub
+		String a =textbox_username.getText().toString();
+		String b=textbox_password.getText().toString();
+		try{
+			//make a db connect to it add values to it (next task)
+			//WTH
+			System.out.print("breakpoint1");
+
+			System.out.print("breakpoint 2");
+			database=DBHELPER.getWritableDatabase();
+			ContentValues values=new ContentValues();
+			button_save.setOnClickListener(this);
+			if(a!=null && b!=null)
+			{
+				values.put(dbhelper.USERNAME,a);
+				values.put(dbhelper.PASSWORD,b);
+
+				database.insert(dbhelper.TABLE,null, values);
+				String[] columns=new String[]{"USERNAME","PASSWORD"};
+				cursor=database.query("INVENTORY", columns, null, null, null,null, null);
+				Log.v("Cursor Object", DatabaseUtils.dumpCursorToString(cursor));
+				//Debug message
+				Log.d("tag: main, onClick, try", "database connected and values inserted with primary key");    //Fuck you Vivek
+				Toast.makeText(getApplicationContext(), a+" entered into your inventory", Toast.LENGTH_SHORT).show();
+			}
+			textbox_username.clearComposingText();
+			textbox_password.clearComposingText();
+
+		}catch(Exception e){
+			System.out.println("ud gaya");
 		}
 
-    public void login(final String username, final String password) throws Exception {
-    	Thread thread = new Thread(new Runnable(){
-    		@Override
-    		public void run() {
-    			try {
-    				login_runner(username,password);    				
-    			} catch (Exception e) {
-    				e.printStackTrace();
-    			}
-    		}
-    	});
-    	thread.start(); 
-    }
-    
-    public void login_runner(String username, String password) throws Exception{
-        if (username == null || password == null){
-        	Log.wtf("Error", "Either username or password is null");
-        	return;
-        }
-        System.out.println("Loggin in with "+username+password);
-        //String username = "11uit424", password = "screwYou";
-        String urlParameters = "user="+username+"&password="+password; // "param1=a&param2=b&param3=c";
+		database.close();
+	}
+	String getUsername(){
+		String username = null;
+		try{
+			database=DBHELPER.getReadableDatabase();
+			String[] columns=new String[]{"USERNAME","PASSWORD"};
+			cursor=database.query("INVENTORY", columns, null, null, null,null, null);
+			int indexUsername = cursor.getColumnIndex("USERNAME");
+			cursor.moveToLast();
+			username  = cursor.getString(0);    //XXX
+		}catch(Exception e){
+			System.out.println("ud gaya");
+			e.printStackTrace();
+		}
 
-        String request = "http://172.16.4.201/cgi-bin/login";
-        URL puServerUrl = new URL(request);
+		database.close();
+		return username;
+	}
+	String getPassword(){
+		String password = null;
+		try{
+			database=DBHELPER.getReadableDatabase();
+			String[] columns=new String[]{"USERNAME","PASSWORD"};
+			System.out.println("1");
+			cursor=database.query("INVENTORY", columns, null, null, null,null, null);
+			int indexUsername = cursor.getColumnIndex("PASSWORD");
 
-        URLConnection puServerConnection = puServerUrl.openConnection();
-        puServerConnection.setDoOutput(true);
-        OutputStreamWriter writer = new OutputStreamWriter(puServerConnection.getOutputStream());
-        writer.write(urlParameters);
-        writer.flush();
-        
-        //Output
-        String line;
-        BufferedReader reader = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
+			cursor.moveToLast();
+			password  = cursor.getString(1);    //XXX
+		}catch(Exception e){
+			System.out.println("ud gaya");
+			e.printStackTrace();
+		}
 
-        while ((line = reader.readLine()) != null) {
-        	Log.w("html", line);
-        }
-        writer.close();
-        reader.close();
-    }
-
-    public void logout() throws Exception {
-    	Thread thread = new Thread(new Runnable(){
-    		@Override
-    		public void run() {
-    			try {
-    				logout_runner();    				
-    			} catch (Exception e) {
-    				e.printStackTrace();
-    			}
-    		}
-    	});
-    	thread.start(); 
-    }
-    
-    public void logout_runner() throws Exception {
-        System.out.println("Loggin out");
-        URL puServerUrl = new URL("http://172.16.4.201/cgi-bin/login?cmd=logout");
-        URLConnection puServerConnection = puServerUrl.openConnection();
-        
-        //Get inputStream and show output
-        BufferedReader htmlBuffer = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
-    	//TODO parse output
-        String inputLine;
-        while ((inputLine = htmlBuffer.readLine()) != null){
-        	Log.w("html", inputLine);
-        }
-        htmlBuffer.close();
-    }
-    
-
-    void saveToDatabase(){
-    	// TODO Auto-generated method stub
-    	String a =textbox_username.getText().toString();
-    	String b=textbox_password.getText().toString();
-    	try{
-    		//make a db connect to it add values to it (next task)	
-    		//WTH
-    		System.out.print("breakpoint1");
-
-    		System.out.print("breakpoint 2");
-    		database=DBHELPER.getWritableDatabase();
-    		ContentValues values=new ContentValues();
-    		button_save.setOnClickListener(this);
-    		if(a!=null && b!=null)
-    		{
-    			values.put(dbhelper.USERNAME,a);
-    			values.put(dbhelper.PASSWORD,b);
-
-    			database.insert(dbhelper.TABLE,null, values); 
-    			String[] columns=new String[]{"USERNAME","PASSWORD"};
-    			cursor=database.query("INVENTORY", columns, null, null, null,null, null);
-    			Log.v("Cursor Object", DatabaseUtils.dumpCursorToString(cursor));  
-    			//Debug message
-    			Log.d("tag: main, onClick, try", "database connected and values inserted with primary key");	//Fuck you Vivek
-    			Toast.makeText(getApplicationContext(), a+" entered into your inventory", Toast.LENGTH_SHORT).show();
-    		}
-    		textbox_username.clearComposingText();
-    		textbox_password.clearComposingText();
-
-    	}catch(Exception e){
-    		System.out.println("ud gaya");
-    	}
-
-    	database.close();
-    }
-    String getUsername(){
-    	String username = null;
-    	try{
-    		database=DBHELPER.getReadableDatabase();
-    		String[] columns=new String[]{"USERNAME","PASSWORD"};
-    		cursor=database.query("INVENTORY", columns, null, null, null,null, null);
-    		int indexUsername = cursor.getColumnIndex("USERNAME");
-    		cursor.moveToLast();
-    		username  = cursor.getString(0);	//XXX
-    	}catch(Exception e){
-    		System.out.println("ud gaya");
-    		e.printStackTrace();
-    	}
-
-    	database.close();
-    	return username;
-    }
-    String getPassword(){
-    	String password = null;
-    	try{
-    		database=DBHELPER.getReadableDatabase();
-    		String[] columns=new String[]{"USERNAME","PASSWORD"};
-    		System.out.println("1");
-    		cursor=database.query("INVENTORY", columns, null, null, null,null, null);
-    		int indexUsername = cursor.getColumnIndex("PASSWORD");
-    		
-    		cursor.moveToLast();
-    		password  = cursor.getString(1);	//XXX
-    	}catch(Exception e){
-    		System.out.println("ud gaya");
-    		e.printStackTrace();
-    	}
-
-    	database.close();
-    	return password;
-    }
+		database.close();
+		return password;
+	}
 
 
 }
+/* vim: set tabstop=4:softtabstop=8:shiftwidth=8:noexpandtab:textwidth=0:sta */
