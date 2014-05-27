@@ -1,7 +1,15 @@
 package in.shubhamchaudhary.logmein;
 
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
+
 import android.content.ContentValues;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
@@ -19,9 +27,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.net.*;
-import java.io.*;
-
 public class MainActivity extends ActionBarActivity implements OnClickListener{
 	///Class Variables
 	EditText textbox_username, textbox_password;
@@ -29,7 +34,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 	TextView debugTextView;
 	SQLiteOpenHelper DBHELPER;
 	SQLiteDatabase database;
-
+    Cursor cursor;
 	/*
 	//Bypass android.os.NetworkOnMainThreadException
 	StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -41,9 +46,46 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-       
+		DBHELPER=new dbhelper(this);
 		button_save=(Button)findViewById(R.id.button_save);
-		
+		button_save.setOnClickListener(new View.OnClickListener() {
+	         public void onClick(View v) {
+	        		// TODO Auto-generated method stub
+	     		String a =textbox_username.getText().toString();
+	     		String b=textbox_password.getText().toString();
+	     		try{
+	     			//make a db connect to it add values to it (next task)	
+	     				//WTH
+	     				System.out.print("breakpoint1");
+	     				
+	     				System.out.print("breakpoint 2");
+	     				database=DBHELPER.getWritableDatabase();
+	     				ContentValues values=new ContentValues();
+	     				button_save.setOnClickListener(this);
+	     				if(a!=null && b!=null)
+	     				{
+	     					values.put(dbhelper.USERNAME,a);
+	     					values.put(dbhelper.PASSWORD,b);
+
+	     					database.insert(dbhelper.TABLE,null, values); 
+	     					 String[] columns=new String[]{"USERNAME","PASSWORD"};
+	     						cursor=database.query("INVENTORY", columns, null, null, null,null, null);
+	     						Log.v("Cursor Object", DatabaseUtils.dumpCursorToString(cursor));  
+	     					//Debug message
+	     		            Log.d("tag: main, onClick, try", "database connected and values inserted with primary key");	//Fuck you Vivek
+	     		            Toast.makeText(getApplicationContext(), a+" entered into your inventory", Toast.LENGTH_SHORT).show();
+	     				}
+	     				textbox_username.clearComposingText();
+	     				textbox_password.clearComposingText();
+
+	     			}catch(Exception e){
+	     				System.out.println("ud gaya");
+	     			}
+
+	     			database.close();
+
+	         }
+	     });
 		button_login=(Button)findViewById(R.id.button_login);
 		button_login.setOnClickListener(new View.OnClickListener() {
 	         public void onClick(View v) {
@@ -122,37 +164,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		String a =textbox_username.getText().toString();
-		String b=textbox_password.getText().toString();
-		try{
-			//make a db connect to it add values to it (next task)	
-				//WTH
-				System.out.print("breakpoint1");
-				DBHELPER=new dbhelper(this);
-				System.out.print("breakpoint 2");
-				database=DBHELPER.getWritableDatabase();
-				ContentValues values=new ContentValues();
-				button_save.setOnClickListener(this);
-				if(a!=null && b!=null)
-				{
-					values.put(dbhelper.USERNAME,a);
-					values.put(dbhelper.PASSWORD,b);
-
-					database.insert(dbhelper.TABLE,null, values);  
-					//Debug message
-		            Log.d("tag: main, onClick, try", "database connected and values inserted with primary key");	//Fuck you Vivek
-		            Toast.makeText(getApplicationContext(), a+" entered into your inventory", Toast.LENGTH_SHORT).show();
-				}
-				textbox_username.clearComposingText();
-				textbox_password.clearComposingText();
-
-			}catch(Exception e){
-				System.out.println("ud gaya");
-			}
-
-			database.close();
-	}
+		}
 
     public void login(final String username, final String password) throws Exception {
     	Thread thread = new Thread(new Runnable(){
