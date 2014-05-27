@@ -150,11 +150,11 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
     }
     
     public void login_runner(String username, String password) throws Exception{
-        System.out.println("Loggin in");
         if (username == null || password == null){
         	Log.wtf("Error", "Either username or password is null");
         	return;
         }
+        System.out.println("Loggin in with "+username+password);
         //String username = "11uit424", password = "screwYou";
         String urlParameters = "user="+username+"&password="+password; // "param1=a&param2=b&param3=c";
 
@@ -250,10 +250,11 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
     		String[] columns=new String[]{"USERNAME","PASSWORD"};
     		cursor=database.query("INVENTORY", columns, null, null, null,null, null);
     		int indexUsername = cursor.getColumnIndex("USERNAME");
-    		cursor.moveToFirst();
-    		username  = cursor.getString(indexUsername);
+    		cursor.moveToLast();
+    		username  = cursor.getString(0);	//XXX
     	}catch(Exception e){
     		System.out.println("ud gaya");
+    		e.printStackTrace();
     	}
 
     	database.close();
@@ -264,12 +265,15 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
     	try{
     		database=DBHELPER.getReadableDatabase();
     		String[] columns=new String[]{"USERNAME","PASSWORD"};
+    		System.out.println("1");
     		cursor=database.query("INVENTORY", columns, null, null, null,null, null);
-    		int indexUsername = cursor.getColumnIndex("USERNAME");
-    		cursor.moveToFirst();
-    		password  = cursor.getString(indexUsername);
+    		int indexUsername = cursor.getColumnIndex("PASSWORD");
+    		
+    		cursor.moveToLast();
+    		password  = cursor.getString(1);	//XXX
     	}catch(Exception e){
     		System.out.println("ud gaya");
+    		e.printStackTrace();
     	}
 
     	database.close();
