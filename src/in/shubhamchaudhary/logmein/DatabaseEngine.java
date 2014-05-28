@@ -53,12 +53,11 @@ public class DatabaseEngine {
 				values.put(dbhelper.PASSWORD,password);
 
 				database.insert(dbhelper.TABLE,null, values);
-				String[] columns=new String[]{"USERNAME","PASSWORD"};
-				cursor=database.query("INVENTORY", columns, null, null, null,null, null);
-				Log.v("Cursor Object", DatabaseUtils.dumpCursorToString(cursor));
+				String[] columns=new String[]{dbhelper.USERNAME,dbhelper.PASSWORD};
+				cursor=database.query(dbhelper.TABLE, columns, null, null, null,null, null);
+				Log.v("DE", "Cursor Object" + DatabaseUtils.dumpCursorToString(cursor));
 				//Debug message
-				Log.d("tag: main, onClick, try", "database connected and values inserted with primary key");    //Fuck you Vivek
-				//Toast.makeText(getApplicationContext(), username+" entered into your inventory", Toast.LENGTH_SHORT).show();
+				Log.d("DE", "database connected and values inserted with primary key");    //Fuck you Vivek
 
 				database.close();
 			}
@@ -71,14 +70,13 @@ public class DatabaseEngine {
 		String username = null;
 		try{
 			database=myDatabaseHelper.getReadableDatabase();
-			String[] columns=new String[]{"USERNAME","PASSWORD"};
-			cursor=database.query("INVENTORY", columns, null, null, null,null, null);
-			int indexUsername = cursor.getColumnIndex("USERNAME");
+			String[] columns=new String[]{dbhelper.USERNAME,dbhelper.PASSWORD};
+			cursor=database.query(dbhelper.TABLE, columns, null, null, null,null, null);
+			int indexUsername = cursor.getColumnIndex(dbhelper.USERNAME);
 			cursor.moveToLast();
-			username  = cursor.getString(0);    //XXX
+			username  = cursor.getString(indexUsername);
 			database.close();
 		}catch(Exception e){
-			System.out.println("ud gaya");
 			e.printStackTrace();
 		}
 
@@ -88,16 +86,14 @@ public class DatabaseEngine {
 		String password = null;
 		try{
 			database=myDatabaseHelper.getReadableDatabase();
-			String[] columns=new String[]{"USERNAME","PASSWORD"};
-			System.out.println("1");
-			cursor=database.query("INVENTORY", columns, null, null, null,null, null);
-			int indexUsername = cursor.getColumnIndex("PASSWORD");
+			String[] columns=new String[]{dbhelper.USERNAME,dbhelper.PASSWORD};
+			cursor=database.query(dbhelper.TABLE, columns, null, null, null,null, null);
+			int indexPassword = cursor.getColumnIndex(dbhelper.PASSWORD);
 
 			cursor.moveToLast();
-			password  = cursor.getString(1);    //XXX
+			password  = cursor.getString(indexPassword);
 			database.close();
 		}catch(Exception e){
-			System.out.println("ud gaya");
 			e.printStackTrace();
 		}
 
