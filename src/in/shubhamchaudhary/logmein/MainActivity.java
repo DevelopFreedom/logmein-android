@@ -28,14 +28,13 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends ActionBarActivity implements OnClickListener{
+public class MainActivity extends ActionBarActivity{
 	///Class Variables
 	EditText textbox_username, textbox_password;
 	Button button_save, button_login, button_logout;
@@ -51,12 +50,19 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 		setContentView(R.layout.activity_main);
 
 		networkEngine = new NetworkEngine();
-		databaseEngine = new DatabaseEngine();
+		databaseEngine = new DatabaseEngine(this);
+
+		debugTextView = (TextView)findViewById(R.id.debugTextView);
+		String username = databaseEngine.getUsername();
+		if (username.length() != 0){
+			debugTextView.setText("Current user: " + username);
+		}
 
 		button_save=(Button)findViewById(R.id.button_save);
 		button_save.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				//TODO: Check user input
+				debugTextView.setText(debugTextView.getText().toString()+"Trying to saveCredential");
 				saveCredential();
 			}
 		});
@@ -80,15 +86,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 		button_logout=(Button)findViewById(R.id.button_logout);
 		button_logout.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				// Perform action on click
-				Log.d("logout","Insiede Logout");
-				System.out.println("Insiade logout");
-				try{
-					networkEngine.logout();
-				}catch(Exception e){
-					//TODO
-					System.out.println("Exception message: "+e.toString());
-				}
+				logout();
 			}
 		});
 
@@ -138,17 +136,33 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 		}
 	}
 
-	@Override
-	public void onClick(View v) {
+	void logout(){
+		NetworkEngine.StatusCode status = null;
+		Log.d("logout","Insiede Logout");
+		System.out.println("Insiade logout");
+		try{
+			status = networkEngine.logout();
+		}catch(Exception e){
+			System.out.println("Exception message: "+e.toString());
+		}
+		if (status == NetworkEngine.StatusCode.LOGOUT_SUCCESS){
+			debugTextView.setText("Logout Successful");
+			Toast.makeText(getApplicationContext(), "Logout Successful", Toast.LENGTH_SHORT).show();
+		}else{
+			debugTextView.setText("Logout Successful");
+			Toast.makeText(getApplicationContext(), "DEBUG: Not Logout Successful", Toast.LENGTH_SHORT).show();
+		}
+		//TODO: handle if not success
 	}
 
 	void saveCredential(){
 		String username =textbox_username.getText().toString();
 		String password =textbox_password.getText().toString();
-
+		
+		debugTextView.setText(debugTextView.getText().toString()+"Saving: "+username+password);
 		databaseEngine.saveToDatabase(username, password);
 
-		Toast.makeText(getApplicationContext(), username+" entered into your inventory", Toast.LENGTH_SHORT).show();
+		Toast.makeText(getApplicationContext(), databaseEngine.getUsername()+" entered into your inventory", Toast.LENGTH_SHORT).show();
 
 //		textbox_username.clearComposingText();
 		textbox_password.clearComposingText();
