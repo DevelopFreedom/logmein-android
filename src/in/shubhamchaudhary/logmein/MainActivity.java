@@ -54,8 +54,12 @@ public class MainActivity extends ActionBarActivity{
 
 		debugTextView = (TextView)findViewById(R.id.debugTextView);
 		String username = databaseEngine.getUsername();
-		if (username.length() != 0){
+		if (username != null){
+		//if (username.length() != 0){
 			debugTextView.setText("Current user: " + username);
+		}else{
+			username = "Welcome, Please enter username and password for the first time!";
+			debugTextView.setText(username);
 		}
 
 		button_save=(Button)findViewById(R.id.button_save);
