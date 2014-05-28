@@ -26,10 +26,20 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.regex.Pattern;
 
 import android.util.Log;
 
 public class NetworkEngine {
+
+	//Class Variables
+	public enum StatusCode { 
+		LOGIN_SUCCESS, LOGOUT_SUCCESS, AUTHENTICATION_ERROR, LOGGED_IN
+	};
 
 	public void login(final String username, final String password) throws Exception {
 		Thread thread = new Thread(new Runnable(){
@@ -45,18 +55,34 @@ public class NetworkEngine {
 		thread.start();
 	}
 
-	public void logout() throws Exception {
-		Thread thread = new Thread(new Runnable(){
+	public NetworkEngine.StatusCode logout() throws Exception {
+//		Thread thread = new Thread(new Runnable(){
+//			@Override
+//			public void run() {
+//				try {
+//					logout_runner();
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//		thread.start();
+		ExecutorService executor = Executors.newSingleThreadExecutor();
+		Callable<StatusCode> callable = new Callable<StatusCode>() {
 			@Override
-			public void run() {
+			public StatusCode call() {
 				try {
-					logout_runner();
+					return logout_runner();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				return null;
 			}
-		});
-		thread.start();
+		};
+		Future<StatusCode> future = executor.submit(callable);
+		// future.get() returns 2
+		executor.shutdown();
+		return future.get();
 	}
 
 	private void login_runner(String username, String password) throws Exception{
@@ -79,6 +105,7 @@ public class NetworkEngine {
 
 		//Output
 		String line;
+		//FIXME: Handle protocol exception
 		BufferedReader reader = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
 
 		while ((line = reader.readLine()) != null) {
@@ -88,7 +115,7 @@ public class NetworkEngine {
 		reader.close();
 	}
 
-	private void logout_runner() throws Exception {
+	private NetworkEngine.StatusCode logout_runner() throws Exception {
 		System.out.println("Loggin out");
 		URL puServerUrl = new URL("http://172.16.4.201/cgi-bin/login?cmd=logout");
 		URLConnection puServerConnection = puServerUrl.openConnection();
@@ -96,11 +123,22 @@ public class NetworkEngine {
 		//Get inputStream and show output
 		BufferedReader htmlBuffer = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
 		//TODO parse output
+/*
+		 if re.search('Logout',the_page):
+	            print ('Logout successful');
+	        elif re.search('User not logged in',the_page):
+	            print('You\'re not logged in');
+*/
 		String inputLine;
 		while ((inputLine = htmlBuffer.readLine()) != null){
+
+			if (Pattern.matches("Logout", inputLine)){
+				return StatusCode.LOGOUT_SUCCESS;
+			}
 			Log.w("html", inputLine);
 		}
 		htmlBuffer.close();
+		return null;
 	}
 
 }
