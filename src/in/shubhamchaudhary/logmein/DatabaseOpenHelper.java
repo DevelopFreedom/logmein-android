@@ -29,8 +29,8 @@ import android.util.Log;
 
 
 
-public class dbhelper extends SQLiteOpenHelper{
-	private static final String TAG= dbhelper.class.getSimpleName();
+public class DatabaseOpenHelper extends SQLiteOpenHelper{
+	private static final String TAG= DatabaseOpenHelper.class.getSimpleName();
 	public static final String DB_NAME="ID";
 	public static final int DB_VERSION=1;
 	public static final String TABLE="INVENTORY";
@@ -39,7 +39,7 @@ public class dbhelper extends SQLiteOpenHelper{
 	public static final String C_ID= "C_ID";
 
 
-	public dbhelper(Context context) {
+	public DatabaseOpenHelper(Context context) {
 		//database filename
 		//database version
 		super(context,DB_NAME,null, DB_VERSION);

@@ -35,7 +35,7 @@ public class DatabaseEngine {
     SQLiteOpenHelper myDatabaseHelper ;
     DatabaseEngine(Context ctx){
         this.context = ctx;
-        this.myDatabaseHelper = new dbhelper(this.context);
+        this.myDatabaseHelper = new DatabaseOpenHelper(this.context);
     }
 	SQLiteDatabase database;
 	Cursor cursor;
@@ -49,12 +49,12 @@ public class DatabaseEngine {
 			ContentValues values=new ContentValues();
 			if(username!=null && password!=null)
 			{
-				values.put(dbhelper.USERNAME,username);
-				values.put(dbhelper.PASSWORD,password);
+				values.put(DatabaseOpenHelper.USERNAME,username);
+				values.put(DatabaseOpenHelper.PASSWORD,password);
 
-				database.insert(dbhelper.TABLE,null, values);
-				String[] columns=new String[]{dbhelper.USERNAME,dbhelper.PASSWORD};
-				cursor=database.query(dbhelper.TABLE, columns, null, null, null,null, null);
+				database.insert(DatabaseOpenHelper.TABLE,null, values);
+				String[] columns=new String[]{DatabaseOpenHelper.USERNAME,DatabaseOpenHelper.PASSWORD};
+				cursor=database.query(DatabaseOpenHelper.TABLE, columns, null, null, null,null, null);
 				Log.v("DE", "Cursor Object" + DatabaseUtils.dumpCursorToString(cursor));
 				//Debug message
 				Log.d("DE", "database connected and values inserted with primary key");    //Fuck you Vivek
@@ -70,9 +70,9 @@ public class DatabaseEngine {
 		String username = null;
 		try{
 			database=myDatabaseHelper.getReadableDatabase();
-			String[] columns=new String[]{dbhelper.USERNAME,dbhelper.PASSWORD};
-			cursor=database.query(dbhelper.TABLE, columns, null, null, null,null, null);
-			int indexUsername = cursor.getColumnIndex(dbhelper.USERNAME);
+			String[] columns=new String[]{DatabaseOpenHelper.USERNAME,DatabaseOpenHelper.PASSWORD};
+			cursor=database.query(DatabaseOpenHelper.TABLE, columns, null, null, null,null, null);
+			int indexUsername = cursor.getColumnIndex(DatabaseOpenHelper.USERNAME);
 			cursor.moveToLast();
 			username  = cursor.getString(indexUsername);
 			database.close();
@@ -86,9 +86,9 @@ public class DatabaseEngine {
 		String password = null;
 		try{
 			database=myDatabaseHelper.getReadableDatabase();
-			String[] columns=new String[]{dbhelper.USERNAME,dbhelper.PASSWORD};
-			cursor=database.query(dbhelper.TABLE, columns, null, null, null,null, null);
-			int indexPassword = cursor.getColumnIndex(dbhelper.PASSWORD);
+			String[] columns=new String[]{DatabaseOpenHelper.USERNAME,DatabaseOpenHelper.PASSWORD};
+			cursor=database.query(DatabaseOpenHelper.TABLE, columns, null, null, null,null, null);
+			int indexPassword = cursor.getColumnIndex(DatabaseOpenHelper.PASSWORD);
 
 			cursor.moveToLast();
 			password  = cursor.getString(indexPassword);
