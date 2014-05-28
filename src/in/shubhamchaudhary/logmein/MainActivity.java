@@ -1,10 +1,5 @@
 package in.shubhamchaudhary.logmein;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.DatabaseUtils;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -25,24 +20,27 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 	EditText textbox_username, textbox_password;
 	Button button_save, button_login, button_logout;
 	TextView debugTextView;
-	SQLiteOpenHelper DBHELPER;
-	SQLiteDatabase database;
-	Cursor cursor;
+
+	/* Engines */
 	NetworkEngine networkEngine;
+	DatabaseEngine databaseEngine;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		DBHELPER=new dbhelper(this);
+
 		networkEngine = new NetworkEngine();
+		databaseEngine = new DatabaseEngine();
+
 		button_save=(Button)findViewById(R.id.button_save);
 		button_save.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				//TODO: Check user input
-				saveToDatabase();
+				saveCredential();
 			}
 		});
+
 		button_login=(Button)findViewById(R.id.button_login);
 		button_login.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -51,7 +49,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 				System.out.println("Insinde login");
 				try{
 //					login(textbox_username.getText().toString(),textbox_password.getText().toString());
-					networkEngine.login(getUsername(),getPassword());
+					networkEngine.login(databaseEngine.getUsername(),databaseEngine.getPassword());
 				}catch(Exception e){
 					//TODO
 					System.out.println("Exception message: "+e.toString());
@@ -124,78 +122,17 @@ public class MainActivity extends ActionBarActivity implements OnClickListener{
 	public void onClick(View v) {
 	}
 
-	void saveToDatabase(){
-		// TODO Auto-generated method stub
-		String a =textbox_username.getText().toString();
-		String b=textbox_password.getText().toString();
-		try{
-			//make a db connect to it add values to it (next task)
-			//WTH
-			System.out.print("breakpoint1");
+	void saveCredential(){
+		String username =textbox_username.getText().toString();
+		String password =textbox_password.getText().toString();
 
-			System.out.print("breakpoint 2");
-			database=DBHELPER.getWritableDatabase();
-			ContentValues values=new ContentValues();
-			button_save.setOnClickListener(this);
-			if(a!=null && b!=null)
-			{
-				values.put(dbhelper.USERNAME,a);
-				values.put(dbhelper.PASSWORD,b);
+		databaseEngine.saveToDatabase(username, password);
 
-				database.insert(dbhelper.TABLE,null, values);
-				String[] columns=new String[]{"USERNAME","PASSWORD"};
-				cursor=database.query("INVENTORY", columns, null, null, null,null, null);
-				Log.v("Cursor Object", DatabaseUtils.dumpCursorToString(cursor));
-				//Debug message
-				Log.d("tag: main, onClick, try", "database connected and values inserted with primary key");    //Fuck you Vivek
-				Toast.makeText(getApplicationContext(), a+" entered into your inventory", Toast.LENGTH_SHORT).show();
-			}
-			textbox_username.clearComposingText();
-			textbox_password.clearComposingText();
+		Toast.makeText(getApplicationContext(), username+" entered into your inventory", Toast.LENGTH_SHORT).show();
 
-		}catch(Exception e){
-			System.out.println("ud gaya");
-		}
-
-		database.close();
+//		textbox_username.clearComposingText();
+		textbox_password.clearComposingText();
 	}
-	String getUsername(){
-		String username = null;
-		try{
-			database=DBHELPER.getReadableDatabase();
-			String[] columns=new String[]{"USERNAME","PASSWORD"};
-			cursor=database.query("INVENTORY", columns, null, null, null,null, null);
-			int indexUsername = cursor.getColumnIndex("USERNAME");
-			cursor.moveToLast();
-			username  = cursor.getString(0);    //XXX
-		}catch(Exception e){
-			System.out.println("ud gaya");
-			e.printStackTrace();
-		}
-
-		database.close();
-		return username;
-	}
-	String getPassword(){
-		String password = null;
-		try{
-			database=DBHELPER.getReadableDatabase();
-			String[] columns=new String[]{"USERNAME","PASSWORD"};
-			System.out.println("1");
-			cursor=database.query("INVENTORY", columns, null, null, null,null, null);
-			int indexUsername = cursor.getColumnIndex("PASSWORD");
-
-			cursor.moveToLast();
-			password  = cursor.getString(1);    //XXX
-		}catch(Exception e){
-			System.out.println("ud gaya");
-			e.printStackTrace();
-		}
-
-		database.close();
-		return password;
-	}
-
 
 }
 /* vim: set tabstop=4:softtabstop=8:shiftwidth=8:noexpandtab:textwidth=0:sta */
