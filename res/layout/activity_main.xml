@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:fontFamily="Verdana"
             android:hint="@string/Username"
             android:inputType="text" >
 
@@ -27,37 +28,44 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:fontFamily="Verdana"
             android:hint="@string/edit_password_hint"
             android:inputType="textPassword" />
 
         <Button
             android:id="@+id/button_save"
-            android:layout_width="match_parent"
+            android:layout_width="116dp"
             android:layout_height="wrap_content"
+            android:fontFamily="Verdana"
             android:text="@string/save" />
 
         <Button
             android:id="@+id/button_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/logmein" />
+            android:fontFamily="Verdana"
+            android:text="@string/logmein"
+            android:textSize="30sp"
+            android:typeface="monospace" />
 
         <Button
             android:id="@+id/button_logout"
-            style="?android:attr/buttonStyleSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:minWidth="64dip"
-            android:text="@string/logout" />
+            android:fontFamily="Verdana"
+            android:text="@string/logout"
+            android:textSize="30sp"
+            android:typeface="monospace" />
 
         <TextView
-            android:id="@+id/debugTextView"
+            android:id="@+id/outputTextView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_weight="0.74"
+            android:fontFamily="Verdana"
             android:gravity="center_vertical|center_horizontal"
-            android:text="@string/empty" />
+            android:text="@string/empty"
+            android:textSize="15sp" />
 
     </LinearLayout>
 
