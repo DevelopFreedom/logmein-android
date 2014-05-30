@@ -38,7 +38,7 @@ public class MainActivity extends ActionBarActivity{
 	///Class Variables
 	EditText textbox_username, textbox_password;
 	Button button_save, button_login, button_logout;
-	TextView debugTextView;
+	TextView outputTextView;
 
 	/* Engines */
 	NetworkEngine networkEngine;
@@ -52,21 +52,19 @@ public class MainActivity extends ActionBarActivity{
 		networkEngine = new NetworkEngine();
 		databaseEngine = new DatabaseEngine(this);
 
-		debugTextView = (TextView)findViewById(R.id.debugTextView);
+		outputTextView = (TextView)findViewById(R.id.outputTextView);
 		String username = databaseEngine.getUsername();
 		if (username != null){
 		//if (username.length() != 0){
-			debugTextView.setText("Current user: " + username);
+			outputTextView.setText("Current user: " + username);
 		}else{
 			username = "Welcome, Please enter username and password for the first time!";
-			debugTextView.setText(username);
+			outputTextView.setText(username);
 		}
 
 		button_save=(Button)findViewById(R.id.button_save);
 		button_save.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				//TODO: Check user input
-				debugTextView.setText(debugTextView.getText().toString()+"Trying to saveCredential");
 				saveCredential();
 			}
 		});
@@ -74,16 +72,7 @@ public class MainActivity extends ActionBarActivity{
 		button_login=(Button)findViewById(R.id.button_login);
 		button_login.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				// Perform action on click
-				Log.d("login","Insiide Login");
-				System.out.println("Insinde login");
-				try{
-//					login(textbox_username.getText().toString(),textbox_password.getText().toString());
-					networkEngine.login(databaseEngine.getUsername(),databaseEngine.getPassword());
-				}catch(Exception e){
-					//TODO
-					System.out.println("Exception message: "+e.toString());
-				}
+				login();
 			}
 		});
 
@@ -140,37 +129,73 @@ public class MainActivity extends ActionBarActivity{
 		}
 	}
 
+	void login(){
+		NetworkEngine.StatusCode status = null;
+		Log.d("login","Insiide Login");
+		try{
+			status = networkEngine.login(databaseEngine.getUsername(),databaseEngine.getPassword());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		String outputText = outputTextView.getText().toString();	//To be shown in User Text Box
+		if (status == NetworkEngine.StatusCode.LOGIN_SUCCESS){
+			outputText = "Login Successful";
+		}else if (status == NetworkEngine.StatusCode.CREDENTIAL_NONE){
+			outputText = "Either username or password in empty";
+		}else if (status == NetworkEngine.StatusCode.AUTHENTICATION_FAILED){
+			outputText = "Authentication Failed";
+		}else if (status == NetworkEngine.StatusCode.MULTIPLE_SESSIONS){
+			outputText = "Only one user login session is allowed";
+		}else if (status == NetworkEngine.StatusCode.LOGGED_IN){
+			outputText = "You're already logged in";
+		}else if (status == null){
+			Log.d("NetworkEngine","StatusCode was null in login");
+			outputText = outputTextView.getText().toString();
+		}else{
+			outputText = "Unknown Login status";
+		}
+		outputTextView.setText(outputText);
+		//Toast.makeText(getApplicationContext(), outputText, Toast.LENGTH_SHORT).show();
+	}//end login
 	void logout(){
 		NetworkEngine.StatusCode status = null;
 		Log.d("logout","Insiede Logout");
-		System.out.println("Insiade logout");
 		try{
 			status = networkEngine.logout();
 		}catch(Exception e){
-			System.out.println("Exception message: "+e.toString());
+			e.printStackTrace();
 		}
+		String outputText = outputTextView.getText().toString();	//To be shown in User Text Box
 		if (status == NetworkEngine.StatusCode.LOGOUT_SUCCESS){
-			debugTextView.setText("Logout Successful");
-			Toast.makeText(getApplicationContext(), "Logout Successful", Toast.LENGTH_SHORT).show();
+			outputText = "Logout Successful";
+		}else if (status == NetworkEngine.StatusCode.NOT_LOGGED_IN){
+			outputText = "You're not logged in " + databaseEngine.getUsername();
+		}else if (status == null){
+			Log.d("NetworkEngine","StatusCode was null in logout");
+			outputText = outputTextView.getText().toString();
 		}else{
-			debugTextView.setText("Logout Successful");
-			Toast.makeText(getApplicationContext(), "DEBUG: Not Logout Successful", Toast.LENGTH_SHORT).show();
+			outputText = "Unknow Logout Status";
 		}
-		//TODO: handle if not success
-	}
+
+		outputTextView.setText(outputText);
+		//Toast.makeText(getApplicationContext(), outputText, Toast.LENGTH_SHORT).show();
+	}//end logout
 
 	void saveCredential(){
+		//TODO: Check user input
+		//outputTextView.setText(outputTextView.getText().toString()+"Trying to saveCredential");
+		
 		String username =textbox_username.getText().toString();
 		String password =textbox_password.getText().toString();
 		
-		debugTextView.setText(debugTextView.getText().toString()+"Saving: "+username+password);
+		outputTextView.setText(outputTextView.getText().toString()+"Saving: "+username+password);
 		databaseEngine.saveToDatabase(username, password);
 
 		Toast.makeText(getApplicationContext(), databaseEngine.getUsername()+" entered into your inventory", Toast.LENGTH_SHORT).show();
 
 //		textbox_username.clearComposingText();
 		textbox_password.clearComposingText();
-	}
+	}//end saveCredential
 
-}
+}//end MainActivity class
 /* vim: set tabstop=4:softtabstop=8:shiftwidth=8:noexpandtab:textwidth=0:sta */
