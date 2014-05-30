@@ -23,6 +23,7 @@ package in.shubhamchaudhary.logmein;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
@@ -30,43 +31,35 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.regex.Pattern;
-
 import android.util.Log;
 
 public class NetworkEngine {
 
 	//Class Variables
-	public enum StatusCode { 
-		LOGIN_SUCCESS, LOGOUT_SUCCESS, AUTHENTICATION_ERROR, LOGGED_IN
+	public enum StatusCode {
+		LOGIN_SUCCESS,  AUTHENTICATION_FAILED, MULTIPLE_SESSIONS,
+		CREDENTIAL_NONE, LOGOUT_SUCCESS, NOT_LOGGED_IN, LOGGED_IN
 	};
 
-	public void login(final String username, final String password) throws Exception {
-		Thread thread = new Thread(new Runnable(){
+	public StatusCode login(final String username, final String password) throws Exception {
+		ExecutorService executor = Executors.newSingleThreadExecutor();
+		Callable<StatusCode> callable = new Callable<StatusCode>() {
 			@Override
-			public void run() {
+			public StatusCode call() {
 				try {
-					login_runner(username,password);
+					return login_runner(username,password);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				return null;
 			}
-		});
-		thread.start();
+		};
+		Future<StatusCode> future = executor.submit(callable);
+		executor.shutdown();
+		return future.get();
 	}
 
 	public NetworkEngine.StatusCode logout() throws Exception {
-//		Thread thread = new Thread(new Runnable(){
-//			@Override
-//			public void run() {
-//				try {
-//					logout_runner();
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//		thread.start();
 		ExecutorService executor = Executors.newSingleThreadExecutor();
 		Callable<StatusCode> callable = new Callable<StatusCode>() {
 			@Override
@@ -80,18 +73,27 @@ public class NetworkEngine {
 			}
 		};
 		Future<StatusCode> future = executor.submit(callable);
-		// future.get() returns 2
 		executor.shutdown();
 		return future.get();
+//		Thread thread = new Thread(new Runnable(){
+//			@Override
+//			public void run() {
+//				try {
+//					logout_runner();
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//		thread.start();
 	}
 
-	private void login_runner(String username, String password) throws Exception{
+	private StatusCode login_runner(String username, String password) throws Exception{
 		if (username == null || password == null){
 			Log.wtf("Error", "Either username or password is null");
-			return;
+			return StatusCode.CREDENTIAL_NONE;
 		}
-		System.out.println("Loggin in with "+username+password);
-		//String username = "11uit424", password = "screwYou";
+		//System.out.println("Loggin in with "+username+password);
 		String urlParameters = "user="+username+"&password="+password; // "param1=a&param2=b&param3=c";
 
 		String request = "http://172.16.4.201/cgi-bin/login";
@@ -99,20 +101,48 @@ public class NetworkEngine {
 
 		URLConnection puServerConnection = puServerUrl.openConnection();
 		puServerConnection.setDoOutput(true);
-		OutputStreamWriter writer = new OutputStreamWriter(puServerConnection.getOutputStream());
-		writer.write(urlParameters);
-		writer.flush();
+
+		//FIXME: Handle protocol exception
+		OutputStream stream = null;	//XXX Wrong
+		try {
+			stream = puServerConnection.getOutputStream();
+		}catch(java.net.ConnectException e){
+			e.printStackTrace();
+			Log.w("NetworkEngine","Connection Exception");
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 
 		//Output
-		String line;
-		//FIXME: Handle protocol exception
-		BufferedReader reader = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
+		OutputStreamWriter writer = new OutputStreamWriter(stream);
+		writer.write(urlParameters);
+		writer.flush();
+		StatusCode returnStatus = null;
 
-		while ((line = reader.readLine()) != null) {
-			Log.w("html", line);
+		String lineBuffer;
+		BufferedReader htmlBuffer = null; //FIXME Null pointer exceptions eminent, May the forth be with you!!!
+		try{
+			htmlBuffer = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
+			while (((lineBuffer = htmlBuffer.readLine()) != null) && returnStatus == null) {
+				if (lineBuffer.contains("External Welcome Page")){
+					Log.d("NetworkEngine", "External Welcome Match");
+					returnStatus = StatusCode.LOGIN_SUCCESS;
+				}else if (lineBuffer.contains("Authentication failed")){
+					returnStatus = StatusCode.AUTHENTICATION_FAILED;
+				}else if (lineBuffer.contains("Only one user login session is allowed")){
+					returnStatus = StatusCode.MULTIPLE_SESSIONS;
+				}else{
+					Log.i("html", lineBuffer);
+				}
+			}
+			writer.close();
+			htmlBuffer.close();
+		}catch(java.net.ProtocolException e){
+			returnStatus = StatusCode.LOGGED_IN;
+		}catch(Exception e){
+			e.printStackTrace();
 		}
-		writer.close();
-		reader.close();
+		return returnStatus;
 	}
 
 	private NetworkEngine.StatusCode logout_runner() throws Exception {
@@ -123,22 +153,19 @@ public class NetworkEngine {
 		//Get inputStream and show output
 		BufferedReader htmlBuffer = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
 		//TODO parse output
-/*
-		 if re.search('Logout',the_page):
-	            print ('Logout successful');
-	        elif re.search('User not logged in',the_page):
-	            print('You\'re not logged in');
-*/
-		String inputLine;
-		while ((inputLine = htmlBuffer.readLine()) != null){
+		String lineBuffer;
+		StatusCode returnStatus = null;
+		while ((lineBuffer = htmlBuffer.readLine()) != null && returnStatus == null){
 
-			if (Pattern.matches("Logout", inputLine)){
-				return StatusCode.LOGOUT_SUCCESS;
+			if (lineBuffer.contains("Logout")){
+				returnStatus = StatusCode.LOGOUT_SUCCESS;
+			}else if(lineBuffer.contains("User not logged in")){
+				returnStatus = StatusCode.NOT_LOGGED_IN;
 			}
-			Log.w("html", inputLine);
+			Log.w("html", lineBuffer);
 		}
 		htmlBuffer.close();
-		return null;
+		return returnStatus;
 	}
 
 }
