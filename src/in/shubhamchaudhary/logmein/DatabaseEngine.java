@@ -22,6 +22,8 @@
 
 package in.shubhamchaudhary.logmein;
 
+import java.util.ArrayList;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -31,6 +33,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class DatabaseEngine {
+	//Class Variables
+	public enum StatusCode {
+		//TODO: Add more meaning full Status Codes
+		DB_EMPTY, DB_DELETE_SUCCESS
+	};
     Context context;
     SQLiteOpenHelper myDatabaseHelper ;
     DatabaseEngine(Context ctx){
@@ -100,7 +107,30 @@ public class DatabaseEngine {
 		return password;
 	}
 
+	/*
+	 * return list of all the users in database
+	 */
+	ArrayList userList(){
+		//TODO
+		return null;
+	}
 
+	/*
+	 * delete the user with username as passed
+	 */
+	int deleteUser(String username){
+		//TODO
+		//Better if we only find the userid here and pass it to deleteUser(id)
+		return -1;
+	}
 
+	/*
+	 * delete the user with id number passed
+	 */
+	int deleteUser(int id){
+		//TODO
+		//Delete userid from database
+		return -1;
+	}
 
 }
