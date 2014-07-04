@@ -188,11 +188,12 @@ public class MainActivity extends ActionBarActivity{
 		String username =textbox_username.getText().toString();
 		String password =textbox_password.getText().toString();
 		
-		outputTextView.setText(outputTextView.getText().toString()+"Saving: "+username+password);
+		outputTextView.setText(outputTextView.getText().toString()+"\nSaving: "+username);
 		databaseEngine.saveToDatabase(username, password);
 
 		Toast.makeText(getApplicationContext(), databaseEngine.getUsername()+" entered into your inventory", Toast.LENGTH_SHORT).show();
 
+		//TODO: wtf is this vivek?????
 //		textbox_username.clearComposingText();
 		textbox_password.clearComposingText();
 	}//end saveCredential
