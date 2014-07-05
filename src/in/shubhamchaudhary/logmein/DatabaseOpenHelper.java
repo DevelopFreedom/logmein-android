@@ -33,7 +33,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper{
 	private static final String TAG= DatabaseOpenHelper.class.getSimpleName();
 	public static final String DB_NAME="ID";
 	public static final int DB_VERSION=1;
-	public static final String TABLE="INVENTORY";
+	public static final String TABLE="INVENTORY";	//XXX
 	public static final String USERNAME="username";
 	public static final String PASSWORD="password";
 	public static final String C_ID= "C_ID";

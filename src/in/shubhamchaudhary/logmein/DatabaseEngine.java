@@ -61,6 +61,7 @@ public class DatabaseEngine {
 
 				database.insert(DatabaseOpenHelper.TABLE,null, values);
 				String[] columns=new String[]{DatabaseOpenHelper.USERNAME,DatabaseOpenHelper.PASSWORD};
+				///TODO: Why cursor?
 				cursor=database.query(DatabaseOpenHelper.TABLE, columns, null, null, null,null, null);
 				Log.v("DE", "Cursor Object" + DatabaseUtils.dumpCursorToString(cursor));
 				//Debug message
@@ -73,6 +74,7 @@ public class DatabaseEngine {
 			e.printStackTrace();
 		}
 	}
+	//TODO: Move to one common function
 	String getUsername(){
 		String username = null;
 		try{
