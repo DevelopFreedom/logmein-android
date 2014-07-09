@@ -22,6 +22,8 @@
 
 package in.shubhamchaudhary.logmein;
 
+import java.util.ArrayList;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -36,9 +38,10 @@ import android.widget.Spinner;
 
 public class UserDatabase extends ActionBarActivity {
 
+	
 	Spinner spinner_user_list; 
 	ArrayAdapter adapter;
-	String user_list[];
+	ArrayList user_list;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,17 +51,18 @@ public class UserDatabase extends ActionBarActivity {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
+	//	my_view = getLayoutInflater().inflate(R.layout.fragment_main,null);
 		
 		spinner_user_list =(Spinner)findViewById(R.id.spinner_user_list);
-		
+		user_list = new ArrayList();
 		Intent intent_user_db = getIntent();
-//		String username = intent_user_db.getStringExtra("username");
-//		
-//		spinner_user_list.setAdapter(null);
-//		
-//		user_list[0] = username;
-//		
-//		spinner_user_list.setAdapter(adapter);
+		
+		String username = intent_user_db.getStringExtra("username");
+		user_list.add(username);
+		
+		adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,user_list);
+		spinner_user_list.setAdapter(adapter);
+	
 	}
 
 	@Override

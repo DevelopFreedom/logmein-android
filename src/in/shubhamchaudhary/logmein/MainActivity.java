@@ -54,6 +54,7 @@ public class MainActivity extends ActionBarActivity{
 		databaseEngine = new DatabaseEngine(this);
 
 		outputTextView = (TextView)findViewById(R.id.outputTextView);
+	
 		String username = databaseEngine.getUsername();
 		if (username != null){
 		//if (username.length() != 0){
@@ -203,7 +204,7 @@ public class MainActivity extends ActionBarActivity{
 		
 		Intent intent_user_db = new Intent(this,UserDatabase.class);
 		String un = textbox_username.getText().toString();
-		intent_user_db.putExtra("username", "un");
+		intent_user_db.putExtra("username", un);
 		startActivity(intent_user_db);
 		
 	}//end of manage_user(View)
