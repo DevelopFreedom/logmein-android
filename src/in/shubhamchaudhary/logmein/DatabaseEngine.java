@@ -112,9 +112,24 @@ public class DatabaseEngine {
 	/*
 	 * return list of all the users in database
 	 */
-	ArrayList userList(){
-		//TODO
-		return null;
+	ArrayList<String> userList(){
+		ArrayList<String> user_list = new ArrayList<String>();
+		try{
+			database=myDatabaseHelper.getReadableDatabase();
+			String[] columns=new String[]{DatabaseOpenHelper.USERNAME,DatabaseOpenHelper.PASSWORD};
+			cursor=database.query(DatabaseOpenHelper.TABLE, columns, null, null, null,null, null);
+
+			while(cursor.moveToNext()){
+				user_list.add(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.USERNAME)));
+			}
+			database.close();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		Log.i("DE","User List:");
+		Log.i("DE",user_list.toString());
+
+		return user_list;
 	}
 
 	/*
