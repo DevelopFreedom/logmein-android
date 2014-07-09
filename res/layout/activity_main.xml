@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:fontFamily="Verdana"
-            android:hint="@string/Username"
+            android:hint="@string/edit_username_hint"
             android:inputType="text" >
 
             <requestFocus />
@@ -37,14 +37,14 @@
             android:layout_width="116dp"
             android:layout_height="wrap_content"
             android:fontFamily="Verdana"
-            android:text="@string/save" />
+            android:text="@string/button_save" />
 
         <Button
             android:id="@+id/button_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="Verdana"
-            android:text="@string/logmein"
+            android:text="@string/button_logmein"
             android:textSize="30sp"
             android:typeface="monospace" />
 
@@ -53,7 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="Verdana"
-            android:text="@string/logout"
+            android:text="@string/button_logout"
             android:textSize="30sp"
             android:typeface="monospace" />
 

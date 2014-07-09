@@ -5,17 +5,17 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="Button">Button</string>
-    <string name="Username">Enter Username</string>
-    <string name="Password">Enter Password</string>
-    <string name="save">Save</string>
-    <string name="logmein">LogMeIn</string>
-    <string name="edit_password_string">Enter password</string>
+
+    <string name="button_save">Save</string>
+    <string name="button_logmein">LogMeIn</string>
+    <string name="button_logout">Logout</string>
+    
     <string name="edit_password_hint">Enter Password</string>
-    <string name="logout">Logout</string>
+    <string name="edit_username_hint">Enter Username</string>
     <string name="empty"></string>
     <string name="title_activity_user_database">UserDatabase</string>
-    <string name="edit">Edit</string>
-    <string name="delete">Delete</string>
+    <string name="button_edit">Edit</string>
+    <string name="button_delete">Delete</string>
     <string name="manage_user">Manage User </string>
 
 </resources>
