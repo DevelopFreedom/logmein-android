@@ -8,32 +8,4 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="in.shubhamchaudhary.logmein.UserDatabase$PlaceholderFragment" >
 
-    <Spinner
-        android:id="@+id/spinner_user_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="16dp" />
-
-    <Button
-        android:id="@+id/button_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/spinner_user_list"
-        android:layout_below="@+id/spinner_user_list"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="51dp"
-        android:text="@string/edit" />
-
-    <Button
-        android:id="@+id/button_delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/button_edit"
-        android:layout_alignBottom="@+id/button_edit"
-        android:layout_marginLeft="56dp"
-        android:layout_toRightOf="@+id/button_edit"
-        android:gravity="center"
-        android:text="@string/delete" />
-
-</RelativeLayout>
+    </RelativeLayout>
