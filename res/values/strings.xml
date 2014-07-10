@@ -13,5 +13,9 @@
     <string name="edit_password_hint">Enter Password</string>
     <string name="logout">Logout</string>
     <string name="empty"></string>
+    <string name="title_activity_user_database">UserDatabase</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="manage_user">Manage User </string>
 
 </resources>

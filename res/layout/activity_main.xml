@@ -57,6 +57,14 @@
             android:textSize="30sp"
             android:typeface="monospace" />
 
+        <Button
+            android:id="@+id/button_manage_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.13"
+            android:text="@string/manage_user"
+            android:onClick="manage_user" />
+
         <TextView
             android:id="@+id/outputTextView"
             android:layout_width="match_parent"

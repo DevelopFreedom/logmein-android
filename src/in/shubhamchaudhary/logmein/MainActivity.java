@@ -20,6 +20,7 @@
 
 package in.shubhamchaudhary.logmein;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -198,5 +199,13 @@ public class MainActivity extends ActionBarActivity{
 		textbox_password.clearComposingText();
 	}//end saveCredential
 
+	public void manage_user(View v){
+		
+		Intent intent_user_db = new Intent(this,UserDatabase.class);
+		String un = textbox_username.getText().toString();
+		intent_user_db.putExtra("username", "un");
+		startActivity(intent_user_db);
+		
+	}//end of manage_user(View)
 }//end MainActivity class
 /* vim: set tabstop=4:softtabstop=8:shiftwidth=8:noexpandtab:textwidth=0:sta */
