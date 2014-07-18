@@ -135,9 +135,18 @@ public class MainActivity extends ActionBarActivity{
 	void login(){
 		NetworkEngine.StatusCode status = null;
 		Log.d("login","Insiide Login");
+		String username, password;
+		// Use username/password from textbox if both filled
+		username=textbox_username.getText().toString();
+		password=textbox_password.getText().toString();
+		if (username.length() == 0 && password.length() == 0 ){
+			username = databaseEngine.getUsername();
+			password = databaseEngine.getPassword();
+		}
 		try{
-			status = networkEngine.login(databaseEngine.getUsername(),databaseEngine.getPassword());
-		}catch(Exception e){
+			status = networkEngine.login(username, password);
+		}
+		catch(Exception e){
 			e.printStackTrace();
 		}
 		String outputText = outputTextView.getText().toString();	//To be shown in User Text Box
