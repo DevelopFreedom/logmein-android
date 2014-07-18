@@ -38,7 +38,8 @@ public class NetworkEngine {
 	//Class Variables
 	public enum StatusCode {
 		LOGIN_SUCCESS,  AUTHENTICATION_FAILED, MULTIPLE_SESSIONS,
-		CREDENTIAL_NONE, LOGOUT_SUCCESS, NOT_LOGGED_IN, LOGGED_IN
+		CREDENTIAL_NONE, LOGOUT_SUCCESS, NOT_LOGGED_IN, LOGGED_IN,
+		CONNECTION_ERROR,
 	};
 
 	public StatusCode login(final String username, final String password) throws Exception {
@@ -111,7 +112,8 @@ public class NetworkEngine {
 			stream = puServerConnection.getOutputStream();
 		}catch(java.net.ConnectException e){
 			e.printStackTrace();
-			Log.w("NetworkEngine","Connection Exception");
+			Log.d("NetworkEngine","Connection Exception");
+			return StatusCode.CONNECTION_ERROR;
 		}catch (Exception e){
 			e.printStackTrace();
 		}
@@ -154,7 +156,16 @@ public class NetworkEngine {
 		URLConnection puServerConnection = puServerUrl.openConnection();
 
 		//Get inputStream and show output
-		BufferedReader htmlBuffer = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
+		BufferedReader htmlBuffer = null;	//XXX
+		try {
+			htmlBuffer = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
+		}catch(java.net.ConnectException e){
+			e.printStackTrace();
+			Log.d("NetworkEngine","Connection Exception");
+			return StatusCode.CONNECTION_ERROR;
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 		//TODO parse output
 		String lineBuffer;
 		StatusCode returnStatus = null;
