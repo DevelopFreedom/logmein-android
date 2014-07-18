@@ -57,6 +57,20 @@ public class NetworkEngine {
 		Future<StatusCode> future = executor.submit(callable);
 		executor.shutdown();
 		return future.get();
+/*
+		Thread thread = new Thread(new Runnable(){
+			@Override
+			public void run() {
+				try {
+					login_runner(username,password);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		thread.start();
+		return StatusCode.LOGIN_SUCCESS;	//XXX
+*/
 	}
 
 	public NetworkEngine.StatusCode logout() throws Exception {
@@ -75,17 +89,6 @@ public class NetworkEngine {
 		Future<StatusCode> future = executor.submit(callable);
 		executor.shutdown();
 		return future.get();
-//		Thread thread = new Thread(new Runnable(){
-//			@Override
-//			public void run() {
-//				try {
-//					logout_runner();
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//		thread.start();
 	}
 
 	private StatusCode login_runner(String username, String password) throws Exception{
