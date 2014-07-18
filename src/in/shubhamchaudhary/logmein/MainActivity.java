@@ -161,6 +161,8 @@ public class MainActivity extends ActionBarActivity{
 			outputText = "Only one user login session is allowed";
 		}else if (status == NetworkEngine.StatusCode.LOGGED_IN){
 			outputText = "You're already logged in";
+		}else if (status == NetworkEngine.StatusCode.CONNECTION_ERROR){
+			outputText = "There was a connection error";
 		}else if (status == null){
 			Log.d("NetworkEngine","StatusCode was null in login");
 			outputText = outputTextView.getText().toString();
@@ -183,6 +185,8 @@ public class MainActivity extends ActionBarActivity{
 			outputText = "Logout Successful";
 		}else if (status == NetworkEngine.StatusCode.NOT_LOGGED_IN){
 			outputText = "You're not logged in " + databaseEngine.getUsername();
+		}else if (status == NetworkEngine.StatusCode.CONNECTION_ERROR){
+			outputText = "There was a connection error";
 		}else if (status == null){
 			Log.d("NetworkEngine","StatusCode was null in logout");
 			outputText = outputTextView.getText().toString();
