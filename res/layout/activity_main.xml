@@ -39,46 +39,94 @@
             android:fontFamily="Verdana"
             android:text="@string/button_save" />
 
-        <Button
-            android:id="@+id/button_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="Verdana"
-            android:text="@string/button_logmein"
-            android:textSize="30sp"
-            android:typeface="monospace" />
-
-        <Button
-            android:id="@+id/button_logout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="Verdana"
-            android:text="@string/button_logout"
-            android:textSize="30sp"
-            android:typeface="monospace" />
-
-	    <LinearLayout
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal" >
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
 
             <Button
-	            android:id="@+id/button_browser"
-	            android:layout_weight="0.13"
-	            android:layout_width="0dip"
-	            android:layout_height="wrap_content"
-                android:fontFamily="Verdana"
-	            android:text="@string/launch_browser"
-	            android:onClick="launch_browser" />
+                android:id="@+id/button_logout"
 
-	        <Button
-	            android:id="@+id/button_manage_user"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
+                android:text="OUT"
+                android:textColor="#170012"
+                android:textSize="30sp"
+                android:typeface="monospace"
+
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:padding="5dp"
+                android:background="@drawable/buttonshape_logout"
+                android:shadowColor="#A8A8A8"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="5"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                />
+
+            <Button
+                android:id="@+id/button_login"
+
+                android:text="IN"
+                android:textColor="#170012"
+                android:textSize="30sp"
+                android:typeface="monospace"
+
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:padding="5dp"
+                android:background="@drawable/buttonshape_login"
+                android:shadowColor="#A8A8A8"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="5"
+                android:layout_centerInParent="true"
+                android:layout_alignParentTop="true"
+                 />
+
+            <Button
+                android:id="@+id/button_web"
+
+                android:text="WEB"
+                android:textColor="#170012"
+                android:textSize="30sp"
+                android:typeface="monospace"
+
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:padding="5dp"
+                android:background="@drawable/buttonshape_web"
+                android:shadowColor="#A8A8A8"
+                android:shadowDx="0"
+                android:shadowDy="0"
+                android:shadowRadius="5"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:onClick="launch_browser"
+                />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/button_browser"
+                android:layout_weight="0.13"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
                 android:fontFamily="Verdana"
-	            android:text="@string/manage_user"
-	            android:onClick="manage_user" />
-	    </LinearLayout>
+                android:text="@string/launch_browser"
+                android:onClick="launch_browser" />
+
+            <Button
+                android:id="@+id/button_manage_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="Verdana"
+                android:text="@string/manage_user"
+                android:onClick="manage_user" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/outputTextView"
