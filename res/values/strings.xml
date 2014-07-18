@@ -16,6 +16,7 @@
     <string name="title_activity_user_database">UserDatabase</string>
     <string name="button_edit">Edit</string>
     <string name="button_delete">Delete</string>
-    <string name="manage_user">Manage User </string>
+    <string name="manage_user">Manage User</string>
+    <string name="launch_browser">Launch Browser</string>
 
 </resources>

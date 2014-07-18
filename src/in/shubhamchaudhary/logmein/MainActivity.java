@@ -21,6 +21,7 @@
 package in.shubhamchaudhary.logmein;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -208,5 +209,10 @@ public class MainActivity extends ActionBarActivity{
 		startActivity(intent_user_db);
 		
 	}//end of manage_user(View)
+
+	public void launch_browser(View v){
+		startActivity(new Intent(Intent.ACTION_VIEW,
+			    Uri.parse("http://www.google.com")));
+	}
 }//end MainActivity class
 /* vim: set tabstop=4:softtabstop=8:shiftwidth=8:noexpandtab:textwidth=0:sta */

@@ -57,13 +57,28 @@
             android:textSize="30sp"
             android:typeface="monospace" />
 
-        <Button
-            android:id="@+id/button_manage_user"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.13"
-            android:text="@string/manage_user"
-            android:onClick="manage_user" />
+	    <LinearLayout
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal" >
+
+            <Button
+	            android:id="@+id/button_browser"
+	            android:layout_weight="0.13"
+	            android:layout_width="0dip"
+	            android:layout_height="wrap_content"
+                android:fontFamily="Verdana"
+	            android:text="@string/launch_browser"
+	            android:onClick="launch_browser" />
+
+	        <Button
+	            android:id="@+id/button_manage_user"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+                android:fontFamily="Verdana"
+	            android:text="@string/manage_user"
+	            android:onClick="manage_user" />
+	    </LinearLayout>
 
         <TextView
             android:id="@+id/outputTextView"
