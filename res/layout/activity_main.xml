@@ -39,27 +39,9 @@
             android:fontFamily="Verdana"
             android:text="@string/button_save" />
 
-	    <LinearLayout
+		<RelativeLayout
 	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:orientation="horizontal" >
-			<Button
-				android:id="@+id/button_login"
-
-	            android:text="IN"
-				android:textColor="#170012"
-				android:textSize="30sp"
-	            android:typeface="monospace"
-
-				android:layout_width="100dp"
-				android:layout_height="100dp"
-				android:background="@drawable/buttonshape_login"
-				android:shadowColor="#A8A8A8"
-				android:shadowDx="0"
-				android:shadowDy="0"
-				android:shadowRadius="5"
-				android:layout_gravity="left"
-				/>
+	        android:layout_height="wrap_content" >
 
 			<Button
 				android:id="@+id/button_logout"
@@ -71,14 +53,57 @@
 
 				android:layout_width="100dp"
 				android:layout_height="100dp"
+				android:padding="5dp"
 				android:background="@drawable/buttonshape_logout"
 				android:shadowColor="#A8A8A8"
 				android:shadowDx="0"
 				android:shadowDy="0"
 				android:shadowRadius="5"
-				android:layout_gravity="right"
+		        android:layout_alignParentLeft="true"
+		        android:layout_alignParentTop="true"
 				/>
-	    </LinearLayout>
+
+		    <Button
+				android:id="@+id/button_login"
+
+	            android:text="IN"
+				android:textColor="#170012"
+				android:textSize="30sp"
+	            android:typeface="monospace"
+
+				android:layout_width="100dp"
+				android:layout_height="100dp"
+				android:padding="5dp"
+				android:background="@drawable/buttonshape_login"
+				android:shadowColor="#A8A8A8"
+				android:shadowDx="0"
+				android:shadowDy="0"
+				android:shadowRadius="5"
+		        android:layout_centerInParent="true"
+		        android:layout_alignParentTop="true"
+		         />
+
+			<Button
+				android:id="@+id/button_web"
+
+	            android:text="WEB"
+				android:textColor="#170012"
+	            android:textSize="30sp"
+	            android:typeface="monospace"
+
+				android:layout_width="100dp"
+				android:layout_height="100dp"
+				android:padding="5dp"
+				android:background="@drawable/buttonshape_web"
+				android:shadowColor="#A8A8A8"
+				android:shadowDx="0"
+				android:shadowDy="0"
+				android:shadowRadius="5"
+		        android:layout_alignParentRight="true"
+		        android:layout_alignParentTop="true"
+	            android:onClick="launch_browser"
+				/>
+		</RelativeLayout>
 
 	    <LinearLayout
 	        android:layout_width="match_parent"
