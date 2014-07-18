@@ -37,8 +37,7 @@ import android.widget.Spinner;
 
 public class UserDatabase extends ActionBarActivity {
 
-	
-	Spinner spinner_user_list; 
+	Spinner spinner_user_list;
 	ArrayAdapter<String> adapter;
 	ArrayList<String> user_list;
 	DatabaseEngine databaseEngine;
@@ -51,14 +50,14 @@ public class UserDatabase extends ActionBarActivity {
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.container, new PlaceholderFragment()).commit();
 		}
-		
+
 		databaseEngine = new DatabaseEngine(this);
 		spinner_user_list =(Spinner)findViewById(R.id.spinner_user_list);
 		user_list = databaseEngine.userList();
-		
+
 		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,user_list);
 		spinner_user_list.setAdapter(adapter);
-	
+
 	}
 
 	@Override

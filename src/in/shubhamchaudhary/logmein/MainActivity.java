@@ -2,6 +2,7 @@
  *   LogMeIn - Automatically log into Panjab University Wifi Network
  *
  *   Copyright (c) 2014 Shubham Chaudhary <me@shubhamchaudhary.in>
+ *   Copyright (c) 2014 Tanjot Kaur <tanjot28@gmail.com>
  *   Copyright (c) 2014 Vivek Aggarwal <vivekaggarwal92@gmail.com>
  *
  *   LogMeIn is free software: you can redistribute it and/or modify
@@ -55,7 +56,7 @@ public class MainActivity extends ActionBarActivity{
 		databaseEngine = new DatabaseEngine(this);
 
 		outputTextView = (TextView)findViewById(R.id.outputTextView);
-	
+
 		String username = databaseEngine.getUsername();
 		if (username != null){
 		//if (username.length() != 0){
@@ -196,27 +197,23 @@ public class MainActivity extends ActionBarActivity{
 	void saveCredential(){
 		//TODO: Check user input
 		//outputTextView.setText(outputTextView.getText().toString()+"Trying to saveCredential");
-		
+
 		String username =textbox_username.getText().toString();
 		String password =textbox_password.getText().toString();
-		
+
 		outputTextView.setText(outputTextView.getText().toString()+"\nSaving: "+username);
 		databaseEngine.saveToDatabase(username, password);
-
 		Toast.makeText(getApplicationContext(), databaseEngine.getUsername()+" entered into your inventory", Toast.LENGTH_SHORT).show();
-
 		//TODO: wtf is this vivek?????
 //		textbox_username.clearComposingText();
 		textbox_password.clearComposingText();
 	}//end saveCredential
 
 	public void manage_user(View v){
-		
 		Intent intent_user_db = new Intent(this,UserDatabase.class);
 		String un = textbox_username.getText().toString();
 		intent_user_db.putExtra("username", un);
 		startActivity(intent_user_db);
-		
 	}//end of manage_user(View)
 
 	public void launch_browser(View v){

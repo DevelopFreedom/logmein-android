@@ -2,6 +2,7 @@
  *   LogMeIn - Automatically log into Panjab University Wifi Network
  *
  *   Copyright (c) 2014 Shubham Chaudhary <me@shubhamchaudhary.in>
+ *   Copyright (c) 2014 Tanjot Kaur <tanjot28@gmail.com>
  *   Copyright (c) 2014 Vivek Aggarwal <vivekaggarwal92@gmail.com>
  *
  *   This file is part of LogMeIn.
