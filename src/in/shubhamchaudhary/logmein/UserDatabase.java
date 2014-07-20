@@ -24,9 +24,13 @@ package in.shubhamchaudhary.logmein;
 
 import java.util.ArrayList;
 
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -35,7 +39,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-public class UserDatabase extends ActionBarActivity {
+public class UserDatabase extends FragmentActivity {
 
 	Spinner spinner_user_list;
 	ArrayAdapter<String> adapter;
@@ -97,4 +101,14 @@ public class UserDatabase extends ActionBarActivity {
 		}
 	}
 
-}
+	public void edit_user_profile(View v){
+		
+		Fragment frag = new EditFragment();
+		FragmentManager fm  = getSupportFragmentManager();
+		FragmentTransaction fragment_transaction = fm.beginTransaction();
+		fragment_transaction.add(android.R.id.content, frag);
+		//fragment_transaction.replace(R.id.fragment_blank, frag);
+		fragment_transaction.commit();
+		
+	}//end 
+}//end of class UserDatabase
