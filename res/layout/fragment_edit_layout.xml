@@ -3,18 +3,58 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
-     <!-- <fragment
-	    android:id="@+id/fragment_edit"
-	    android:name="in.shubhamchaudhary.logmein.EditFragment"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content" 
-	    android:padding="10dp"
-	  /> -->
-     
-	<TextView 
+
+   	<RelativeLayout
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:text="@string/edit_fragment"
-	    />
+	    android:padding="10dp" >
+   
+	    <TextView
+	        android:id="@+id/edit_username"
+	        android:layout_width="106dp"
+	        android:layout_height="37dp"
+	        android:text="Username: "
+	        android:textSize="20dp" />
+	     
+	   	<EditText
+	        android:id="@+id/text_edit_username"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_toRightOf="@id/edit_username" >
+    	    <requestFocus />
+	    </EditText>  
+     </RelativeLayout>
+
+   	
+	     
+	<RelativeLayout 
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:padding="10dp">
+	    
+		<TextView
+	        android:id="@+id/edit_password"
+	        android:layout_width="106dp"
+	        android:layout_height="37dp"
+	        android:text="Password"
+	        android:textAppearance="?android:attr/textAppearanceSmall"
+	        android:textSize="20dp"	/>    
+         
+         <EditText
+	   	    android:id="@+id/text_edit_password"
+	   	    android:layout_width="match_parent"
+	   	    android:layout_height="wrap_content"
+	   	    android:inputType="textPassword" 
+	   	    android:layout_toRightOf="@id/edit_password"	/>
+         
+	</RelativeLayout>
+
+	<CheckBox
+	    android:id="@+id/cb_show_password"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="show password"
+	    android:textSize="15dp"
+	    android:layout_gravity="center" />
+    
 </LinearLayout>

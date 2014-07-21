@@ -59,7 +59,7 @@ public class UserDatabase extends FragmentActivity {
 		spinner_user_list =(Spinner)findViewById(R.id.spinner_user_list);
 		user_list = databaseEngine.userList();
 
-		adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,user_list);
+		adapter = new ArrayAdapter<String>(this,R.layout.spinner_layout,user_list);
 		spinner_user_list.setAdapter(adapter);
 
 	}
