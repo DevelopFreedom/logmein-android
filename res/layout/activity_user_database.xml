@@ -17,14 +17,25 @@
 			android:layout_height="wrap_content"
 			android:orientation="horizontal"
 			android:padding="30dp" >
+
+   			<TextView
+			    android:id="@+id/tb_user_list"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_marginTop="20dp"
+			    android:layout_marginRight="20dp"
+			    android:gravity="left"
+			    android:textSize="8pt"
+			    android:text="User List" />
+		    
 			<Spinner
-				android:id="@+id/spinner_user_list"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_marginLeft="15dp"
-				android:layout_marginTop="15dp"
-				android:layout_centerInParent="true"
-				/>
+			    android:id="@+id/spinner_user_list"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_marginTop="8dp"
+			    android:layout_toRightOf="@+id/tb_user_list" />
+
+
 		</RelativeLayout>
 
 		<RelativeLayout
