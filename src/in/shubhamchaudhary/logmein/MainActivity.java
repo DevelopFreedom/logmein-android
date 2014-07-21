@@ -214,10 +214,12 @@ public class MainActivity extends ActionBarActivity{
 	}//end saveCredential
 
 	public void manage_user(View v){
+		
 		Intent intent_user_db = new Intent(this,UserDatabase.class);
 		String un = textbox_username.getText().toString();
 		intent_user_db.putExtra("username", un);
 		startActivity(intent_user_db);
+		
 	}//end of manage_user(View)
 
 	public void launch_browser(View v){

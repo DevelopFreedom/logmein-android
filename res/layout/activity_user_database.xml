@@ -53,7 +53,14 @@
 				/>
 		</RelativeLayout>
 
-		
+		<fragment
+	    android:id="@+id/fragment_blank"
+	    android:name="in.shubhamchaudhary.logmein.FragmentBlank"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" 
+	    android:padding="10dp"
+	    android:layout_gravity="bottom"
+	    />
 	</LinearLayout>
 	
 	

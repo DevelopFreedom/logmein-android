@@ -103,11 +103,11 @@ public class UserDatabase extends FragmentActivity {
 
 	public void edit_user_profile(View v){
 		
-		Fragment frag = new EditFragment();
+		Fragment frag = new FragmentEdit();
 		FragmentManager fm  = getSupportFragmentManager();
 		FragmentTransaction fragment_transaction = fm.beginTransaction();
-		fragment_transaction.add(android.R.id.content, frag);
-		//fragment_transaction.replace(R.id.fragment_blank, frag);
+		//fragment_transaction.add(android.R.id.content, frag);
+		fragment_transaction.replace(R.id.fragment_blank, frag);
 		fragment_transaction.commit();
 		
 	}//end 
