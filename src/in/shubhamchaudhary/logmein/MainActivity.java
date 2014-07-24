@@ -199,7 +199,7 @@ public class MainActivity extends ActionBarActivity{
 	}//end logout
 
 	void saveCredential(){
-		//TODO: Check user input
+		//TODO: Check user input-that no user id is entered twice
 		//outputTextView.setText(outputTextView.getText().toString()+"Trying to saveCredential");
 
 		String username =textbox_username.getText().toString();

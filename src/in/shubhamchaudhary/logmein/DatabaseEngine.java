@@ -151,4 +151,35 @@ public class DatabaseEngine {
 		return -1;
 	}
 
+	UserStructure getUsernamePassword(String un){
+		UserStructure user=null;
+		try{
+			
+			database = myDatabaseHelper.getReadableDatabase();
+			cursor = database.query(DatabaseOpenHelper.TABLE,new String[]{DatabaseOpenHelper.PASSWORD},DatabaseOpenHelper.USERNAME+"=?",new String[]{un},null,null,null,null);
+			if(cursor!=null){
+				cursor.moveToFirst();
+			}
+			user = new UserStructure();
+			user.setUsername(un);
+			user.setPassword(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.PASSWORD)));
+			
+			
+//			//String[] columns=new String[]{DatabaseOpenHelper.USERNAME,DatabaseOpenHelper.PASSWORD};
+//			cursor = database.rawQuery("select * from ? where username=?", new String[]{DatabaseOpenHelper.TABLE,un} );
+//			if(!cursor.isNull(0)){
+//			//TODO:make sure that check is made when users are saved that no more than one entry for same user is made
+//				user = new UserStructure();
+//				user.setUsername(cursor.getString(cursor.getColumnIndex("username")));
+//				user.setPassword(cursor.getString(cursor.getColumnIndex("password")));
+//				
+				Log.e("unnnnnn", user.getUsername());
+				Log.e("pwwwwwd", user.getPassword());
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			database.close();
+		}
+		return(user);
+	}//end of getUsernamePassword(String)
 }

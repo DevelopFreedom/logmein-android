@@ -103,12 +103,21 @@ public class UserDatabase extends FragmentActivity {
 
 	public void edit_user_profile(View v){
 		
+		String username = (String)spinner_user_list.getSelectedItem();
+		UserStructure user = databaseEngine.getUsernamePassword(username);
+		//Log.e("In FRagEdit un",user.username);
+		Bundle bundle = new Bundle();
+		//bundle.putStringArray(user, new String[]{user.username,user.password} );
+		bundle.putSerializable("user",user);
 		Fragment frag = new FragmentEdit();
+		frag.setArguments(bundle);
+		
 		FragmentManager fm  = getSupportFragmentManager();
 		FragmentTransaction fragment_transaction = fm.beginTransaction();
 		//fragment_transaction.add(android.R.id.content, frag);
 		fragment_transaction.replace(R.id.fragment_blank, frag);
 		fragment_transaction.commit();
+			
 		
 	}//end 
 }//end of class UserDatabase
