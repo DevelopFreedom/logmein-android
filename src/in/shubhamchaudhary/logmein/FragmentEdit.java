@@ -6,12 +6,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 public class FragmentEdit extends Fragment {
 
-	DatabaseEngine databaseEngine;
-	Spinner spinner_ul;
+	EditText username,password;
 	@Override
 
 public View onCreateView(LayoutInflater inflater,
@@ -20,6 +20,14 @@ public View onCreateView(LayoutInflater inflater,
 	       //Inflate the layout for this fragment
 	        
 			UserStructure user = (UserStructure)getArguments().getSerializable("user");
+			View v = inflater.inflate(
+		              R.layout.fragment_edit_layout, container, false);
+			Log.e("viewwwww", ""+v);
+			username = (EditText)v.findViewById(R.id.edit_username);
+	        password = (EditText)v.findViewById(R.id.edit_password);
+	        username.setText(user.getUsername());
+	        password.setText(user.getPassword());
+	        
 			Log.e("In FRagEdit un",user.getUsername());
 			Log.e("In FRagEdit pwd",user.getPassword());
 				

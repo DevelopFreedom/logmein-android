@@ -10,17 +10,19 @@
 	    android:padding="10dp" >
    
 	    <TextView
-	        android:id="@+id/edit_username"
+	        android:id="@+id/text_edit_username"
 	        android:layout_width="106dp"
 	        android:layout_height="37dp"
 	        android:text="Username: "
 	        android:textSize="20dp" />
 	     
 	   	<EditText
-	        android:id="@+id/text_edit_username"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_toRightOf="@id/edit_username" >
+	   	    android:id="@+id/edit_username"
+	   	    android:layout_width="match_parent"
+	   	    android:layout_height="wrap_content"
+	   	    android:layout_alignParentTop="true"
+	   	    android:layout_toRightOf="@+id/text_edit_username" >
+
     	    <requestFocus />
 	    </EditText>  
      </RelativeLayout>
@@ -33,7 +35,7 @@
 	    android:padding="10dp">
 	    
 		<TextView
-	        android:id="@+id/edit_password"
+	        android:id="@+id/text_edit_password"
 	        android:layout_width="106dp"
 	        android:layout_height="37dp"
 	        android:text="Password"
@@ -41,11 +43,11 @@
 	        android:textSize="20dp"	/>    
          
          <EditText
-	   	    android:id="@+id/text_edit_password"
-	   	    android:layout_width="match_parent"
-	   	    android:layout_height="wrap_content"
-	   	    android:inputType="textPassword" 
-	   	    android:layout_toRightOf="@id/edit_password"	/>
+             android:id="@+id/edit_password"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_toRightOf="@+id/text_edit_password"
+             android:inputType="textPassword" />
          
 	</RelativeLayout>
 
