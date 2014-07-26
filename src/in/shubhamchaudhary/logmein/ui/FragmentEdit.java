@@ -1,5 +1,8 @@
-package in.shubhamchaudhary.logmein;
+package in.shubhamchaudhary.logmein.ui;
 
+import in.shubhamchaudhary.logmein.R;
+import in.shubhamchaudhary.logmein.R.id;
+import in.shubhamchaudhary.logmein.R.layout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;

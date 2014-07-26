@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="in.shubhamchaudhary.logmein.UserDatabase"
+            android:name="in.shubhamchaudhary.logmein.ui.UserDatabase"
             android:label="@string/title_activity_user_database" >
         </activity>
     </application>
