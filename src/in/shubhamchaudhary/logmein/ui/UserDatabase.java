@@ -20,7 +20,13 @@
  *   along with LogMeIn.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package in.shubhamchaudhary.logmein;
+package in.shubhamchaudhary.logmein.ui;
+
+import in.shubhamchaudhary.logmein.DatabaseEngine;
+import in.shubhamchaudhary.logmein.R;
+import in.shubhamchaudhary.logmein.R.id;
+import in.shubhamchaudhary.logmein.R.layout;
+import in.shubhamchaudhary.logmein.R.menu;
 
 import java.util.ArrayList;
 

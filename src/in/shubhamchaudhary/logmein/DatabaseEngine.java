@@ -23,6 +23,8 @@
 
 package in.shubhamchaudhary.logmein;
 
+import in.shubhamchaudhary.logmein.ui.UserStructure;
+
 import java.util.ArrayList;
 
 import android.content.ContentValues;
@@ -41,7 +43,7 @@ public class DatabaseEngine {
 	};
     Context context;
     SQLiteOpenHelper myDatabaseHelper ;
-    DatabaseEngine(Context ctx){
+    public DatabaseEngine(Context ctx){
         this.context = ctx;
         this.myDatabaseHelper = new DatabaseOpenHelper(this.context);
     }
@@ -113,7 +115,7 @@ public class DatabaseEngine {
 	/*
 	 * return list of all the users in database
 	 */
-	ArrayList<String> userList(){
+	public ArrayList<String> userList(){
 		ArrayList<String> user_list = new ArrayList<String>();
 		try{
 			database=myDatabaseHelper.getReadableDatabase();
@@ -151,7 +153,7 @@ public class DatabaseEngine {
 		return -1;
 	}
 
-	UserStructure getUsernamePassword(String un){
+	public UserStructure getUsernamePassword(String un){
 		UserStructure user=null;
 		try{
 			

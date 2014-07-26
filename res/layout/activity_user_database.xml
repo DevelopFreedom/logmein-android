@@ -3,7 +3,7 @@
 	android:id="@+id/container"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context="in.shubhamchaudhary.logmein.UserDatabase"
+	tools:context="in.shubhamchaudhary.logmein.ui.UserDatabase"
 	tools:ignore="MergeRootFrame"
 	>
 
@@ -66,7 +66,7 @@
 
 		<fragment
 		    android:id="@+id/fragment_blank"
-		    android:name="in.shubhamchaudhary.logmein.FragmentBlank"
+		    android:name="in.shubhamchaudhary.logmein.ui.FragmentBlank"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_marginTop="30dp" />

@@ -21,6 +21,7 @@
 
 package in.shubhamchaudhary.logmein;
 
+import in.shubhamchaudhary.logmein.ui.UserDatabase;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
