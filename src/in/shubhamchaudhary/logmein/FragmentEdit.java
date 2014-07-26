@@ -14,24 +14,19 @@ public class FragmentEdit extends Fragment {
 	EditText username,password;
 	@Override
 
-public View onCreateView(LayoutInflater inflater,
-		ViewGroup container, Bundle savedInstanceState) {
-   
-	       //Inflate the layout for this fragment
-	        
-			UserStructure user = (UserStructure)getArguments().getSerializable("user");
-			View v = inflater.inflate(
-		              R.layout.fragment_edit_layout, container, false);
-			Log.e("viewwwww", ""+v);
-			username = (EditText)v.findViewById(R.id.edit_username);
-	        password = (EditText)v.findViewById(R.id.edit_password);
-	        username.setText(user.getUsername());
-	        password.setText(user.getPassword());
-	        
-			Log.e("In FRagEdit un",user.getUsername());
-			Log.e("In FRagEdit pwd",user.getPassword());
-				
-	      return inflater.inflate(
-	              R.layout.fragment_edit_layout, container, false);
-	   }
+	public View onCreateView(LayoutInflater inflater,
+			ViewGroup container, Bundle savedInstanceState) {
+
+		//Inflate the layout for this fragment
+
+		UserStructure user = (UserStructure)getArguments().getSerializable("user");
+		View v = inflater.inflate(
+				R.layout.fragment_edit_layout, container, false);
+		username = (EditText)v.findViewById(R.id.edit_username);
+		password = (EditText)v.findViewById(R.id.edit_password);
+		username.setText(user.getUsername());
+		password.setText(user.getPassword());
+
+		return v;
+	}
 }
