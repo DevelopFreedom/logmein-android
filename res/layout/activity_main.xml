@@ -101,8 +101,9 @@
                 android:shadowDy="0"
                 android:shadowRadius="5"
                 android:layout_centerInParent="true"
-                android:layout_alignParentTop="true"
-                 />
+                android:layout_alignParentTop="true" >
+                <requestFocus />
+            </Button>
 
             <Button
                 android:id="@+id/button_web"
@@ -126,16 +127,27 @@
                 />
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="10dp" >
 
         <TextView
             android:id="@+id/outputTextView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.74"
+            android:layout_height="wrap_content"
             android:fontFamily="Verdana"
-            android:gravity="center_vertical|center_horizontal"
+            android:gravity="bottom|center_horizontal"
+            android:maxLines="2"
             android:text="@string/empty"
-            android:textSize="15sp" />
+            android:textColor="#ff0099cc"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:typeface="monospace" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 

@@ -27,6 +27,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -57,6 +58,7 @@ public class MainActivity extends ActionBarActivity{
 		databaseEngine = new DatabaseEngine(this);
 
 		outputTextView = (TextView)findViewById(R.id.outputTextView);
+		outputTextView.setMovementMethod(new ScrollingMovementMethod());
 
 		String username = databaseEngine.getUsername();
 		if (username != null){
@@ -134,6 +136,12 @@ public class MainActivity extends ActionBarActivity{
 		}
 	}
 
+	void showText(String text){
+		outputTextView.append("\n" + text);
+		//int scroll_amount = (int) (outputTextView.getLineCount() * outputTextView.getLineHeight()) - (outputTextView.getBottom() - outputTextView.getTop());
+		//outputTextView.scrollTo(0, scroll_amount);
+	}
+
 	void login(){
 		NetworkEngine.StatusCode status = null;
 		Log.d("login","Insiide Login");
@@ -170,7 +178,7 @@ public class MainActivity extends ActionBarActivity{
 		}else{
 			outputText = "Unknown Login status";
 		}
-		outputTextView.setText(outputText);
+		showText(outputText);
 		//Toast.makeText(getApplicationContext(), outputText, Toast.LENGTH_SHORT).show();
 	}//end login
 	void logout(){
@@ -195,7 +203,8 @@ public class MainActivity extends ActionBarActivity{
 			outputText = "Unknow Logout Status";
 		}
 
-		outputTextView.setText(outputText);
+		showText(outputText);
+//		outputTextView.scrollTo(0, outputTextView.getHeight());
 		//Toast.makeText(getApplicationContext(), outputText, Toast.LENGTH_SHORT).show();
 	}//end logout
 
@@ -206,7 +215,7 @@ public class MainActivity extends ActionBarActivity{
 		String username =textbox_username.getText().toString();
 		String password =textbox_password.getText().toString();
 
-		outputTextView.setText(outputTextView.getText().toString()+"\nSaving: "+username);
+		showText("Saving: "+username);
 		databaseEngine.saveToDatabase(username, password);
 		Toast.makeText(getApplicationContext(), databaseEngine.getUsername()+" entered into your inventory", Toast.LENGTH_SHORT).show();
 		//TODO: wtf is this vivek?????
