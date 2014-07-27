@@ -114,7 +114,11 @@ public class MainActivity extends ActionBarActivity{
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
+			//TODO: Calling manage_user until we have some settings
+			manage_user(this.findViewById(android.R.id.content));
 			return true;
+		} else if (id == R.id.action_manage_user) {
+			manage_user(this.findViewById(android.R.id.content));
 		}
 		return super.onOptionsItemSelected(item);
 	}
