@@ -22,8 +22,10 @@
 package in.shubhamchaudhary.logmein;
 
 import in.shubhamchaudhary.logmein.ui.UserDatabase;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -79,7 +81,9 @@ public class MainActivity extends ActionBarActivity{
 		button_login=(Button)findViewById(R.id.button_login);
 		button_login.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				login();
+//				login();
+				Progress progress = new Progress();
+				progress.execute("bla");
 			}
 		});
 
@@ -141,6 +145,27 @@ public class MainActivity extends ActionBarActivity{
 		//int scroll_amount = (int) (outputTextView.getLineCount() * outputTextView.getLineHeight()) - (outputTextView.getBottom() - outputTextView.getTop());
 		//outputTextView.scrollTo(0, scroll_amount);
 	}
+	
+	public class Progress extends AsyncTask<String, Void, Void> {
+		ProgressDialog dialog = ProgressDialog.show(
+				MainActivity.this.getApplicationContext(), 
+				"Loading..",
+				" Wait..");
+    	protected void onPreExecute() {
+    		dialog.show();
+    	}
+
+        @Override
+        protected Void doInBackground(String... params) {
+        	// do your network connection
+        	login();
+            return null;
+        }
+
+        protected void onPostExecute(Void unused) {
+            dialog.dismiss(); 
+        }
+    }
 
 	void login(){
 		NetworkEngine.StatusCode status = null;
