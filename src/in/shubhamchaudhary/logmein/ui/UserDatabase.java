@@ -29,6 +29,7 @@ import in.shubhamchaudhary.logmein.R.layout;
 import in.shubhamchaudhary.logmein.R.menu;
 
 import java.util.ArrayList;
+import java.util.zip.Inflater;
 
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -36,6 +37,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -43,6 +46,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 public class UserDatabase extends FragmentActivity {
@@ -126,4 +131,15 @@ public class UserDatabase extends FragmentActivity {
 			
 		
 	}//end 
+	public void show_password(View v){
+//		FragmentEdit fe = new FragmentEdit();
+//		fe.show_password_edit_fragment();
+		CheckBox cb_show_pwd = (CheckBox)FragmentEdit.v.findViewById(R.id.cb_show_password);
+		EditText pwd = (EditText)FragmentEdit.v.findViewById(R.id.edit_password);
+		if(cb_show_pwd.isChecked()){
+			pwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+			return;
+		}
+		pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+	}//end of show_password(View)
 }//end of class UserDatabase

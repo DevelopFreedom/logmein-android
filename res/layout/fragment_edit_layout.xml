@@ -57,6 +57,9 @@
 	    android:layout_height="wrap_content"
 	    android:text="show password"
 	    android:textSize="15dp"
-	    android:layout_gravity="center" />
+	    android:layout_gravity="center" 
+	    android:checked="false"
+	    android:onClick="show_password"/>
+		
     
 </LinearLayout>
