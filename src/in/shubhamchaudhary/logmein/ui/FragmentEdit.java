@@ -20,7 +20,7 @@ public class FragmentEdit extends Fragment {
 
 	EditText username,password;
 	CheckBox cb_show_password;
-
+	static View v;
 	@Override
 	public View onCreateView(LayoutInflater inflater,
 			ViewGroup container, Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class FragmentEdit extends Fragment {
 		//Inflate the layout for this fragment
 
 		UserStructure user = (UserStructure)getArguments().getSerializable("user");
-		View v = inflater.inflate(
+		v = inflater.inflate(
 				R.layout.fragment_edit_layout, container, false);
 		username = (EditText)v.findViewById(R.id.edit_username);
 		password = (EditText)v.findViewById(R.id.edit_password);
@@ -52,5 +52,14 @@ public class FragmentEdit extends Fragment {
 		});
 
 		return v;
-	}
+	}//end of onCreate
+//
+//	public void show_password_edit_fragment(){
+//		CheckBox cb_show_pwd = (CheckBox)v.findViewById(R.id.cb_show_password);
+//		if(cb_show_pwd.isChecked()){
+//			password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+//			return;
+//		}
+//		password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+//	}
 }
