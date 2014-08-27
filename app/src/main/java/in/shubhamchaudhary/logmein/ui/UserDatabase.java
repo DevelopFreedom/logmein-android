@@ -52,94 +52,95 @@ import android.widget.Spinner;
 
 public class UserDatabase extends FragmentActivity {
 
-	Spinner spinner_user_list;
-	ArrayAdapter<String> adapter;
-	ArrayList<String> user_list;
-	DatabaseEngine databaseEngine;
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_user_database);
+    Spinner spinner_user_list;
+    ArrayAdapter<String> adapter;
+    ArrayList<String> user_list;
+    DatabaseEngine databaseEngine;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_user_database);
 
-		if (savedInstanceState == null) {
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
-		}
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.container, new PlaceholderFragment()).commit();
+        }
 
-		databaseEngine = new DatabaseEngine(this);
-		spinner_user_list =(Spinner)findViewById(R.id.spinner_user_list);
-		user_list = databaseEngine.userList();
+        databaseEngine = new DatabaseEngine(this);
+        spinner_user_list =(Spinner)findViewById(R.id.spinner_user_list);
+        user_list = databaseEngine.userList();
 
-		adapter = new ArrayAdapter<String>(this,R.layout.spinner_layout,user_list);
-		spinner_user_list.setAdapter(adapter);
+        adapter = new ArrayAdapter<String>(this,R.layout.spinner_layout,user_list);
+        spinner_user_list.setAdapter(adapter);
 
-	}
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
 
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.user_database, menu);
-		return true;
-	}
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.user_database, menu);
+        return true;
+    }
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-	/**
-	 * A placeholder fragment containing a simple view.
-	 */
-	public static class PlaceholderFragment extends Fragment {
+    /**
+     * A placeholder fragment containing a simple view.
+     */
+    public static class PlaceholderFragment extends Fragment {
 
-		public PlaceholderFragment() {
-		}
+        public PlaceholderFragment() {
+        }
 
-		@Override
-		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
-			View rootView = inflater.inflate(R.layout.fragment_user_database,
-					container, false);
-			return rootView;
-		}
-	}
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                Bundle savedInstanceState) {
+            View rootView = inflater.inflate(R.layout.fragment_user_database,
+                    container, false);
+            return rootView;
+        }
+    }
 
-	public void edit_user_profile(View v){
-		
-		String username = (String)spinner_user_list.getSelectedItem();
-		UserStructure user = databaseEngine.getUsernamePassword(username);
-		//Log.e("In FRagEdit un",user.username);
-		Bundle bundle = new Bundle();
-		//bundle.putStringArray(user, new String[]{user.username,user.password} );
-		bundle.putSerializable("user",user);
-		Fragment frag = new FragmentEdit();
-		frag.setArguments(bundle);
-		
-		FragmentManager fm  = getSupportFragmentManager();
-		FragmentTransaction fragment_transaction = fm.beginTransaction();
-		//fragment_transaction.add(android.R.id.content, frag);
-		fragment_transaction.replace(R.id.fragment_blank, frag);
-		fragment_transaction.commit();
-			
-		
-	}//end 
-	public void show_password(View v){
-//		FragmentEdit fe = new FragmentEdit();
-//		fe.show_password_edit_fragment();
-		CheckBox cb_show_pwd = (CheckBox)FragmentEdit.v.findViewById(R.id.cb_show_password);
-		EditText pwd = (EditText)FragmentEdit.v.findViewById(R.id.edit_password);
-		if(cb_show_pwd.isChecked()){
-			pwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-			return;
-		}
-		pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
-	}//end of show_password(View)
+    public void edit_user_profile(View v){
+
+        String username = (String)spinner_user_list.getSelectedItem();
+        UserStructure user = databaseEngine.getUsernamePassword(username);
+        //Log.e("In FRagEdit un",user.username);
+        Bundle bundle = new Bundle();
+        //bundle.putStringArray(user, new String[]{user.username,user.password} );
+        bundle.putSerializable("user",user);
+        Fragment frag = new FragmentEdit();
+        frag.setArguments(bundle);
+
+        FragmentManager fm  = getSupportFragmentManager();
+        FragmentTransaction fragment_transaction = fm.beginTransaction();
+        //fragment_transaction.add(android.R.id.content, frag);
+        fragment_transaction.replace(R.id.fragment_blank, frag);
+        fragment_transaction.commit();
+
+
+    }//end
+    public void show_password(View v){
+//      FragmentEdit fe = new FragmentEdit();
+//      fe.show_password_edit_fragment();
+        CheckBox cb_show_pwd = (CheckBox)FragmentEdit.v.findViewById(R.id.cb_show_password);
+        EditText pwd = (EditText)FragmentEdit.v.findViewById(R.id.edit_password);
+        if(cb_show_pwd.isChecked()){
+            pwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            return;
+        }
+        pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+    }//end of show_password(View)
 }//end of class UserDatabase
+// vim: set ts=4 sw=4 tw=79 et :
