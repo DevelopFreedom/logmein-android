@@ -113,22 +113,18 @@ public class UserDatabase extends FragmentActivity {
     }
 
     public void edit_user_profile(View v){
-
         String username = (String)spinner_user_list.getSelectedItem();
         UserStructure user = databaseEngine.getUsernamePassword(username);
-        //Log.e("In FRagEdit un",user.username);
         Bundle bundle = new Bundle();
-        //bundle.putStringArray(user, new String[]{user.username,user.password} );
-        bundle.putSerializable("user",user);
         Fragment frag = new FragmentEdit();
-        frag.setArguments(bundle);
-
         FragmentManager fm  = getSupportFragmentManager();
         FragmentTransaction fragment_transaction = fm.beginTransaction();
-        //fragment_transaction.add(android.R.id.content, frag);
+
+
+        bundle.putSerializable("user",user);
+        frag.setArguments(bundle);
         fragment_transaction.replace(R.id.fragment_blank, frag);
         fragment_transaction.commit();
-
 
     }//end
     public void show_password(View v){
@@ -142,5 +138,13 @@ public class UserDatabase extends FragmentActivity {
         }
         pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
     }//end of show_password(View)
+
+    public void update_spinner_list(String oldname,String newname){
+        adapter.remove(oldname);
+        adapter.add(newname);
+        adapter.notifyDataSetChanged();
+        spinner_user_list.setSelection(adapter.getPosition(newname));
+    }//end of update_spinner_list
+
 }//end of class UserDatabase
 // vim: set ts=4 sw=4 tw=79 et :

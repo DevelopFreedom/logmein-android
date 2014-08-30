@@ -22,5 +22,5 @@
     <string name="launch_browser">Launch Browser</string>
     <string name="edit_fragment">Testing: In Edit Fragment......</string>
     <string name="button_cancel">Cancel</string>
-
+    <string name="button_update">Update</string>
 </resources>

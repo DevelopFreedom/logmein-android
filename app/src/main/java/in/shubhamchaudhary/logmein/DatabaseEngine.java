@@ -184,5 +184,18 @@ public class DatabaseEngine {
         }
         return(user);
     }//end of getUsernamePassword(String)
+
+    public int updateUser(UserStructure user,String oldname){
+        database =myDatabaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        String username = DatabaseOpenHelper.USERNAME;
+
+        values.put(username,user.getUsername());
+        values.put(DatabaseOpenHelper.PASSWORD,user.getPassword());
+
+        return database.update(DatabaseOpenHelper.TABLE, values, username+ "=?", new String[] {oldname} );
+
+    }//end of updateUser(UserStructure)
+
 }
 // vim: set ts=4 sw=4 tw=79 et :
