@@ -21,7 +21,6 @@
 
 package in.shubhamchaudhary.logmein;
 
-import in.shubhamchaudhary.logmein.ui.UserDatabase;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -39,6 +38,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import in.shubhamchaudhary.logmein.ui.UserDatabase;
+
 public class MainActivity extends ActionBarActivity{
     ///Class Variables
     EditText textbox_username, textbox_password;
@@ -54,7 +55,7 @@ public class MainActivity extends ActionBarActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        networkEngine = new NetworkEngine();
+        networkEngine = NetworkEngine.getInstance(this);
         databaseEngine = new DatabaseEngine(this);
 
         outputTextView = (TextView)findViewById(R.id.outputTextView);
@@ -157,33 +158,11 @@ public class MainActivity extends ActionBarActivity{
             username = databaseEngine.getUsername();
             password = databaseEngine.getPassword();
         }
-        try{
+        try {
             status = networkEngine.login(username, password);
-        }
-        catch(Exception e){
+        } catch(Exception e) {
             e.printStackTrace();
         }
-        String outputText = outputTextView.getText().toString();    //To be shown in User Text Box
-        if (status == NetworkEngine.StatusCode.LOGIN_SUCCESS){
-            outputText = "Login Successful";
-        }else if (status == NetworkEngine.StatusCode.CREDENTIAL_NONE){
-            outputText = "Either username or password in empty";
-        }else if (status == NetworkEngine.StatusCode.AUTHENTICATION_FAILED){
-            outputText = "Authentication Failed";
-        }else if (status == NetworkEngine.StatusCode.MULTIPLE_SESSIONS){
-            outputText = "Only one user login session is allowed";
-        }else if (status == NetworkEngine.StatusCode.LOGGED_IN){
-            outputText = "You're already logged in";
-        }else if (status == NetworkEngine.StatusCode.CONNECTION_ERROR){
-            outputText = "There was a connection error";
-        }else if (status == null){
-            Log.d("NetworkEngine","StatusCode was null in login");
-            outputText = outputTextView.getText().toString();
-        }else{
-            outputText = "Unknown Login status";
-        }
-        showText(outputText);
-        //Toast.makeText(getApplicationContext(), outputText, Toast.LENGTH_SHORT).show();
     }//end login
     void logout(){
         NetworkEngine.StatusCode status = null;
@@ -193,23 +172,6 @@ public class MainActivity extends ActionBarActivity{
         }catch(Exception e){
             e.printStackTrace();
         }
-        String outputText = outputTextView.getText().toString();    //To be shown in User Text Box
-        if (status == NetworkEngine.StatusCode.LOGOUT_SUCCESS){
-            outputText = "Logout Successful";
-        }else if (status == NetworkEngine.StatusCode.NOT_LOGGED_IN){
-            outputText = "You're not logged in " + databaseEngine.getUsername();
-        }else if (status == NetworkEngine.StatusCode.CONNECTION_ERROR){
-            outputText = "There was a connection error";
-        }else if (status == null){
-            Log.d("NetworkEngine","StatusCode was null in logout");
-            outputText = outputTextView.getText().toString();
-        }else{
-            outputText = "Unknow Logout Status";
-        }
-
-        showText(outputText);
-//      outputTextView.scrollTo(0, outputTextView.getHeight());
-        //Toast.makeText(getApplicationContext(), outputText, Toast.LENGTH_SHORT).show();
     }//end logout
 
     void saveCredential(){

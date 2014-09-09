@@ -21,20 +21,34 @@
 
 package in.shubhamchaudhary.logmein;
 
+import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Toast;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import android.util.Log;
 
 public class NetworkEngine {
 
+    Context m_context;
+    // Singleton method with lazy initialization.
+    private static NetworkEngine instance = null;
+    private static int use_count = 0;   //like semaphores
+    public static synchronized NetworkEngine getInstance(Context context) {
+        if (instance == null) {
+            instance = new NetworkEngine(context);
+        }
+        use_count += 1;
+        return instance;
+    }
+    public NetworkEngine(Context context) {
+        m_context = context;
+    }
     //Class Variables
     public enum StatusCode {
         LOGIN_SUCCESS,  AUTHENTICATION_FAILED, MULTIPLE_SESSIONS,
@@ -42,7 +56,30 @@ public class NetworkEngine {
         CONNECTION_ERROR,
     };
 
+    public StatusCode login(final Context context, String username, final String password) throws Exception {
+        NetworkTask longRunningTask = new NetworkTask(context) {
+            @Override
+            protected StatusCode doInBackground(String... input_strings) {
+                username = input_strings[0];
+                password = input_strings[1];
+                try {
+                    return_status = login_runner(username, password);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return return_status;
+            }
+        };
+        longRunningTask.execute(username,password);
+        return longRunningTask.return_status;
+    }
+
+
     public StatusCode login(final String username, final String password) throws Exception {
+        NetworkTask longRunningTask = new NetworkTask(m_context);
+        longRunningTask.execute("login",username,password);
+        return longRunningTask.return_status;
+/*
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Callable<StatusCode> callable = new Callable<StatusCode>() {
             @Override
@@ -58,7 +95,6 @@ public class NetworkEngine {
         Future<StatusCode> future = executor.submit(callable);
         executor.shutdown();
         return future.get();
-/*
         Thread thread = new Thread(new Runnable(){
             @Override
             public void run() {
@@ -75,21 +111,9 @@ public class NetworkEngine {
     }
 
     public NetworkEngine.StatusCode logout() throws Exception {
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Callable<StatusCode> callable = new Callable<StatusCode>() {
-            @Override
-            public StatusCode call() {
-                try {
-                    return logout_runner();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-        };
-        Future<StatusCode> future = executor.submit(callable);
-        executor.shutdown();
-        return future.get();
+        NetworkTask longRunningTask = new NetworkTask(m_context);
+        longRunningTask.execute("logout");
+        return longRunningTask.return_status;
     }
 
     private StatusCode login_runner(String username, String password) throws Exception{
@@ -182,6 +206,68 @@ public class NetworkEngine {
         return returnStatus;
     }
 
+    public class NetworkTask extends AsyncTask<String, Void, StatusCode> {
+        String username,password;
+        StatusCode return_status;
+        Context m_context;
+
+        public NetworkTask(Context context) {
+            m_context = context;
+        }
+
+        @Override
+        protected StatusCode doInBackground(String... input_strings) {
+            String operation = input_strings[0];
+            try {
+                if (operation == "login") {
+                    username = input_strings[1];
+                    password = input_strings[2];
+                    return_status = login_runner(username, password);
+                } else if (operation == "logout") {
+                    return_status = logout_runner();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return return_status;
+        }
+
+        @Override
+        protected void onPostExecute(NetworkEngine.StatusCode status) {
+            Toast.makeText(
+                    m_context,
+                    get_status_text(status),
+                    Toast.LENGTH_SHORT
+            ).show();
+        }
+    }
+
+    public String get_status_text(StatusCode status) {
+        String outputText;    //To be shown in User Text Box
+        if (status == NetworkEngine.StatusCode.LOGIN_SUCCESS){
+            outputText = "Login Successful";
+        }else if (status == NetworkEngine.StatusCode.CREDENTIAL_NONE){
+            outputText = "Either username or password in empty";
+        }else if (status == NetworkEngine.StatusCode.AUTHENTICATION_FAILED){
+            outputText = "Authentication Failed";
+        }else if (status == NetworkEngine.StatusCode.MULTIPLE_SESSIONS){
+            outputText = "Only one user login session is allowed";
+        }else if (status == NetworkEngine.StatusCode.LOGGED_IN){
+            outputText = "You're already logged in";
+        }else if (status == NetworkEngine.StatusCode.CONNECTION_ERROR){
+            outputText = "There was a connection error";
+        } else if (status == NetworkEngine.StatusCode.LOGOUT_SUCCESS){
+            outputText = "Logout Successful";
+        }else if (status == NetworkEngine.StatusCode.NOT_LOGGED_IN){
+            outputText = "You're not logged in " + DatabaseEngine.getInstance(m_context).getUsername();
+        } else if (status == null){
+            Log.d("NetworkEngine","StatusCode was null in login");
+            outputText = "null";
+        }else{
+            outputText = "Unknown Login status";
+        }
+        return outputText;
+    }
 }
 
 /*
