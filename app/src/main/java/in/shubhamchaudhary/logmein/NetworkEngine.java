@@ -35,10 +35,15 @@ import java.net.URLConnection;
 
 public class NetworkEngine {
 
-    Context m_context;
     // Singleton method with lazy initialization.
     private static NetworkEngine instance = null;
     private static int use_count = 0;   //like semaphores
+    Context m_context;
+
+    public NetworkEngine(Context context) {
+        m_context = context;
+    }
+
     public static synchronized NetworkEngine getInstance(Context context) {
         if (instance == null) {
             instance = new NetworkEngine(context);
@@ -46,15 +51,6 @@ public class NetworkEngine {
         use_count += 1;
         return instance;
     }
-    public NetworkEngine(Context context) {
-        m_context = context;
-    }
-    //Class Variables
-    public enum StatusCode {
-        LOGIN_SUCCESS,  AUTHENTICATION_FAILED, MULTIPLE_SESSIONS,
-        CREDENTIAL_NONE, LOGOUT_SUCCESS, NOT_LOGGED_IN, LOGGED_IN,
-        CONNECTION_ERROR,
-    };
 
     public StatusCode login(final Context context, String username, final String password) throws Exception {
         NetworkTask longRunningTask = new NetworkTask(context) {
@@ -70,14 +66,15 @@ public class NetworkEngine {
                 return return_status;
             }
         };
-        longRunningTask.execute(username,password);
+        longRunningTask.execute(username, password);
         return longRunningTask.return_status;
     }
 
+    ;
 
     public StatusCode login(final String username, final String password) throws Exception {
         NetworkTask longRunningTask = new NetworkTask(m_context);
-        longRunningTask.execute("login",username,password);
+        longRunningTask.execute("login", username, password);
         return longRunningTask.return_status;
 /*
         ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -116,13 +113,13 @@ public class NetworkEngine {
         return longRunningTask.return_status;
     }
 
-    private StatusCode login_runner(String username, String password) throws Exception{
-        if (username == null || password == null){
+    private StatusCode login_runner(String username, String password) throws Exception {
+        if (username == null || password == null) {
             Log.wtf("Error", "Either username or password is null");
             return StatusCode.CREDENTIAL_NONE;
         }
         //System.out.println("Loggin in with "+username+password);
-        String urlParameters = "user="+username+"&password="+password; // "param1=a&param2=b&param3=c";
+        String urlParameters = "user=" + username + "&password=" + password; // "param1=a&param2=b&param3=c";
 
         String request = "http://172.16.4.201/cgi-bin/login";
         URL puServerUrl = new URL(request);
@@ -134,11 +131,11 @@ public class NetworkEngine {
         OutputStream stream = null; //XXX Wrong
         try {
             stream = puServerConnection.getOutputStream();
-        }catch(java.net.ConnectException e){
+        } catch (java.net.ConnectException e) {
             e.printStackTrace();
-            Log.d("NetworkEngine","Connection Exception");
+            Log.d("NetworkEngine", "Connection Exception");
             return StatusCode.CONNECTION_ERROR;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -150,25 +147,25 @@ public class NetworkEngine {
 
         String lineBuffer;
         BufferedReader htmlBuffer = null; //FIXME Null pointer exceptions eminent, May the forth be with you!!!
-        try{
+        try {
             htmlBuffer = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
             while (((lineBuffer = htmlBuffer.readLine()) != null) && returnStatus == null) {
-                if (lineBuffer.contains("External Welcome Page")){
+                if (lineBuffer.contains("External Welcome Page")) {
                     Log.d("NetworkEngine", "External Welcome Match");
                     returnStatus = StatusCode.LOGIN_SUCCESS;
-                }else if (lineBuffer.contains("Authentication failed")){
+                } else if (lineBuffer.contains("Authentication failed")) {
                     returnStatus = StatusCode.AUTHENTICATION_FAILED;
-                }else if (lineBuffer.contains("Only one user login session is allowed")){
+                } else if (lineBuffer.contains("Only one user login session is allowed")) {
                     returnStatus = StatusCode.MULTIPLE_SESSIONS;
-                }else{
+                } else {
                     Log.i("html", lineBuffer);
                 }
             }
             writer.close();
             htmlBuffer.close();
-        }catch(java.net.ProtocolException e){
+        } catch (java.net.ProtocolException e) {
             returnStatus = StatusCode.LOGGED_IN;
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return returnStatus;
@@ -183,21 +180,21 @@ public class NetworkEngine {
         BufferedReader htmlBuffer = null;   //XXX
         try {
             htmlBuffer = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
-        }catch(java.net.ConnectException e){
+        } catch (java.net.ConnectException e) {
             e.printStackTrace();
-            Log.d("NetworkEngine","Connection Exception");
+            Log.d("NetworkEngine", "Connection Exception");
             return StatusCode.CONNECTION_ERROR;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         //TODO parse output
         String lineBuffer;
         StatusCode returnStatus = null;
-        while ((lineBuffer = htmlBuffer.readLine()) != null && returnStatus == null){
+        while ((lineBuffer = htmlBuffer.readLine()) != null && returnStatus == null) {
 
-            if (lineBuffer.contains("Logout")){
+            if (lineBuffer.contains("Logout")) {
                 returnStatus = StatusCode.LOGOUT_SUCCESS;
-            }else if(lineBuffer.contains("User not logged in")){
+            } else if (lineBuffer.contains("User not logged in")) {
                 returnStatus = StatusCode.NOT_LOGGED_IN;
             }
             Log.w("html", lineBuffer);
@@ -206,8 +203,42 @@ public class NetworkEngine {
         return returnStatus;
     }
 
+    public String get_status_text(StatusCode status) {
+        String outputText;    //To be shown in User Text Box
+        if (status == NetworkEngine.StatusCode.LOGIN_SUCCESS) {
+            outputText = "Login Successful";
+        } else if (status == NetworkEngine.StatusCode.CREDENTIAL_NONE) {
+            outputText = "Either username or password in empty";
+        } else if (status == NetworkEngine.StatusCode.AUTHENTICATION_FAILED) {
+            outputText = "Authentication Failed";
+        } else if (status == NetworkEngine.StatusCode.MULTIPLE_SESSIONS) {
+            outputText = "Only one user login session is allowed";
+        } else if (status == NetworkEngine.StatusCode.LOGGED_IN) {
+            outputText = "You're already logged in";
+        } else if (status == NetworkEngine.StatusCode.CONNECTION_ERROR) {
+            outputText = "There was a connection error";
+        } else if (status == NetworkEngine.StatusCode.LOGOUT_SUCCESS) {
+            outputText = "Logout Successful";
+        } else if (status == NetworkEngine.StatusCode.NOT_LOGGED_IN) {
+            outputText = "You're not logged in " + DatabaseEngine.getInstance(m_context).getUsername();
+        } else if (status == null) {
+            Log.d("NetworkEngine", "StatusCode was null in login");
+            outputText = "null";
+        } else {
+            outputText = "Unknown Login status";
+        }
+        return outputText;
+    }
+
+    //Class Variables
+    public enum StatusCode {
+        LOGIN_SUCCESS, AUTHENTICATION_FAILED, MULTIPLE_SESSIONS,
+        CREDENTIAL_NONE, LOGOUT_SUCCESS, NOT_LOGGED_IN, LOGGED_IN,
+        CONNECTION_ERROR,
+    }
+
     public class NetworkTask extends AsyncTask<String, Void, StatusCode> {
-        String username,password;
+        String username, password;
         StatusCode return_status;
         Context m_context;
 
@@ -240,33 +271,6 @@ public class NetworkEngine {
                     Toast.LENGTH_SHORT
             ).show();
         }
-    }
-
-    public String get_status_text(StatusCode status) {
-        String outputText;    //To be shown in User Text Box
-        if (status == NetworkEngine.StatusCode.LOGIN_SUCCESS){
-            outputText = "Login Successful";
-        }else if (status == NetworkEngine.StatusCode.CREDENTIAL_NONE){
-            outputText = "Either username or password in empty";
-        }else if (status == NetworkEngine.StatusCode.AUTHENTICATION_FAILED){
-            outputText = "Authentication Failed";
-        }else if (status == NetworkEngine.StatusCode.MULTIPLE_SESSIONS){
-            outputText = "Only one user login session is allowed";
-        }else if (status == NetworkEngine.StatusCode.LOGGED_IN){
-            outputText = "You're already logged in";
-        }else if (status == NetworkEngine.StatusCode.CONNECTION_ERROR){
-            outputText = "There was a connection error";
-        } else if (status == NetworkEngine.StatusCode.LOGOUT_SUCCESS){
-            outputText = "Logout Successful";
-        }else if (status == NetworkEngine.StatusCode.NOT_LOGGED_IN){
-            outputText = "You're not logged in " + DatabaseEngine.getInstance(m_context).getUsername();
-        } else if (status == null){
-            Log.d("NetworkEngine","StatusCode was null in login");
-            outputText = "null";
-        }else{
-            outputText = "Unknown Login status";
-        }
-        return outputText;
     }
 }
 

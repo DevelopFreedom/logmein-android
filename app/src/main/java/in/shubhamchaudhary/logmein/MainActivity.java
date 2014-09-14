@@ -40,7 +40,7 @@ import android.widget.Toast;
 
 import in.shubhamchaudhary.logmein.ui.UserDatabase;
 
-public class MainActivity extends ActionBarActivity{
+public class MainActivity extends ActionBarActivity {
     ///Class Variables
     EditText textbox_username, textbox_password;
     Button button_save, button_login, button_logout;
@@ -58,44 +58,44 @@ public class MainActivity extends ActionBarActivity{
         networkEngine = NetworkEngine.getInstance(this);
         databaseEngine = DatabaseEngine.getInstance(this);
 
-        outputTextView = (TextView)findViewById(R.id.outputTextView);
+        outputTextView = (TextView) findViewById(R.id.outputTextView);
         outputTextView.setMovementMethod(new ScrollingMovementMethod());
 
         String username = databaseEngine.getUsername();
-        if (username != null){
-        //if (username.length() != 0){
+        if (username != null) {
+            //if (username.length() != 0){
             outputTextView.setText("Current user: " + username);
-        }else{
+        } else {
             username = "Welcome, Please enter username and password for the first time!";
             outputTextView.setText(username);
         }
 
-        button_save=(Button)findViewById(R.id.button_save);
+        button_save = (Button) findViewById(R.id.button_save);
         button_save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 saveCredential();
             }
         });
 
-        button_login=(Button)findViewById(R.id.button_login);
+        button_login = (Button) findViewById(R.id.button_login);
         button_login.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 login();
             }
         });
 
-        button_logout=(Button)findViewById(R.id.button_logout);
+        button_logout = (Button) findViewById(R.id.button_logout);
         button_logout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 logout();
             }
         });
 
-        textbox_username=(EditText)findViewById(R.id.edit_username);
-        textbox_password=(EditText)findViewById(R.id.edit_password);
+        textbox_username = (EditText) findViewById(R.id.edit_username);
+        textbox_password = (EditText) findViewById(R.id.edit_password);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-            .add(R.id.container, new PlaceholderFragment()).commit();
+                    .add(R.id.container, new PlaceholderFragment()).commit();
         }
 
     }
@@ -124,6 +124,69 @@ public class MainActivity extends ActionBarActivity{
         return super.onOptionsItemSelected(item);
     }
 
+    void showText(String text) {
+        outputTextView.append("\n" + text);
+        //int scroll_amount = (int) (outputTextView.getLineCount() * outputTextView.getLineHeight()) - (outputTextView.getBottom() - outputTextView.getTop());
+        //outputTextView.scrollTo(0, scroll_amount);
+    }
+
+    void login() {
+        NetworkEngine.StatusCode status = null;
+        Log.d("login", "Insiide Login");
+        String username, password;
+        // Use username/password from textbox if both filled
+        username = textbox_username.getText().toString();
+        password = textbox_password.getText().toString();
+        if (username.length() == 0 && password.length() == 0) {
+            username = databaseEngine.getUsername();
+            password = databaseEngine.getPassword();
+        }
+        try {
+            status = networkEngine.login(username, password);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//end login
+
+    void logout() {
+        NetworkEngine.StatusCode status = null;
+        Log.d("logout", "Insiede Logout");
+        try {
+            status = networkEngine.logout();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }//end logout
+
+    void saveCredential() {
+        //TODO: Check user input-that no user id is entered twice
+        //outputTextView.setText(outputTextView.getText().toString()+"Trying to saveCredential");
+
+        String username = textbox_username.getText().toString();
+        String password = textbox_password.getText().toString();
+
+        showText("Saving: " + username);
+        databaseEngine.saveToDatabase(username, password);
+        Toast.makeText(getApplicationContext(), databaseEngine.getUsername() + " entered into your inventory", Toast.LENGTH_SHORT).show();
+        //TODO: wtf is this vivek?????
+//      textbox_username.clearComposingText();
+        textbox_password.clearComposingText();
+    }//end saveCredential
+
+    public void manage_user(View v) {
+
+        Intent intent_user_db = new Intent(this, UserDatabase.class);
+        String un = textbox_username.getText().toString();
+        intent_user_db.putExtra("username", un);
+        startActivity(intent_user_db);
+
+    }//end of manage_user(View)
+
+    public void launch_browser(View v) {
+        startActivity(new Intent(Intent.ACTION_VIEW,
+                Uri.parse("http://www.google.com")));
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -134,73 +197,11 @@ public class MainActivity extends ActionBarActivity{
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+                                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container,
                     false);
             return rootView;
         }
-    }
-
-    void showText(String text){
-        outputTextView.append("\n" + text);
-        //int scroll_amount = (int) (outputTextView.getLineCount() * outputTextView.getLineHeight()) - (outputTextView.getBottom() - outputTextView.getTop());
-        //outputTextView.scrollTo(0, scroll_amount);
-    }
-
-    void login(){
-        NetworkEngine.StatusCode status = null;
-        Log.d("login","Insiide Login");
-        String username, password;
-        // Use username/password from textbox if both filled
-        username=textbox_username.getText().toString();
-        password=textbox_password.getText().toString();
-        if (username.length() == 0 && password.length() == 0 ){
-            username = databaseEngine.getUsername();
-            password = databaseEngine.getPassword();
-        }
-        try {
-            status = networkEngine.login(username, password);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-    }//end login
-    void logout(){
-        NetworkEngine.StatusCode status = null;
-        Log.d("logout","Insiede Logout");
-        try{
-            status = networkEngine.logout();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }//end logout
-
-    void saveCredential(){
-        //TODO: Check user input-that no user id is entered twice
-        //outputTextView.setText(outputTextView.getText().toString()+"Trying to saveCredential");
-
-        String username =textbox_username.getText().toString();
-        String password =textbox_password.getText().toString();
-
-        showText("Saving: "+username);
-        databaseEngine.saveToDatabase(username, password);
-        Toast.makeText(getApplicationContext(), databaseEngine.getUsername()+" entered into your inventory", Toast.LENGTH_SHORT).show();
-        //TODO: wtf is this vivek?????
-//      textbox_username.clearComposingText();
-        textbox_password.clearComposingText();
-    }//end saveCredential
-
-    public void manage_user(View v){
-
-        Intent intent_user_db = new Intent(this,UserDatabase.class);
-        String un = textbox_username.getText().toString();
-        intent_user_db.putExtra("username", un);
-        startActivity(intent_user_db);
-
-    }//end of manage_user(View)
-
-    public void launch_browser(View v){
-        startActivity(new Intent(Intent.ACTION_VIEW,
-                Uri.parse("http://www.google.com")));
     }
 }//end MainActivity class
 /* vim: set tabstop=4:shiftwidth=4:textwidth=79:et */

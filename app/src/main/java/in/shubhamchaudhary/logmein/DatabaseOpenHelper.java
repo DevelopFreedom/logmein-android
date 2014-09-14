@@ -31,21 +31,20 @@ import android.util.Log;
 //import android.provider.BaseColumns;
 
 
-
-public class DatabaseOpenHelper extends SQLiteOpenHelper{
-    private static final String TAG= DatabaseOpenHelper.class.getSimpleName();
-    public static final String DB_NAME="ID";
-    public static final int DB_VERSION=1;
-    public static final String TABLE="INVENTORY";   //XXX
-    public static final String USERNAME="username";
-    public static final String PASSWORD="password";
-    public static final String C_ID= "C_ID";
+public class DatabaseOpenHelper extends SQLiteOpenHelper {
+    public static final String DB_NAME = "ID";
+    public static final int DB_VERSION = 1;
+    public static final String TABLE = "INVENTORY";   //XXX
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
+    public static final String C_ID = "C_ID";
+    private static final String TAG = DatabaseOpenHelper.class.getSimpleName();
 
 
     public DatabaseOpenHelper(Context context) {
         //database filename
         //database version
-        super(context,DB_NAME,null, DB_VERSION);
+        super(context, DB_NAME, null, DB_VERSION);
         // TODO Auto-generated constructor stub
     }
 
@@ -53,8 +52,8 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db) {
         // TODO Auto-generated method stub
         //create a database execute sql for creating the database
-        String sql =String.format("create table %s (%s INTEGER primary key AUTOINCREMENT, %s TEXT, %s TEXT)",TABLE,C_ID,USERNAME,PASSWORD);
-        Log.d(TAG,"onCreated sql"+sql);
+        String sql = String.format("create table %s (%s INTEGER primary key AUTOINCREMENT, %s TEXT, %s TEXT)", TABLE, C_ID, USERNAME, PASSWORD);
+        Log.d(TAG, "onCreated sql" + sql);
         db.execSQL(sql);
     }
 
@@ -62,10 +61,9 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper{
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // TODO Auto-generated method stub
         //executes whenever version of database system reports is different
-        if(oldVersion==1)
-        {
+        if (oldVersion == 1) {
             //alter current table or schema and execute the sql command using db.execSQL(sql)
-            this.onUpgrade(db, ++oldVersion,newVersion);
+            this.onUpgrade(db, ++oldVersion, newVersion);
         }
 
     }

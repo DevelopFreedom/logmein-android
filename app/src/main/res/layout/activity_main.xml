@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="in.shubhamchaudhary.logmein.MainActivity"
-    tools:ignore="MergeRootFrame" >
+    tools:ignore="MergeRootFrame">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:ems="10"
             android:fontFamily="Verdana"
             android:hint="@string/edit_username_hint"
-            android:inputType="text" >
+            android:inputType="text">
 
             <requestFocus />
         </EditText>
@@ -37,26 +37,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="10dp" >
+            android:padding="10dp">
 
             <Button
                 android:id="@+id/button_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="Verdana"
-                android:text="@string/button_save"
                 android:layout_alignParentLeft="true"
-                />
+                android:fontFamily="Verdana"
+                android:text="@string/button_save" />
 
             <Button
                 android:id="@+id/button_manage_user"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="Verdana"
-                android:text="@string/manage_user"
-                android:onClick="manage_user"
                 android:layout_alignParentRight="true"
-                />
+                android:fontFamily="Verdana"
+                android:onClick="manage_user"
+                android:text="@string/manage_user" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -67,85 +65,84 @@
             <Button
                 android:id="@+id/button_logout"
 
-                android:text="OUT"
-                android:textColor="#170012"
-                android:textSize="30sp"
-                android:typeface="monospace"
-
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:padding="5dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+
                 android:background="@drawable/buttonshape_logout"
+                android:padding="5dp"
                 android:shadowColor="#A8A8A8"
                 android:shadowDx="0"
                 android:shadowDy="0"
                 android:shadowRadius="5"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                />
+                android:text="OUT"
+                android:textColor="#170012"
+                android:textSize="30sp"
+                android:typeface="monospace" />
 
             <Button
                 android:id="@+id/button_login"
 
-                android:text="IN"
-                android:textColor="#170012"
-                android:textSize="30sp"
-                android:typeface="monospace"
-
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:padding="5dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+
                 android:background="@drawable/buttonshape_login"
+                android:padding="5dp"
                 android:shadowColor="#A8A8A8"
                 android:shadowDx="0"
                 android:shadowDy="0"
                 android:shadowRadius="5"
-                android:layout_centerInParent="true"
-                android:layout_alignParentTop="true" >
+                android:text="IN"
+                android:textColor="#170012"
+                android:textSize="30sp"
+                android:typeface="monospace">
+
                 <requestFocus />
             </Button>
 
             <Button
                 android:id="@+id/button_web"
 
-                android:text="WEB"
-                android:textColor="#170012"
-                android:textSize="30sp"
-                android:typeface="monospace"
-
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:padding="5dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+
                 android:background="@drawable/buttonshape_web"
+                android:onClick="launch_browser"
+                android:padding="5dp"
                 android:shadowColor="#A8A8A8"
                 android:shadowDx="0"
                 android:shadowDy="0"
                 android:shadowRadius="5"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:onClick="launch_browser"
-                />
+                android:text="WEB"
+                android:textColor="#170012"
+                android:textSize="30sp"
+                android:typeface="monospace" />
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
-            android:orientation="vertical"
             android:gravity="center"
-            android:padding="10dp" >
+            android:orientation="vertical"
+            android:padding="10dp">
 
-        <TextView
-            android:id="@+id/outputTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="Verdana"
-            android:gravity="bottom|center_horizontal"
-            android:maxLines="2"
-            android:text="@string/empty"
-            android:textColor="#ff0099cc"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:typeface="monospace" />
+            <TextView
+                android:id="@+id/outputTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="Verdana"
+                android:gravity="bottom|center_horizontal"
+                android:maxLines="2"
+                android:text="@string/empty"
+                android:textColor="#ff0099cc"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:typeface="monospace" />
 
         </RelativeLayout>
 

@@ -50,6 +50,7 @@ public class UserDatabase extends FragmentActivity {
     ArrayAdapter<String> adapter;
     ArrayList<String> user_list;
     DatabaseEngine databaseEngine;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,10 +62,10 @@ public class UserDatabase extends FragmentActivity {
         }
 
         databaseEngine = DatabaseEngine.getInstance(this);
-        spinner_user_list =(Spinner)findViewById(R.id.spinner_user_list);
+        spinner_user_list = (Spinner) findViewById(R.id.spinner_user_list);
         user_list = databaseEngine.userList();
 
-        adapter = new ArrayAdapter<String>(this,R.layout.spinner_layout,user_list);
+        adapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, user_list);
         spinner_user_list.setAdapter(adapter);
 
     }
@@ -89,6 +90,41 @@ public class UserDatabase extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void edit_user_profile(View v) {
+        String username = (String) spinner_user_list.getSelectedItem();
+        UserStructure user = databaseEngine.getUsernamePassword(username);
+        Bundle bundle = new Bundle();
+        Fragment frag = new FragmentEdit();
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction fragment_transaction = fm.beginTransaction();
+
+
+        bundle.putSerializable("user", user);
+        frag.setArguments(bundle);
+        fragment_transaction.replace(R.id.fragment_blank, frag);
+        fragment_transaction.commit();
+
+    }//end
+
+    public void show_password(View v) {
+//      FragmentEdit fe = new FragmentEdit();
+//      fe.show_password_edit_fragment();
+        CheckBox cb_show_pwd = (CheckBox) FragmentEdit.v.findViewById(R.id.cb_show_password);
+        EditText pwd = (EditText) FragmentEdit.v.findViewById(R.id.edit_password);
+        if (cb_show_pwd.isChecked()) {
+            pwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            return;
+        }
+        pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
+    }//end of show_password(View)
+
+    public void update_spinner_list(String oldname, String newname) {
+        adapter.remove(oldname);
+        adapter.add(newname);
+        adapter.notifyDataSetChanged();
+        spinner_user_list.setSelection(adapter.getPosition(newname));
+    }//end of update_spinner_list
+
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -99,46 +135,12 @@ public class UserDatabase extends FragmentActivity {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+                                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_user_database,
                     container, false);
             return rootView;
         }
     }
-
-    public void edit_user_profile(View v){
-        String username = (String)spinner_user_list.getSelectedItem();
-        UserStructure user = databaseEngine.getUsernamePassword(username);
-        Bundle bundle = new Bundle();
-        Fragment frag = new FragmentEdit();
-        FragmentManager fm  = getSupportFragmentManager();
-        FragmentTransaction fragment_transaction = fm.beginTransaction();
-
-
-        bundle.putSerializable("user",user);
-        frag.setArguments(bundle);
-        fragment_transaction.replace(R.id.fragment_blank, frag);
-        fragment_transaction.commit();
-
-    }//end
-    public void show_password(View v){
-//      FragmentEdit fe = new FragmentEdit();
-//      fe.show_password_edit_fragment();
-        CheckBox cb_show_pwd = (CheckBox)FragmentEdit.v.findViewById(R.id.cb_show_password);
-        EditText pwd = (EditText)FragmentEdit.v.findViewById(R.id.edit_password);
-        if(cb_show_pwd.isChecked()){
-            pwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-            return;
-        }
-        pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
-    }//end of show_password(View)
-
-    public void update_spinner_list(String oldname,String newname){
-        adapter.remove(oldname);
-        adapter.add(newname);
-        adapter.notifyDataSetChanged();
-        spinner_user_list.setSelection(adapter.getPosition(newname));
-    }//end of update_spinner_list
 
 }//end of class UserDatabase
 // vim: set ts=4 sw=4 tw=79 et :
