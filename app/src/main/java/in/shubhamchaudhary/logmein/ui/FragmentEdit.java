@@ -1,9 +1,5 @@
 package in.shubhamchaudhary.logmein.ui;
 
-import in.shubhamchaudhary.logmein.DatabaseEngine;
-import in.shubhamchaudhary.logmein.R;
-import in.shubhamchaudhary.logmein.R.id;
-import in.shubhamchaudhary.logmein.R.layout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.method.HideReturnsTransformationMethod;
@@ -16,7 +12,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Spinner;
+
+import in.shubhamchaudhary.logmein.DatabaseEngine;
+import in.shubhamchaudhary.logmein.R;
 
 public class FragmentEdit extends Fragment {
 
@@ -57,7 +55,7 @@ public class FragmentEdit extends Fragment {
         });
 
         button_update = (Button)v.findViewById(R.id.button_update);
-        de = new DatabaseEngine(container.getContext());
+        de = DatabaseEngine.getInstance(container.getContext());
         username.setText(activity_user.getUsername());
         password.setText(activity_user.getPassword());
 

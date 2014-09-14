@@ -22,24 +22,13 @@
 
 package in.shubhamchaudhary.logmein.ui;
 
-import in.shubhamchaudhary.logmein.DatabaseEngine;
-import in.shubhamchaudhary.logmein.R;
-import in.shubhamchaudhary.logmein.R.id;
-import in.shubhamchaudhary.logmein.R.layout;
-import in.shubhamchaudhary.logmein.R.menu;
-
-import java.util.ArrayList;
-import java.util.zip.Inflater;
-
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -49,6 +38,11 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+
+import java.util.ArrayList;
+
+import in.shubhamchaudhary.logmein.DatabaseEngine;
+import in.shubhamchaudhary.logmein.R;
 
 public class UserDatabase extends FragmentActivity {
 
@@ -66,7 +60,7 @@ public class UserDatabase extends FragmentActivity {
                     .add(R.id.container, new PlaceholderFragment()).commit();
         }
 
-        databaseEngine = new DatabaseEngine(this);
+        databaseEngine = DatabaseEngine.getInstance(this);
         spinner_user_list =(Spinner)findViewById(R.id.spinner_user_list);
         user_list = databaseEngine.userList();
 

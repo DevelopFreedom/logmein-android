@@ -56,7 +56,7 @@ public class MainActivity extends ActionBarActivity{
         setContentView(R.layout.activity_main);
 
         networkEngine = NetworkEngine.getInstance(this);
-        databaseEngine = new DatabaseEngine(this);
+        databaseEngine = DatabaseEngine.getInstance(this);
 
         outputTextView = (TextView)findViewById(R.id.outputTextView);
         outputTextView.setMovementMethod(new ScrollingMovementMethod());
