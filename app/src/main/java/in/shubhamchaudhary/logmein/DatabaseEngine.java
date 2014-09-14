@@ -23,10 +23,6 @@
 
 package in.shubhamchaudhary.logmein;
 
-import in.shubhamchaudhary.logmein.ui.UserStructure;
-
-import java.util.ArrayList;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -35,6 +31,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
+
+import in.shubhamchaudhary.logmein.ui.UserStructure;
+
 public class DatabaseEngine {
     //Class Variables
     public enum StatusCode {
@@ -42,6 +42,16 @@ public class DatabaseEngine {
         DB_EMPTY, DB_DELETE_SUCCESS
     };
     Context context;
+    // Singleton method with lazy initialization.
+    private static DatabaseEngine instance = null;
+    private static int use_count = 0;   //like semaphores
+    public static synchronized DatabaseEngine getInstance(Context context) {
+        if (instance == null) {
+            instance = new DatabaseEngine(context);
+        }
+        use_count += 1;
+        return instance;
+    }
     SQLiteOpenHelper myDatabaseHelper ;
     public DatabaseEngine(Context ctx){
         this.context = ctx;
