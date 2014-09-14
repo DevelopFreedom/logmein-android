@@ -51,6 +51,20 @@ public class MainActivity extends ActionBarActivity {
     DatabaseEngine databaseEngine;
 
     @Override
+    protected void onResume() {
+        // Make sure that when we return from manage use activity, the username is right
+        String username = databaseEngine.getUsername();
+        if (username != null) {
+            //if (username.length() != 0){
+            outputTextView.setText("Current user: " + username);
+        } else {
+            username = "Welcome, Please enter username and password for the first time!";
+            outputTextView.setText(username);
+        }
+        super.onResume();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

@@ -137,7 +137,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="Verdana"
                 android:gravity="bottom|center_horizontal"
-                android:maxLines="2"
+                android:maxLines="3"
                 android:text="@string/empty"
                 android:textColor="#ff0099cc"
                 android:textSize="22sp"
