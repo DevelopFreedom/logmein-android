@@ -1,5 +1,6 @@
 package in.shubhamchaudhary.logmein.ui;
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.method.HideReturnsTransformationMethod;
@@ -21,7 +22,7 @@ public class FragmentEdit extends Fragment {
     static View v;
     EditText username, password;
     CheckBox cb_show_password;
-    Button button_update;
+    Button button_update,button_cancel;
     DatabaseEngine de;
     UserStructure activity_user;
 
@@ -86,8 +87,20 @@ public class FragmentEdit extends Fragment {
             }
         });
         //TODO:close fragment at completing update or cancel
+
+        button_cancel = (Button) v.findViewById(R.id.button_cancel);
+        button_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pop_fragment();
+            }
+        });
         return v;
     }//end of onCreate
+    private void pop_fragment(){
+        getFragmentManager().popBackStack();
+
+    }//end of pop_fragment
 //
 //  public void show_password_edit_fragment(){
 //      CheckBox cb_show_pwd = (CheckBox)v.findViewById(R.id.cb_show_password);
