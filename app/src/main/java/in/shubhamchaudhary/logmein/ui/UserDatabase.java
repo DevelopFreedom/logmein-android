@@ -102,6 +102,7 @@ public class UserDatabase extends FragmentActivity {
         bundle.putSerializable("user", user);
         frag.setArguments(bundle);
         fragment_transaction.replace(R.id.fragment_blank, frag);
+        fragment_transaction.addToBackStack(null);
         fragment_transaction.commit();
 
     }//end
