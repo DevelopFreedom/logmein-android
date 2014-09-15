@@ -42,6 +42,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import in.shubhamchaudhary.logmein.ui.ManageUser;
 import in.shubhamchaudhary.logmein.ui.UserDatabase;
 import in.shubhamchaudhary.logmein.ui.UserStructure;
 
@@ -206,7 +207,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void manage_user(View v) {
 
-        Intent intent_user_db = new Intent(this, UserDatabase.class);
+        Intent intent_user_db = new Intent(this, ManageUser.class);
 //        String un = textbox_username.getText().toString();
 //        intent_user_db.putExtra("username", un);
         startActivity(intent_user_db);
