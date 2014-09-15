@@ -1,5 +1,6 @@
 package in.shubhamchaudhary.logmein.ui;
 
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import in.shubhamchaudhary.logmein.DatabaseEngine;
 import in.shubhamchaudhary.logmein.R;
@@ -73,10 +75,13 @@ public class FragmentEdit extends Fragment {
                 Boolean flag = false;
                 if (i == 1) {
                     Log.e("Updated", "Updated user");
+                    Toast.makeText(getActivity(),"Updated account",Toast.LENGTH_SHORT).show();
                     flag = true;
                 } else if (i == 0) {
+                    Toast.makeText(getActivity(),"Problem in updating account",Toast.LENGTH_SHORT).show();
                     Log.e("Updated", "Error updating");
                 } else {
+                    Toast.makeText(getActivity(),"Updated more than 1 records",Toast.LENGTH_SHORT).show();
                     Log.e("Updated", "Updated more than 1 records");
                     flag = true;
                 }
@@ -95,6 +100,7 @@ public class FragmentEdit extends Fragment {
         button_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Toast.makeText(getActivity(),"Update cancelled",Toast.LENGTH_SHORT).show();
                 pop_fragment();
             }
         });
