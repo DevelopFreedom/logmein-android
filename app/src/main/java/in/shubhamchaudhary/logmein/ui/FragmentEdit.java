@@ -83,10 +83,13 @@ public class FragmentEdit extends Fragment {
 
                 if (flag) {
                     ((UserDatabase) getActivity()).update_spinner_list(activity_user.getUsername(), username.getText().toString());
+                    pop_fragment();
+                }
+                else{
+                    //TODO: pop up a dialog box to show error
                 }
             }
         });
-        //TODO:close fragment at completing update or cancel
 
         button_cancel = (Button) v.findViewById(R.id.button_cancel);
         button_cancel.setOnClickListener(new View.OnClickListener() {
