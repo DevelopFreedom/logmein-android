@@ -80,7 +80,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginLeft="66dp"
             android:layout_marginRight="40dp"
-            android:layout_toRightOf="@id/button_save"
+            android:layout_toRightOf="@id/button_update"
             android:text="@string/button_cancel" />
 
 

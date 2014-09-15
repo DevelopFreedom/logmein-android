@@ -6,55 +6,36 @@
     tools:context="in.shubhamchaudhary.logmein.MainActivity"
     tools:ignore="MergeRootFrame">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="10dp">
 
-        <EditText
-            android:id="@+id/edit_username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:fontFamily="Verdana"
-            android:hint="@string/edit_username_hint"
-            android:inputType="text">
-
-            <requestFocus />
-        </EditText>
-
-        <EditText
-            android:id="@+id/edit_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:fontFamily="Verdana"
-            android:hint="@string/edit_password_hint"
-            android:inputType="textPassword" />
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="30dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="50dp">
 
-            <Button
-                android:id="@+id/button_save"
+            <TextView
+                android:id="@+id/tb_user_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:fontFamily="Verdana"
-                android:text="@string/button_save" />
-
-            <Button
-                android:id="@+id/button_manage_user"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:gravity="left"
+                android:text="Userlist"
+                android:layout_marginTop="10dp"
+                android:textSize="10pt" />
+            <Spinner
+                android:id="@+id/spinner_user_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:fontFamily="Verdana"
-                android:onClick="manage_user"
-                android:text="@string/manage_user" />
+                android:layout_toRightOf="@+id/tb_user_list"/>
         </RelativeLayout>
 
         <RelativeLayout
