@@ -24,7 +24,7 @@ public class FragmentEdit extends Fragment {
     static View v;
     EditText username, password;
     CheckBox cb_show_password;
-    Button button_update,button_cancel;
+    Button button_save,button_cancel;
     DatabaseEngine de;
     UserStructure activity_user;
 
@@ -57,12 +57,12 @@ public class FragmentEdit extends Fragment {
             }
         });
 
-        button_update = (Button) v.findViewById(R.id.button_update);
+        button_save = (Button) v.findViewById(R.id.button_frag_save);
         de = DatabaseEngine.getInstance(container.getContext());
         username.setText(activity_user.getUsername());
         password.setText(activity_user.getPassword());
 
-        button_update.setOnClickListener(new View.OnClickListener() {
+        button_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 UserStructure updated_user = new UserStructure();
