@@ -28,7 +28,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:gravity="left"
-                android:text="Userlist"
+                android:text="Current"
                 android:layout_marginTop="10dp"
                 android:textSize="10pt" />
             <Spinner
