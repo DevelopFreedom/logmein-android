@@ -1,18 +1,13 @@
 package in.shubhamchaudhary.logmein.ui;
 
-import android.app.AlertDialog;
-import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -130,7 +125,7 @@ public class FragmentEdit extends Fragment {
 
         if(!de.existsUser(userStructure.getUsername())){
             if(de.insert(userStructure)){
-                Toast.makeText(getActivity(), de.getUsername() + " entered into your inventory", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), userStructure.getUsername() + " entered into your inventory", Toast.LENGTH_SHORT).show();
                 textbox_password.clearComposingText();
             } else {
                 Toast.makeText(getActivity()," problem inserting record", Toast.LENGTH_SHORT).show();

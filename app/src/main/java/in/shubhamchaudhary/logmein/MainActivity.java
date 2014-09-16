@@ -42,7 +42,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import in.shubhamchaudhary.logmein.ui.ManageUser;
-import in.shubhamchaudhary.logmein.ui.UserStructure;
 
 public class MainActivity extends ActionBarActivity {
     /* Engines */
@@ -181,13 +180,8 @@ public class MainActivity extends ActionBarActivity {
         String username, password;
         // Use username/password from textbox if both filled
         username = getSelectedUsername();
-        UserStructure user_structure = databaseEngine.getUsernamePassword(username);
-        password = user_structure.getPassword();
+        password = databaseEngine.getUsernamePassword(username).getPassword();
 
-        if (username.length() == 0 && password.length() == 0) {
-            username = databaseEngine.getUsername();
-            password = databaseEngine.getPassword();
-        }
         try {
             status = networkEngine.login(username, password);
         } catch (Exception e) {

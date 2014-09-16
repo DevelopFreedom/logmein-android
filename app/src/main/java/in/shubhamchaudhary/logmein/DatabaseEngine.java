@@ -104,42 +104,6 @@ public class DatabaseEngine {
         }
     }
 
-    //TODO: Move to one common function
-    public String getUsername() {
-        String username = null;
-        try {
-            database = myDatabaseHelper.getReadableDatabase();
-            String[] columns = new String[]{DatabaseOpenHelper.USERNAME, DatabaseOpenHelper.PASSWORD};
-            cursor = database.query(DatabaseOpenHelper.TABLE, columns, null, null, null, null, null);
-            int indexUsername = cursor.getColumnIndex(DatabaseOpenHelper.USERNAME);
-            cursor.moveToFirst();
-            username = cursor.getString(indexUsername);
-            database.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return username;
-    }
-
-    String getPassword() {
-        String password = null;
-        try {
-            database = myDatabaseHelper.getReadableDatabase();
-            String[] columns = new String[]{DatabaseOpenHelper.USERNAME, DatabaseOpenHelper.PASSWORD};
-            cursor = database.query(DatabaseOpenHelper.TABLE, columns, null, null, null, null, null);
-            int indexPassword = cursor.getColumnIndex(DatabaseOpenHelper.PASSWORD);
-
-            cursor.moveToLast();
-            password = cursor.getString(indexPassword);
-            database.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return password;
-    }
-
     /*
      * return list of all the users in database
      */
@@ -181,6 +145,7 @@ public class DatabaseEngine {
         return -1;
     }
 
+    //TODO: Move to one common function
     public UserStructure getUsernamePassword(String un) {
         UserStructure user = null;
         try {
@@ -195,16 +160,18 @@ public class DatabaseEngine {
             user.setPassword(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.PASSWORD)));
 
 
-//          //String[] columns=new String[]{DatabaseOpenHelper.USERNAME,DatabaseOpenHelper.PASSWORD};
-//          cursor = database.rawQuery("select * from ? where username=?", new String[]{DatabaseOpenHelper.TABLE,un} );
-//          if(!cursor.isNull(0)){
-//          //TODO:make sure that check is made when users are saved that no more than one entry for same user is made
-//              user = new UserStructure();
-//              user.setUsername(cursor.getString(cursor.getColumnIndex("username")));
-//              user.setPassword(cursor.getString(cursor.getColumnIndex("password")));
-//
-            Log.e("unnnnnn", user.getUsername());
-            Log.e("pwwwwwd", user.getPassword());
+            /*
+            //String[] columns=new String[]{DatabaseOpenHelper.USERNAME,DatabaseOpenHelper.PASSWORD};
+            cursor = database.rawQuery("select * from ? where username=?", new String[]{DatabaseOpenHelper.TABLE,un} );
+            if(!cursor.isNull(0)){
+                //TODO:make sure that check is made when users are saved that no more than one entry for same user is made
+                user = new UserStructure();
+                user.setUsername(cursor.getString(cursor.getColumnIndex("username")));
+                user.setPassword(cursor.getString(cursor.getColumnIndex("password")));
+            */
+
+            //Log.e("unnnnnn", user.getUsername());
+            //Log.e("pwwwwwd", user.getPassword());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
