@@ -38,7 +38,7 @@ import java.net.URLConnection;
 
 public class NetworkEngine {
 
-    // Singleton method with lazy initialization.
+    public String BASE_URL = "http://172.16.4.201/cgi-bin/login";
     private static NetworkEngine instance = null;
     private static int use_count = 0;   //like semaphores
     Context m_context;
@@ -47,6 +47,7 @@ public class NetworkEngine {
         m_context = context;
     }
 
+    // Singleton method with lazy initialization.
     public static synchronized NetworkEngine getInstance(Context context) {
         if (instance == null) {
             instance = new NetworkEngine(context);
@@ -73,41 +74,10 @@ public class NetworkEngine {
         return longRunningTask.return_status;
     }
 
-    ;
-
     public StatusCode login(final String username, final String password) throws Exception {
         NetworkTask longRunningTask = new NetworkTask(m_context);
         longRunningTask.execute("login", username, password);
         return longRunningTask.return_status;
-/*
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Callable<StatusCode> callable = new Callable<StatusCode>() {
-            @Override
-            public StatusCode call() {
-                try {
-                    return login_runner(username,password);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return null;
-            }
-        };
-        Future<StatusCode> future = executor.submit(callable);
-        executor.shutdown();
-        return future.get();
-        Thread thread = new Thread(new Runnable(){
-            @Override
-            public void run() {
-                try {
-                    login_runner(username,password);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        thread.start();
-        return StatusCode.LOGIN_SUCCESS;    //XXX
-*/
     }
 
     public NetworkEngine.StatusCode logout() throws Exception {
@@ -124,7 +94,7 @@ public class NetworkEngine {
         //System.out.println("Loggin in with "+username+password);
         String urlParameters = "user=" + username + "&password=" + password; // "param1=a&param2=b&param3=c";
 
-        String request = "http://172.16.4.201/cgi-bin/login";
+        String request = BASE_URL;
         URL puServerUrl = new URL(request);
 
         URLConnection puServerConnection = puServerUrl.openConnection();
@@ -176,7 +146,7 @@ public class NetworkEngine {
 
     private NetworkEngine.StatusCode logout_runner() throws Exception {
         System.out.println("Loggin out");
-        URL puServerUrl = new URL("http://172.16.4.201/cgi-bin/login?cmd=logout");
+        URL puServerUrl = new URL(BASE_URL+"?cmd=logout");
         URLConnection puServerConnection = puServerUrl.openConnection();
 
         //Get inputStream and show output
@@ -258,11 +228,11 @@ public class NetworkEngine {
         protected StatusCode doInBackground(String... input_strings) {
             String operation = input_strings[0];
             try {
-                if (operation == "login") {
+                if (operation.equals("login")) {
                     username = input_strings[1];
                     password = input_strings[2];
                     return_status = login_runner(username, password);
-                } else if (operation == "logout") {
+                } else if (operation.equals("logout")) {
                     return_status = logout_runner();
                 }
             } catch (Exception e) {
@@ -282,10 +252,4 @@ public class NetworkEngine {
     }
 }
 
-/*
-//Bypass android.os.NetworkOnMainThreadException
-StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-
-StrictMode.setThreadPolicy(policy);
- */
 // vim: set ts=4 sw=4 tw=79 et :
