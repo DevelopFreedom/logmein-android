@@ -45,15 +45,16 @@ import in.shubhamchaudhary.logmein.ui.ManageUser;
 import in.shubhamchaudhary.logmein.ui.UserStructure;
 
 public class MainActivity extends ActionBarActivity {
+    /* Engines */
+    NetworkEngine networkEngine;
+    DatabaseEngine databaseEngine;
     ///Class Variables
     Button button_login, button_logout;
     TextView outputTextView;
     Spinner spinner_user_list;
     ArrayList<String> user_list;
     ArrayAdapter adapter;
-    /* Engines */
-    NetworkEngine networkEngine;
-    DatabaseEngine databaseEngine;
+    boolean spinnerUpdateFlag;
 
     @Override
     protected void onResume() {
@@ -92,6 +93,8 @@ public class MainActivity extends ActionBarActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinner_user_list = (Spinner) findViewById(R.id.spinner_user_list);
         spinner_user_list.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        spinnerUpdateFlag = false;
 
         spinner_user_list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -114,6 +117,18 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void updateHomescreenData() {
+        if (spinnerUpdateFlag) {
+            spinnerUpdateFlag = false; //Avoid recursive loop via onItemSelected Listner
+            return;
+        } else {
+            user_list = databaseEngine.userList();
+            int pos = spinner_user_list.getSelectedItemPosition();
+            adapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, user_list);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+            spinner_user_list.setAdapter(adapter);
+            spinner_user_list.setSelection(pos);
+            spinnerUpdateFlag = true;
+        }
 
         String username = getSelectedUsername();
         if (username != null) {
