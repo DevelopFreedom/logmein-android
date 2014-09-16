@@ -27,7 +27,7 @@ public class FragmentEdit extends Fragment {
     Button button_save,button_cancel;
     DatabaseEngine de;
     UserStructure activity_user;
-
+    boolean add_update;
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -63,12 +63,15 @@ public class FragmentEdit extends Fragment {
             public void onClick(View view) {
                 Toast.makeText(getActivity(),"Update cancelled",Toast.LENGTH_SHORT).show();
                 pop_fragment();
+
             }
         });
 
-        final int add_update = (Integer)getArguments().getInt("add_update");
+        add_update = (Boolean)getArguments().getBoolean("add_update");
         Log.e("a_u",""+add_update);
-        if(add_update==2) {
+        if(add_update){
+            Log.e("In add",""+add_update);
+        } else{
             activity_user = (UserStructure) getArguments().getSerializable("user");
             Log.e("a_u", activity_user.getUsername());
             username.setText(activity_user.getUsername());
@@ -86,7 +89,7 @@ public class FragmentEdit extends Fragment {
                 updated_user.setUsername(username.getText().toString());
                 Log.e("username", username.getText().toString());
 
-                if(add_update == 1){
+                if(add_update){
 //TODO:Add operation
                 }else {
                     int i = de.updateUser(updated_user, activity_user.getUsername());
@@ -118,8 +121,10 @@ public class FragmentEdit extends Fragment {
         return v;
     }//end of onCreate
     private void pop_fragment(){
+        if(add_update){
+            ((UserDatabase) getActivity()).finish();
+        }
         getFragmentManager().popBackStack();
-
     }//end of pop_fragment
 //
 //  public void show_password_edit_fragment(){

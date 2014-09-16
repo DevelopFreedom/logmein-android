@@ -22,6 +22,7 @@
 
 package in.shubhamchaudhary.logmein.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -29,6 +30,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,6 +41,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -52,6 +55,8 @@ public class UserDatabase extends FragmentActivity {
     ArrayList<String> user_list;
     DatabaseEngine databaseEngine;
     Button button_edit;
+    Boolean add_update;
+    TextView test_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,21 +67,37 @@ public class UserDatabase extends FragmentActivity {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment()).commit();
         }
+        Intent intent = getIntent();
+        add_update = intent.getBooleanExtra("add_update",false);
+        Log.e("ud a_u", "" + add_update);
 
         databaseEngine = DatabaseEngine.getInstance(this);
+        button_edit = (Button) findViewById(R.id.button_edit);
+        test_list = (TextView) findViewById(R.id.tb_user_list);
         spinner_user_list = (Spinner) findViewById(R.id.spinner_user_list);
         user_list = databaseEngine.userList();
 
         adapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, user_list);
         spinner_user_list.setAdapter(adapter);
 
-        button_edit = (Button) findViewById(R.id.button_edit);
+        if(add_update){
+            spinner_user_list.setEnabled(false);
+            button_edit.setEnabled(false);
+            test_list.setEnabled(false);
+
+            spinner_user_list.setVisibility(View.INVISIBLE);
+            button_edit.setVisibility(View.INVISIBLE);
+            test_list.setVisibility(View.INVISIBLE);
+            edit_user_profile();
+        }
+
         button_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 edit_user_profile();
             }
         });
+
     }
 
     @Override
@@ -100,18 +121,33 @@ public class UserDatabase extends FragmentActivity {
     }
 
     public void edit_user_profile() {
-        String username = (String) spinner_user_list.getSelectedItem();
-        UserStructure user = databaseEngine.getUsernamePassword(username);
         Bundle bundle = new Bundle();
         Fragment frag = new FragmentEdit();
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction fragment_transaction = fm.beginTransaction();
+        bundle.putBoolean("add_update", add_update);
 
-        bundle.putInt("add_update",2);
-        bundle.putSerializable("user", user);
-        frag.setArguments(bundle);
-        fragment_transaction.replace(R.id.fragment_blank, frag);
-        fragment_transaction.addToBackStack(null);
+        if(add_update){
+            Log.e("hkfbskbksbjbnfjbvksb", "382684274427484729732");
+            frag.setArguments(bundle);
+//            fragment_transaction.add(android.R.id.content, frag);
+            fragment_transaction.replace(R.id.fragment_blank, frag);
+
+        }else {
+            String username = (String) spinner_user_list.getSelectedItem();
+            UserStructure user = databaseEngine.getUsernamePassword(username);
+//            Bundle bundle = new Bundle();
+//            Fragment frag = new FragmentEdit();
+//            FragmentManager fm = getSupportFragmentManager();
+//            FragmentTransaction fragment_transaction = fm.beginTransaction();
+
+//            bundle.putInt("add_update", 2);
+            bundle.putSerializable("user", user);
+            frag.setArguments(bundle);
+            fragment_transaction.replace(R.id.fragment_blank, frag);
+            fragment_transaction.addToBackStack(null);
+//            fragment_transaction.commit();
+        }
         fragment_transaction.commit();
 
     }//end

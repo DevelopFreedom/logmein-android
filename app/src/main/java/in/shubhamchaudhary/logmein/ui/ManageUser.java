@@ -1,8 +1,12 @@
 package in.shubhamchaudhary.logmein.ui;
 
 import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,7 +16,7 @@ import in.shubhamchaudhary.logmein.R;
 
 public class ManageUser extends ActionBarActivity {
 
-    Button update;
+    Button update,add;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +30,13 @@ public class ManageUser extends ActionBarActivity {
             }
         });
 
+       add = (Button) findViewById(R.id.button_add);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                add_user();
+            }
+        });
     }
 
 
@@ -50,6 +61,16 @@ public class ManageUser extends ActionBarActivity {
 
     public void update_user(){
         Intent intent = new Intent(this, UserDatabase.class);
+        //true for add and false for update
+        intent.putExtra("add_update",false);
+        startActivity(intent);
+
+    }
+
+    public void add_user(){
+        Intent intent = new Intent(this, UserDatabase.class);
+        //true for add and false for update
+        intent.putExtra("add_update",true);
         startActivity(intent);
 
     }

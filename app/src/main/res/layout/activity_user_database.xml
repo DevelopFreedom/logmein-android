@@ -48,17 +48,10 @@
                 android:id="@+id/button_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
                 android:onClick="edit_user_profile"
+                android:layout_centerHorizontal="true"
                 android:text="@string/button_edit" />
 
-            <Button
-                android:id="@+id/button_delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:gravity="center"
-                android:text="@string/button_delete" />
         </RelativeLayout>
 
         <fragment
