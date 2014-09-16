@@ -57,9 +57,12 @@ public class FragmentEdit extends Fragment {
         button_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(),"Update cancelled",Toast.LENGTH_SHORT).show();
-                pop_fragment();
-
+                Toast.makeText(getActivity(),"Activity cancelled",Toast.LENGTH_SHORT).show();
+                getActivity().onBackPressed();
+                /*the following can also be used to remove activity from stack !!! couldn't make out which way
+                is better.....if we want to save some data from this fragment then the method above won't suffice !!!*/
+//                pop_fragment();
+//                ((UserDatabase)getActivity()).buttons_enabled(true);
             }
         });
 

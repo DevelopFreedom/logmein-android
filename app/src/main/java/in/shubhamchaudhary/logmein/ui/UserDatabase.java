@@ -124,6 +124,11 @@ public class UserDatabase extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        buttons_enabled(true);
+    }
     public void edit_user_profile() {
         Bundle bundle = new Bundle();
         Fragment frag = new FragmentEdit();
