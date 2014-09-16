@@ -32,6 +32,10 @@
             android:name=".ui.ManageUser"
             android:label="@string/title_activity_manage_user" >
         </activity>
+        <activity
+            android:name=".ui.DeleteUser"
+            android:label="@string/title_activity_delete_user" >
+        </activity>
     </application>
 
 </manifest>

@@ -16,14 +16,14 @@ import in.shubhamchaudhary.logmein.R;
 
 public class ManageUser extends ActionBarActivity {
 
-    Button update,add;
+    Button update,add,delete;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_manage_user);
+       super.onCreate(savedInstanceState);
+       setContentView(R.layout.activity_manage_user);
 
-        update = (Button) findViewById(R.id.button_update);
-        update.setOnClickListener(new View.OnClickListener() {
+       update = (Button) findViewById(R.id.button_update);
+       update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 update_user();
@@ -31,10 +31,18 @@ public class ManageUser extends ActionBarActivity {
         });
 
        add = (Button) findViewById(R.id.button_add);
-        add.setOnClickListener(new View.OnClickListener() {
+       add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 add_user();
+            }
+        });
+
+        delete = (Button) findViewById(R.id.button_delete);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                delete_user();
             }
         });
     }
@@ -73,5 +81,10 @@ public class ManageUser extends ActionBarActivity {
         intent.putExtra("add_update",true);
         startActivity(intent);
 
+    }
+
+    public void delete_user(){
+        Intent intent = new Intent(this,DeleteUser.class);
+        startActivity(intent);
     }
 }

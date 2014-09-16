@@ -21,5 +21,6 @@
     <string name="button_cancel">Cancel</string>
     <string name="button_update">Update</string>
     <string name="title_activity_manage_user">ManageUser</string>
+    <string name="title_activity_delete_user">DeleteUser</string>
 
 </resources>
