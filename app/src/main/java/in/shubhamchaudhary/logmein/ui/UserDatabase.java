@@ -98,7 +98,7 @@ public class UserDatabase extends FragmentActivity {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction fragment_transaction = fm.beginTransaction();
 
-
+        bundle.putInt("add_update",2);
         bundle.putSerializable("user", user);
         frag.setArguments(bundle);
         fragment_transaction.replace(R.id.fragment_blank, frag);

@@ -33,14 +33,14 @@ public class FragmentEdit extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         //Inflate the layout for this fragment
-        activity_user = (UserStructure) getArguments().getSerializable("user");
         v = inflater.inflate(
                 R.layout.fragment_edit_layout, container, false);
+        cb_show_password = (CheckBox) v.findViewById(R.id.cb_show_password);
         username = (EditText) v.findViewById(R.id.edit_username);
         password = (EditText) v.findViewById(R.id.edit_password);
-        cb_show_password = (CheckBox) v.findViewById(R.id.cb_show_password);
-        username.setText(activity_user.getUsername());
-        password.setText(activity_user.getPassword());
+        button_save = (Button) v.findViewById(R.id.button_frag_save);
+        de = DatabaseEngine.getInstance(container.getContext());
+        button_cancel = (Button) v.findViewById(R.id.button_cancel);
 
         // when user clicks on this checkbox, this is the handler.
         cb_show_password.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -57,10 +57,26 @@ public class FragmentEdit extends Fragment {
             }
         });
 
-        button_save = (Button) v.findViewById(R.id.button_frag_save);
-        de = DatabaseEngine.getInstance(container.getContext());
-        username.setText(activity_user.getUsername());
-        password.setText(activity_user.getPassword());
+
+        button_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(),"Update cancelled",Toast.LENGTH_SHORT).show();
+                pop_fragment();
+            }
+        });
+
+        final int add_update = (Integer)getArguments().getInt("add_update");
+        Log.e("a_u",""+add_update);
+        if(add_update==2) {
+            activity_user = (UserStructure) getArguments().getSerializable("user");
+            Log.e("a_u", activity_user.getUsername());
+            username.setText(activity_user.getUsername());
+            password.setText(activity_user.getPassword());
+
+        }
+//        username.setText(activity_user.getUsername());
+//        password.setText(activity_user.getPassword());
 
         button_save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,40 +86,35 @@ public class FragmentEdit extends Fragment {
                 updated_user.setUsername(username.getText().toString());
                 Log.e("username", username.getText().toString());
 
-                int i = de.updateUser(updated_user, activity_user.getUsername());
-                //TODO: show pop ups instead of logs
-                Boolean flag = false;
-                if (i == 1) {
-                    Log.e("Updated", "Updated user");
-                    Toast.makeText(getActivity(),"Updated account",Toast.LENGTH_SHORT).show();
-                    flag = true;
-                } else if (i == 0) {
-                    Toast.makeText(getActivity(),"Problem in updating account",Toast.LENGTH_SHORT).show();
-                    Log.e("Updated", "Error updating");
-                } else {
-                    Toast.makeText(getActivity(),"Updated more than 1 records",Toast.LENGTH_SHORT).show();
-                    Log.e("Updated", "Updated more than 1 records");
-                    flag = true;
-                }
+                if(add_update == 1){
+//TODO:Add operation
+                }else {
+                    int i = de.updateUser(updated_user, activity_user.getUsername());
+                    //TODO: show pop ups instead of logs
+                    Boolean flag = false;
+                    if (i == 1) {
+                        Log.e("Updated", "Updated user");
+                        Toast.makeText(getActivity(), "Updated account", Toast.LENGTH_SHORT).show();
+                        flag = true;
+                    } else if (i == 0) {
+                        Toast.makeText(getActivity(), "Problem in updating account", Toast.LENGTH_SHORT).show();
+                        Log.e("Updated", "Error updating");
+                    } else {
+                        Toast.makeText(getActivity(), "Updated more than 1 records", Toast.LENGTH_SHORT).show();
+                        Log.e("Updated", "Updated more than 1 records");
+                        flag = true;
+                    }
 
-                if (flag) {
-                    ((UserDatabase) getActivity()).update_spinner_list(activity_user.getUsername(), username.getText().toString());
-                    pop_fragment();
-                }
-                else{
-                    //TODO: pop up a dialog box to show error
+                    if (flag) {
+                        ((UserDatabase) getActivity()).update_spinner_list(activity_user.getUsername(), username.getText().toString());
+                        pop_fragment();
+                    } else {
+                        //TODO: pop up a dialog box to show error
+                    }
                 }
             }
         });
 
-        button_cancel = (Button) v.findViewById(R.id.button_cancel);
-        button_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getActivity(),"Update cancelled",Toast.LENGTH_SHORT).show();
-                pop_fragment();
-            }
-        });
         return v;
     }//end of onCreate
     private void pop_fragment(){
