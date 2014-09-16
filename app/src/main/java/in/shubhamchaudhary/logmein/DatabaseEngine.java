@@ -112,7 +112,7 @@ public class DatabaseEngine {
             String[] columns = new String[]{DatabaseOpenHelper.USERNAME, DatabaseOpenHelper.PASSWORD};
             cursor = database.query(DatabaseOpenHelper.TABLE, columns, null, null, null, null, null);
             int indexUsername = cursor.getColumnIndex(DatabaseOpenHelper.USERNAME);
-            cursor.moveToLast();
+            cursor.moveToFirst();
             username = cursor.getString(indexUsername);
             database.close();
         } catch (Exception e) {

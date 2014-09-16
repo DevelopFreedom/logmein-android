@@ -21,9 +21,12 @@
 
 package in.shubhamchaudhary.logmein;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -220,7 +223,7 @@ public class NetworkEngine {
         } else if (status == NetworkEngine.StatusCode.LOGOUT_SUCCESS) {
             outputText = "Logout Successful";
         } else if (status == NetworkEngine.StatusCode.NOT_LOGGED_IN) {
-            outputText = "You're not logged in " + DatabaseEngine.getInstance(m_context).getUsername();
+            outputText = "You're not logged in " + getSelectedUsername();
         } else if (status == null) {
             Log.d("NetworkEngine", "StatusCode was null in login");
             outputText = "null";
@@ -235,6 +238,11 @@ public class NetworkEngine {
         LOGIN_SUCCESS, AUTHENTICATION_FAILED, MULTIPLE_SESSIONS,
         CREDENTIAL_NONE, LOGOUT_SUCCESS, NOT_LOGGED_IN, LOGGED_IN,
         CONNECTION_ERROR,
+    }
+
+    public String getSelectedUsername() {
+        View rootView = ((Activity)m_context).getWindow().getDecorView().findViewById(android.R.id.content);
+        return (String) ((Spinner)rootView.findViewById(R.id.spinner_user_list)).getSelectedItem();
     }
 
     public class NetworkTask extends AsyncTask<String, Void, StatusCode> {

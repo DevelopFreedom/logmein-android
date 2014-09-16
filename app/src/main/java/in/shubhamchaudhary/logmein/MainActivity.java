@@ -33,17 +33,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import in.shubhamchaudhary.logmein.ui.ManageUser;
-import in.shubhamchaudhary.logmein.ui.UserDatabase;
 import in.shubhamchaudhary.logmein.ui.UserStructure;
 
 public class MainActivity extends ActionBarActivity {
@@ -60,14 +58,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         // Make sure that when we return from manage use activity, the username is right
-        String username = databaseEngine.getUsername();
-        if (username != null) {
-            //if (username.length() != 0){
-            outputTextView.setText("Current user: " + username);
-        } else {
-            username = "Welcome, Please enter username and password for the first time!";
-            outputTextView.setText(username);
-        }
+        updateHomescreenData();
         super.onResume();
     }
 
@@ -81,15 +72,6 @@ public class MainActivity extends ActionBarActivity {
 
         outputTextView = (TextView) findViewById(R.id.outputTextView);
         outputTextView.setMovementMethod(new ScrollingMovementMethod());
-
-        String username = databaseEngine.getUsername();
-        if (username != null) {
-            //if (username.length() != 0){
-            outputTextView.setText("Current user: " + username);
-        } else {
-            username = "Welcome, Please enter username and password for the first time!";
-            outputTextView.setText(username);
-        }
 
         button_login = (Button) findViewById(R.id.button_login);
         button_login.setOnClickListener(new View.OnClickListener() {
@@ -105,17 +87,46 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        spinner_user_list = (Spinner) findViewById(R.id.spinner_user_list);
         user_list = databaseEngine.userList();
-
         adapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, user_list);
+        spinner_user_list = (Spinner) findViewById(R.id.spinner_user_list);
         spinner_user_list.setAdapter(adapter);
+
+        spinner_user_list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long l) {
+                // An item was selected. We can retrieve the selected item using
+                // parent.getItemAtPosition(pos)
+                parent.setSelection(pos);
+                updateHomescreenData();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) { }
+        });
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment()).commit();
         }
+        updateHomescreenData();
+    }
 
+    public void updateHomescreenData() {
+
+        String username = getSelectedUsername();
+        if (username != null) {
+            //if (username.length() != 0){
+            outputTextView.setText("Current user: " + username);
+        } else {
+            username = "Welcome, Please enter username and password for the first time!";
+            outputTextView.setText(username);
+        }
+
+    }
+
+    public String getSelectedUsername() {
+        return (String)spinner_user_list.getSelectedItem();
     }
 
     @Override
@@ -153,7 +164,7 @@ public class MainActivity extends ActionBarActivity {
         Log.d("login", "Insiide Login");
         String username, password;
         // Use username/password from textbox if both filled
-        username = (String)spinner_user_list.getSelectedItem();
+        username = getSelectedUsername();
         UserStructure user_structure = databaseEngine.getUsernamePassword(username);
         password = user_structure.getPassword();
 
