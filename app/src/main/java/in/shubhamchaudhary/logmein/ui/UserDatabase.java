@@ -35,6 +35,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -50,6 +51,7 @@ public class UserDatabase extends FragmentActivity {
     ArrayAdapter<String> adapter;
     ArrayList<String> user_list;
     DatabaseEngine databaseEngine;
+    Button button_edit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +70,13 @@ public class UserDatabase extends FragmentActivity {
         adapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, user_list);
         spinner_user_list.setAdapter(adapter);
 
+        button_edit = (Button) findViewById(R.id.button_edit);
+        button_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                edit_user_profile();
+            }
+        });
     }
 
     @Override
@@ -90,7 +99,7 @@ public class UserDatabase extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void edit_user_profile(View v) {
+    public void edit_user_profile() {
         String username = (String) spinner_user_list.getSelectedItem();
         UserStructure user = databaseEngine.getUsernamePassword(username);
         Bundle bundle = new Bundle();
