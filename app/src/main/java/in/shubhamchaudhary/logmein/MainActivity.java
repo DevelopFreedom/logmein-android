@@ -48,8 +48,7 @@ import in.shubhamchaudhary.logmein.ui.UserStructure;
 
 public class MainActivity extends ActionBarActivity {
     ///Class Variables
-    EditText textbox_username, textbox_password;
-    Button button_save, button_login, button_logout;
+    Button button_login, button_logout;
     TextView outputTextView;
     Spinner spinner_user_list;
     ArrayList<String> user_list;
@@ -92,13 +91,6 @@ public class MainActivity extends ActionBarActivity {
             outputTextView.setText(username);
         }
 
-//        button_save = (Button) findViewById(R.id.button_save);
-//        button_save.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                saveCredential();
-//            }
-//        });
-
         button_login = (Button) findViewById(R.id.button_login);
         button_login.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -119,9 +111,7 @@ public class MainActivity extends ActionBarActivity {
         adapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, user_list);
         spinner_user_list.setAdapter(adapter);
 
-/*        textbox_username = (EditText) findViewById(R.id.edit_username);
-        textbox_password = (EditText) findViewById(R.id.edit_password);
-  */      if (savedInstanceState == null) {
+        if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment()).commit();
         }
@@ -164,10 +154,8 @@ public class MainActivity extends ActionBarActivity {
         String username, password;
         // Use username/password from textbox if both filled
         username = (String)spinner_user_list.getSelectedItem();
-//        username = textbox_username.getText().toString();
         UserStructure user_structure = databaseEngine.getUsernamePassword(username);
         password = user_structure.getPassword();
-//        password = textbox_password.getText().toString();
 
         if (username.length() == 0 && password.length() == 0) {
             username = databaseEngine.getUsername();
@@ -189,21 +177,6 @@ public class MainActivity extends ActionBarActivity {
             e.printStackTrace();
         }
     }//end logout
-//
-//    void saveCredential() {
-//        //TODO: Check user input-that no user id is entered twice
-//        //outputTextView.setText(outputTextView.getText().toString()+"Trying to saveCredential");
-//
-//        String username = textbox_username.getText().toString();
-//        String password = textbox_password.getText().toString();
-//
-//        showText("Saving: " + username);
-//        databaseEngine.saveToDatabase(username, password);
-//        Toast.makeText(getApplicationContext(), databaseEngine.getUsername() + " entered into your inventory", Toast.LENGTH_SHORT).show();
-//        //TODO: wtf is this vivek?????
-////      textbox_username.clearComposingText();
-//        textbox_password.clearComposingText();
-//    }//end saveCredential
 
     public void manage_user(View v) {
 

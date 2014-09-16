@@ -43,19 +43,20 @@ public class FragmentEdit extends Fragment {
         button_cancel = (Button) v.findViewById(R.id.button_cancel);
 
         // when user clicks on this checkbox, this is the handler.
-        cb_show_password.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // checkbox status is changed from uncheck to checked.
-                if (!isChecked) {
-                    // show password
-                    textbox_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                } else {
-                    // hide password
-                    textbox_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                }
-            }
-        });
+//TODO: this is not functional.....the one in UserDatabase is!!!
+//        cb_show_password.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                // checkbox status is changed from uncheck to checked.
+//                if (!isChecked) {
+//                    // show password
+//                    textbox_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+//                } else {
+//                    // hide password
+//                    textbox_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+//                }
+//            }
+//        });
 
 
         button_cancel.setOnClickListener(new View.OnClickListener() {
@@ -78,8 +79,6 @@ public class FragmentEdit extends Fragment {
             textbox_password.setText(activity_user.getPassword());
 
         }
-//        username.setText(activity_user.getUsername());
-//        password.setText(activity_user.getPassword());
 
         button_save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,16 +145,5 @@ public class FragmentEdit extends Fragment {
         }
 
     }//end saveCredential
-
-
-//
-//  public void show_password_edit_fragment(){
-//      CheckBox cb_show_pwd = (CheckBox)v.findViewById(R.id.cb_show_password);
-//      if(cb_show_pwd.isChecked()){
-//          password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-//          return;
-//      }
-//      password.setTransformationMethod(PasswordTransformationMethod.getInstance());
-//  }
 }
 // vim: set ts=4 sw=4 tw=79 et :

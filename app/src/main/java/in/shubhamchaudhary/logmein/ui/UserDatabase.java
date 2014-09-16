@@ -128,33 +128,22 @@ public class UserDatabase extends FragmentActivity {
         bundle.putBoolean("add_update", add_update);
 
         if(add_update){
-            Log.e("hkfbskbksbjbnfjbvksb", "382684274427484729732");
             frag.setArguments(bundle);
-//            fragment_transaction.add(android.R.id.content, frag);
             fragment_transaction.replace(R.id.fragment_blank, frag);
 
         }else {
             String username = (String) spinner_user_list.getSelectedItem();
             UserStructure user = databaseEngine.getUsernamePassword(username);
-//            Bundle bundle = new Bundle();
-//            Fragment frag = new FragmentEdit();
-//            FragmentManager fm = getSupportFragmentManager();
-//            FragmentTransaction fragment_transaction = fm.beginTransaction();
-
-//            bundle.putInt("add_update", 2);
             bundle.putSerializable("user", user);
             frag.setArguments(bundle);
             fragment_transaction.replace(R.id.fragment_blank, frag);
             fragment_transaction.addToBackStack(null);
-//            fragment_transaction.commit();
         }
         fragment_transaction.commit();
 
     }//end
 
     public void show_password(View v) {
-//      FragmentEdit fe = new FragmentEdit();
-//      fe.show_password_edit_fragment();
         CheckBox cb_show_pwd = (CheckBox) FragmentEdit.v.findViewById(R.id.cb_show_password);
         EditText pwd = (EditText) FragmentEdit.v.findViewById(R.id.edit_password);
         if (cb_show_pwd.isChecked()) {
