@@ -130,7 +130,7 @@ public class DatabaseEngine {
     /*
      * delete the user with username as passed
      */
-    int deleteUser(String username) {
+    int deleteUser(int uid) {
         //TODO
         //Better if we only find the userid here and pass it to deleteUser(id)
         return -1;
@@ -139,10 +139,20 @@ public class DatabaseEngine {
     /*
      * delete the user with id number passed
      */
-    int deleteUser(int id) {
-        //TODO
+    public boolean deleteUser(String username) {
         //Delete userid from database
-        return -1;
+        try{
+            SQLiteDatabase db = myDatabaseHelper.getWritableDatabase();
+            String[] columns = new String[]{username};
+            long success = db.delete(DatabaseOpenHelper.TABLE, DatabaseOpenHelper.USERNAME + "=?", columns);
+            if(success != -1){
+                return true;
+            }
+            database.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     //TODO: Move to one common function
