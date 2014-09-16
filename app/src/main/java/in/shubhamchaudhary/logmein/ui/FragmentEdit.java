@@ -22,7 +22,7 @@ import in.shubhamchaudhary.logmein.R;
 public class FragmentEdit extends Fragment {
 
     static View v;
-    EditText username, password;
+    EditText textbox_username, textbox_password;
     CheckBox cb_show_password;
     Button button_save,button_cancel;
     DatabaseEngine de;
@@ -36,8 +36,8 @@ public class FragmentEdit extends Fragment {
         v = inflater.inflate(
                 R.layout.fragment_edit_layout, container, false);
         cb_show_password = (CheckBox) v.findViewById(R.id.cb_show_password);
-        username = (EditText) v.findViewById(R.id.edit_username);
-        password = (EditText) v.findViewById(R.id.edit_password);
+        textbox_username = (EditText) v.findViewById(R.id.edit_username);
+        textbox_password = (EditText) v.findViewById(R.id.edit_password);
         button_save = (Button) v.findViewById(R.id.button_frag_save);
         de = DatabaseEngine.getInstance(container.getContext());
         button_cancel = (Button) v.findViewById(R.id.button_cancel);
@@ -49,10 +49,10 @@ public class FragmentEdit extends Fragment {
                 // checkbox status is changed from uncheck to checked.
                 if (!isChecked) {
                     // show password
-                    password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    textbox_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 } else {
                     // hide password
-                    password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    textbox_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 }
             }
         });
@@ -68,14 +68,14 @@ public class FragmentEdit extends Fragment {
         });
 
         add_update = (Boolean)getArguments().getBoolean("add_update");
-        Log.e("a_u",""+add_update);
         if(add_update){
-            Log.e("In add",""+add_update);
+            textbox_username.setText("");
+            textbox_password.setText("");
         } else{
             activity_user = (UserStructure) getArguments().getSerializable("user");
             Log.e("a_u", activity_user.getUsername());
-            username.setText(activity_user.getUsername());
-            password.setText(activity_user.getPassword());
+            textbox_username.setText(activity_user.getUsername());
+            textbox_password.setText(activity_user.getPassword());
 
         }
 //        username.setText(activity_user.getUsername());
@@ -85,12 +85,12 @@ public class FragmentEdit extends Fragment {
             @Override
             public void onClick(View v) {
                 UserStructure updated_user = new UserStructure();
-                updated_user.setPassword(password.getText().toString());
-                updated_user.setUsername(username.getText().toString());
-                Log.e("username", username.getText().toString());
+                updated_user.setPassword(textbox_password.getText().toString());
+                updated_user.setUsername(textbox_username.getText().toString());
+                Log.e("username", textbox_username.getText().toString());
 
                 if(add_update){
-//TODO:Add operation
+                    saveCredential();
                 }else {
                     int i = de.updateUser(updated_user, activity_user.getUsername());
                     //TODO: show pop ups instead of logs
@@ -109,7 +109,7 @@ public class FragmentEdit extends Fragment {
                     }
 
                     if (flag) {
-                        ((UserDatabase) getActivity()).update_spinner_list(activity_user.getUsername(), username.getText().toString());
+                        ((UserDatabase) getActivity()).update_spinner_list(activity_user.getUsername(), textbox_username.getText().toString());
                         pop_fragment();
                     } else {
                         //TODO: pop up a dialog box to show error
@@ -126,6 +126,28 @@ public class FragmentEdit extends Fragment {
         }
         getFragmentManager().popBackStack();
     }//end of pop_fragment
+
+    void saveCredential() {
+        UserStructure userStructure = new UserStructure();
+        userStructure.setUsername(textbox_username.getText().toString());
+        userStructure.setPassword(textbox_password.getText().toString());
+
+        if(!de.existsUser(userStructure.getUsername())){
+            if(de.insert(userStructure)){
+                Toast.makeText(getActivity(), de.getUsername() + " entered into your inventory", Toast.LENGTH_SHORT).show();
+                textbox_password.clearComposingText();
+            } else {
+                Toast.makeText(getActivity()," problem inserting record", Toast.LENGTH_SHORT).show();
+            }
+
+        } else{
+            //TODO: pop up an alert here
+            Toast.makeText(getActivity(),"Username already exists", Toast.LENGTH_SHORT).show();
+        }
+
+    }//end saveCredential
+
+
 //
 //  public void show_password_edit_fragment(){
 //      CheckBox cb_show_pwd = (CheckBox)v.findViewById(R.id.cb_show_password);

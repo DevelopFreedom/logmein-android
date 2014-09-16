@@ -59,7 +59,25 @@ public class DatabaseEngine {
         return instance;
     }
 
-    void saveToDatabase(String username, String password) {
+    public boolean insert(UserStructure us){
+        SQLiteDatabase db = myDatabaseHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(DatabaseOpenHelper.USERNAME, us.getUsername()); // Contact Name
+        values.put(DatabaseOpenHelper.PASSWORD, us.getPassword()); // Contact Phone Number
+
+        // Inserting Row
+        long success = db.insert(DatabaseOpenHelper.TABLE, null, values);
+        db.close(); // Closing database connection
+        Log.e("success",""+success);
+        if(success == -1){
+            return false;
+        }
+        return true;
+    }
+
+    //TODO: this function looks like shit
+    public void saveToDatabase(String username, String password) {
         try {
             //make a db connect to it add values to it (next task)
             //WTH
@@ -87,7 +105,7 @@ public class DatabaseEngine {
     }
 
     //TODO: Move to one common function
-    String getUsername() {
+    public String getUsername() {
         String username = null;
         try {
             database = myDatabaseHelper.getReadableDatabase();
@@ -194,6 +212,22 @@ public class DatabaseEngine {
         }
         return (user);
     }//end of getUsernamePassword(String)
+
+    public boolean existsUser(String username){
+      try{
+        ArrayList users = userList();
+        for(int i=0; i<users.size(); i++){
+            if(username.equals((String) users.get(i)) ){
+                return true;
+            }
+        }//end of for i
+      } catch(Exception e){
+          System.out.println(e);
+      } finally{
+        database.close();
+      }
+      return false;
+    }//end of existsUser(String)
 
     public int updateUser(UserStructure user, String oldname) {
         database = myDatabaseHelper.getWritableDatabase();
