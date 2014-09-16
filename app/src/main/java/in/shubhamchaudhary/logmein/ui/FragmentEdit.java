@@ -120,9 +120,6 @@ public class FragmentEdit extends Fragment {
         return v;
     }//end of onCreate
     private void pop_fragment(){
-        if(add_update){
-            ((UserDatabase) getActivity()).finish();
-        }
         getFragmentManager().popBackStack();
     }//end of pop_fragment
 

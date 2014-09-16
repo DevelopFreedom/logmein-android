@@ -81,9 +81,7 @@ public class UserDatabase extends FragmentActivity {
         spinner_user_list.setAdapter(adapter);
 
         if(add_update){
-            spinner_user_list.setEnabled(false);
-            button_edit.setEnabled(false);
-            test_list.setEnabled(false);
+            buttons_enabled(false);
 
             spinner_user_list.setVisibility(View.INVISIBLE);
             button_edit.setVisibility(View.INVISIBLE);
@@ -100,6 +98,12 @@ public class UserDatabase extends FragmentActivity {
 
     }
 
+    public void buttons_enabled(boolean flag){
+        spinner_user_list.setEnabled(flag);
+        button_edit.setEnabled(flag);
+        test_list.setEnabled(flag);
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -139,6 +143,7 @@ public class UserDatabase extends FragmentActivity {
             fragment_transaction.replace(R.id.fragment_blank, frag);
             fragment_transaction.addToBackStack(null);
         }
+        buttons_enabled(false);
         fragment_transaction.commit();
 
     }//end
@@ -154,6 +159,7 @@ public class UserDatabase extends FragmentActivity {
     }//end of show_password(View)
 
     public void update_spinner_list(String oldname, String newname) {
+        buttons_enabled(true);
         adapter.remove(oldname);
         adapter.add(newname);
         adapter.notifyDataSetChanged();
