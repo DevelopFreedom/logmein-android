@@ -1,20 +1,30 @@
 package in.shubhamchaudhary.logmein.ui;
 
+import android.content.Context;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 
+import java.util.ArrayList;
+
+import in.shubhamchaudhary.logmein.DatabaseEngine;
 import in.shubhamchaudhary.logmein.R;
 
 public class DeleteUser extends ActionBarActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,9 +35,18 @@ public class DeleteUser extends ActionBarActivity {
                     .commit();
         }
 
+        create_delete_fragment();
 
     }
 
+    public void create_delete_fragment(){
+
+        Fragment frag = new FragmentDelete();
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.add(android.R.id.content,frag);
+        ft.commit();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -56,11 +75,12 @@ public class DeleteUser extends ActionBarActivity {
         public PlaceholderFragment() {
         }
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_delete_user, container, false);
-            return rootView;
-        }
+//        @Override
+//        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                Bundle savedInstanceState) {
+//            Log.e("here","here in delete user");
+//            View rootView = inflater.inflate(R.layout.fragment_delete_user, container, false);
+//            return rootView;
+//        }
     }
 }
