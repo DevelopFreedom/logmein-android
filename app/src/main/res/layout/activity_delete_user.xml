@@ -4,4 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="in.shubhamchaudhary.logmein.ui.DeleteUser"
-    tools:ignore="MergeRootFrame" />
+    tools:ignore="MergeRootFrame" >
+
+<!--TODO: Use this method if you do not want to call it through activity-->
+    <!--<fragment-->
+        <!--android:id="@+id/fragment_delete_user"-->
+        <!--android:name="in.shubhamchaudhary.logmein.ui.FragmentDelete"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="30dp" />-->
+    </FrameLayout>
