@@ -42,13 +42,14 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import in.shubhamchaudhary.logmein.DatabaseEngine;
 import in.shubhamchaudhary.logmein.R;
 
-public class UserDatabase extends FragmentActivity {
+public class UserDatabase extends FragmentActivity implements DialogAlert.ReturnDialogMessage{
 
     Spinner spinner_user_list;
     ArrayAdapter<String> adapter;
@@ -57,6 +58,7 @@ public class UserDatabase extends FragmentActivity {
     Button button_edit;
     Boolean add_update;
     TextView test_list;
+    DialogAlert dialogAlert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +84,7 @@ public class UserDatabase extends FragmentActivity {
         spinner_user_list.setAdapter(adapter);
 
         if(add_update){
-            buttons_enabled(false);
+            //buttons_enabled(false);
 
             spinner_user_list.setVisibility(View.INVISIBLE);
             button_edit.setVisibility(View.INVISIBLE);
@@ -93,6 +95,7 @@ public class UserDatabase extends FragmentActivity {
         button_edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+              //  buttons_enabled(false);
                 edit_user_profile();
             }
         });
@@ -130,27 +133,109 @@ public class UserDatabase extends FragmentActivity {
         super.onBackPressed();
         buttons_enabled(true);
     }
-    public void edit_user_profile() {
-        Bundle bundle = new Bundle();
-        Fragment frag = new FragmentEdit();
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction fragment_transaction = fm.beginTransaction();
-        bundle.putBoolean("add_update", add_update);
+
+    public void onClickPositive(String username, String password){
+        Log.e("heer add","add");
+        UserStructure userStructure = new UserStructure();
+        userStructure.setUsername(username);
+        userStructure.setPassword(password);
 
         if(add_update){
-            frag.setArguments(bundle);
-            fragment_transaction.replace(R.id.fragment_blank, frag);
+            saveCredential(userStructure);
+            this.finish();
+        }else{
+            updateCredentials(userStructure);
+            buttons_enabled(true);
+            dialogAlert.dismiss();
+        }
 
-        }else {
+    }
+
+    public void onClickNegative(){
+        Toast.makeText(this,"Activity cancelled",Toast.LENGTH_SHORT).show();
+        buttons_enabled(true);
+        if(add_update){
+            this.finish();
+        }else{
+            dialogAlert.dismiss();
+        }
+    }
+
+    void saveCredential(UserStructure userStructure) {
+
+        if(!databaseEngine.existsUser(userStructure.getUsername())){
+            if(databaseEngine.insert(userStructure)){
+                Toast.makeText(this, userStructure.getUsername() + " entered into your inventory", Toast.LENGTH_SHORT).show();
+                //textbox_password.clearComposingText();
+            } else {
+                Toast.makeText(this," problem inserting record", Toast.LENGTH_SHORT).show();
+            }
+
+        } else{
+            Toast.makeText(this,"Username already exists", Toast.LENGTH_SHORT).show();
+        }
+
+    }//end saveCredential
+    public void updateCredentials(UserStructure userStructure){
+        String old_username = ""+spinner_user_list.getSelectedItem();
+        int i = databaseEngine.updateUser(userStructure, old_username);
+        Boolean flag = false;
+        if (i == 1) {
+            Log.e("Updated", "Updated user");
+            Toast.makeText(this, "Updated account", Toast.LENGTH_SHORT).show();
+            flag = true;
+        } else if (i == 0) {
+            Toast.makeText(this, "Problem in updating account", Toast.LENGTH_SHORT).show();
+            Log.e("Updated", "Error updating");
+        } else {
+            Toast.makeText(this, "Updated more than 1 records", Toast.LENGTH_SHORT).show();
+            Log.e("Updated", "Updated more than 1 records");
+            flag = true;
+        }
+
+        if (flag) {
+            update_spinner_list(old_username, userStructure.getUsername());
+        }
+    }//end of updateCredentials
+
+    public void edit_user_profile() {
+        dialogAlert = new DialogAlert();
+
+        if(add_update){
+            dialogAlert.setAlertStrings("Add user","","SAVE","CANCEL");
+        }else{
+            dialogAlert.setAlertStrings("Update user","","UPDATE","CANCEL");
             String username = (String) spinner_user_list.getSelectedItem();
             UserStructure user = databaseEngine.getUsernamePassword(username);
-            bundle.putSerializable("user", user);
-            frag.setArguments(bundle);
-            fragment_transaction.replace(R.id.fragment_blank, frag);
-            fragment_transaction.addToBackStack(null);
+
+            if(user != null){
+                dialogAlert.fill_textboxes(username,user.getPassword());
+            }else{
+                Toast.makeText(this,"Problem fetching record for username: "+username,Toast.LENGTH_SHORT).show();
+            }
         }
-        buttons_enabled(false);
-        fragment_transaction.commit();
+        dialogAlert.show(getSupportFragmentManager(), null);
+
+//        Bundle bundle = new Bundle();
+//        Fragment frag = new FragmentEdit();
+//        FragmentManager fm = getSupportFragmentManager();
+//        FragmentTransaction fragment_transaction = fm.beginTransaction();
+//        bundle.putBoolean("add_update", add_update);
+//
+//        if(add_update){
+//            frag.setArguments(bundle);
+//            fragment_transaction.replace(R.id.fragment_blank, frag);
+//
+//        }else {
+//            String username = (String) spinner_user_list.getSelectedItem();
+//            UserStructure user = databaseEngine.getUsernamePassword(username);
+//            bundle.putSerializable("user", user);
+//            frag.setArguments(bundle);
+//            fragment_transaction.replace(R.id.fragment_blank, frag);
+//            fragment_transaction.addToBackStack(null);
+//        }
+//        buttons_enabled(false);
+//        fragment_transaction.commit();
 
     }//end
 
@@ -165,7 +250,7 @@ public class UserDatabase extends FragmentActivity {
     }//end of show_password(View)
 
     public void update_spinner_list(String oldname, String newname) {
-        buttons_enabled(true);
+       // buttons_enabled(true);
         adapter.remove(oldname);
         adapter.add(newname);
         adapter.notifyDataSetChanged();

@@ -33,9 +33,9 @@ public class FragmentEdit extends Fragment {
         cb_show_password = (CheckBox) v.findViewById(R.id.cb_show_password);
         textbox_username = (EditText) v.findViewById(R.id.edit_username);
         textbox_password = (EditText) v.findViewById(R.id.edit_password);
-        button_save = (Button) v.findViewById(R.id.button_frag_save);
+        button_save = (Button) v.findViewById(R.id.button_edit_save);
         de = DatabaseEngine.getInstance(container.getContext());
-        button_cancel = (Button) v.findViewById(R.id.button_cancel);
+        button_cancel = (Button) v.findViewById(R.id.button_edit_cancel);
 
         // when user clicks on this checkbox, this is the handler.
 //TODO: this is not functional.....the one in UserDatabase is!!!
