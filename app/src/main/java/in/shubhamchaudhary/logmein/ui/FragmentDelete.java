@@ -1,5 +1,8 @@
 package in.shubhamchaudhary.logmein.ui;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -47,12 +50,49 @@ Log.e("user_list",""+user_list.size());
         button_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DialogAlert da = new DialogAlert();
+                //DialogAlert da = new DialogAlert();
 
-                da.setAlertStrings("Delete User","Are you sure you want to delete "+spinner_user_list.getSelectedItem(),"YES","NO");
-                da.show(getActivity().getSupportFragmentManager(),"delete_user" );
+                setAlertStrings("Delete User", "Are you sure you want to delete " + spinner_user_list.getSelectedItem(), "YES", "NO");
+                //da.show(getActivity().getSupportFragmentManager(),"delete_user" );
+                showDialog().show();
             }
         });
         return v;
     }
+
+
+    /*Not using this method here..... instead make another fragment file to make it generic i.e. usable for other alerts*/
+    String title = "Alert!!!";//""+R.string.alert_title;
+    String message = "Do you want to proceed";//""+R.string.alert_message;
+    String positive_message = "YES";//""+R.string.alert_positive_message;
+    String negative_message = "NO";//""+R.string.alert_negative_message;
+
+    //You can set title,message and positive and negative button strings as per your requirement
+    public void setAlertStrings(String tit, String msg,String pos_msg, String neg_msg){
+        this.title = tit;
+        this.message = msg;
+        this.positive_message = pos_msg;
+        this.negative_message = neg_msg;
+    }
+    public Dialog showDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(positive_message,new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .setNegativeButton(negative_message,new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+
+        return builder.create();
+
+    }
+
 }
