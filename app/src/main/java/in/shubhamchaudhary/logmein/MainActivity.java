@@ -32,6 +32,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -56,6 +58,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onResume() {
         // Make sure that when we return from manage use activity, the username is right
         updateHomescreenData();
+        startAnimation();
         super.onResume();
     }
 
@@ -89,6 +92,7 @@ public class MainActivity extends ActionBarActivity {
         adapter.notifyDataSetChanged();
         spinnerUpdateFlag = false;
 
+
         spinner_user_list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long l) {
@@ -107,7 +111,22 @@ public class MainActivity extends ActionBarActivity {
                     .add(R.id.container, new PlaceholderFragment()).commit();
         }
         updateHomescreenData();
+
+
+        //animations
+        startAnimation();
     }
+
+    private void startAnimation() {
+        View line1 =  findViewById(R.id.animate1);
+        Animation left_to_right = AnimationUtils.loadAnimation(this, R.anim.infinite_slide_in_left);
+        line1.startAnimation(left_to_right);
+        View line2 =  findViewById(R.id.animate2);
+        Animation right_to_left = AnimationUtils.loadAnimation(this, R.anim.infinite_slide_in_right);
+        line2.startAnimation(right_to_left);
+    }
+
+
 
     public void updateHomescreenData() {
         if (spinnerUpdateFlag) {
