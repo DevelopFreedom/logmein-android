@@ -135,7 +135,11 @@ public class UserDatabase extends FragmentActivity implements DialogAlert.Return
     }
 
     public void onClickPositive(String username, String password){
-        Log.e("heer add","add");
+
+        if( username.isEmpty() ){
+            Toast.makeText(this,"Username cannot be an empty string",Toast.LENGTH_LONG).show();
+            return;
+        }
         UserStructure userStructure = new UserStructure();
         userStructure.setUsername(username);
         userStructure.setPassword(password);
