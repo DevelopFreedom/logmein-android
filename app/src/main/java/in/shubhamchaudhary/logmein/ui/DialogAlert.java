@@ -10,10 +10,13 @@ import android.os.Bundle;
 import android.preference.DialogPreference;
 import android.preference.Preference;
 import android.support.v4.app.DialogFragment;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import in.shubhamchaudhary.logmein.DatabaseEngine;
@@ -33,15 +36,17 @@ public class DialogAlert extends DialogFragment{
 
 
     AlertDialog.Builder builder;
+    Button button_update, button_cancel;
+    EditText textbox_username = null, textbox_password = null;
+    CheckBox cb_show_pwd;
+    String username="",password="";
+    View v;
+    Boolean initialized_flag;
+    /*Default string if no strings are set by user*/
     String title = "Alert!!!";//""+R.string.alert_title;
     String message = "Do you want to proceed";//""+R.string.alert_message;
     String positive_message = "YES";//""+R.string.alert_positive_message;
     String negative_message = "NO";//""+R.string.alert_negative_message;
-    Button button_update, button_cancel;
-    EditText textbox_username = null, textbox_password = null;
-    String username="",password="";
-    View v;
-    Boolean initialized_flag;
 
     // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
     @Override
@@ -78,6 +83,7 @@ public class DialogAlert extends DialogFragment{
         button_update = (Button) v.findViewById(R.id.button_edit_save);
         textbox_username = (EditText) v.findViewById(R.id.edit_username);
         textbox_password = (EditText) v.findViewById(R.id.edit_password);
+        cb_show_pwd = (CheckBox) v.findViewById(R.id.cb_show_password);
         button_cancel = (Button) v.findViewById(R.id.button_edit_cancel);
         initialized_flag = true;
 
@@ -91,6 +97,12 @@ public class DialogAlert extends DialogFragment{
         initialize();
         builder.setView(v).setTitle(title).setMessage(message);
 
+        cb_show_pwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                show_password();
+            }
+        });
         button_update.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -123,5 +135,13 @@ public class DialogAlert extends DialogFragment{
             return builder.create();
 
         }
+
+    public void show_password() {
+        if (cb_show_pwd.isChecked()) {
+            textbox_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+            return;
+        }
+        textbox_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+    }//end of show_password(View)
 
     }
