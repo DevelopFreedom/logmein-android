@@ -42,6 +42,17 @@ Log.e("user_list",""+user_list.size());
         adapter = new ArrayAdapter<String>(v.getContext(), R.layout.spinner_layout,user_list);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spinner_user_list.setAdapter(adapter);
+
+        button_delete = (Button) v.findViewById(R.id.button_delete);
+        button_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DialogAlert da = new DialogAlert();
+
+                da.setAlertStrings("Delete User","Are you sure you want to delete "+spinner_user_list.getSelectedItem(),"YES","NO");
+                da.show(getActivity().getSupportFragmentManager(),"delete_user" );
+            }
+        });
         return v;
     }
 }

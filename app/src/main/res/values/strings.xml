@@ -22,5 +22,8 @@
     <string name="button_update">Update</string>
     <string name="title_activity_manage_user">ManageUser</string>
     <string name="title_activity_delete_user">DeleteUser</string>
-
+    <!--<string name="alert_title">Alert!!1</string>-->
+    <!--<string name="alert_message">Do you want to proceed</string>-->
+    <!--<string name="alert_positive_message">YES</string>-->
+    <!--<string name="alert_negative_message">NO</string>-->
 </resources>
