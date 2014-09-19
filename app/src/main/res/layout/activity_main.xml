@@ -3,13 +3,19 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/dark_grey"
     tools:context="in.shubhamchaudhary.logmein.MainActivity"
     tools:ignore="MergeRootFrame">
 
 
+<ScrollView
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
     <LinearLayout
+        android:layout_gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -18,115 +24,98 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="30dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="50dp">
+            android:background="@color/grey">
 
             <TextView
                 android:id="@+id/tb_user_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:gravity="left"
-                android:text="Current"
                 android:layout_marginTop="10dp"
-                android:textSize="10pt" />
+                android:gravity="left"
+                android:text="Current User:"
+                android:textStyle="italic"
+                android:textColor="@color/text2"
+                android:textSize="30sp"
+               />
+
             <Spinner
+                android:layout_marginTop="12dp"
                 android:id="@+id/spinner_user_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/tb_user_list"/>
+                android:layout_marginLeft="30dp"
+                android:layout_toRightOf="@+id/tb_user_list" />
         </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_below="@+id/textView1"
+            android:layout_centerHorizontal="true"
+            android:background="@color/text2"
+            android:layout_marginBottom="35dp"
+            />
 
-        <RelativeLayout
+        <View
+            android:id="@+id/animate1"
             android:layout_width="fill_parent"
+            android:layout_height="3dp"
+            android:background="@color/grey"
+            android:layout_marginBottom="5dp"
+
+            />
+        <View
+            android:id="@+id/animate2"
+            android:layout_width="fill_parent"
+            android:layout_height="3dp"
+            android:background="@color/grey"
+            android:layout_marginBottom="10dp"
+
+            />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
             android:padding="10dp">
 
             <Button
-                android:id="@+id/button_logout"
-
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-
-                android:background="@drawable/buttonshape_logout"
-                android:padding="5dp"
-                android:shadowColor="#A8A8A8"
-                android:shadowDx="0"
-                android:shadowDy="0"
-                android:shadowRadius="5"
-                android:text="OUT"
-                android:textColor="#170012"
-                android:textSize="30sp"
-                android:typeface="monospace" />
-
-            <Button
                 android:id="@+id/button_login"
-
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerInParent="true"
-
-                android:background="@drawable/buttonshape_login"
-                android:padding="5dp"
-                android:shadowColor="#A8A8A8"
-                android:shadowDx="0"
-                android:shadowDy="0"
-                android:shadowRadius="5"
-                android:text="IN"
-                android:textColor="#170012"
-                android:textSize="30sp"
-                android:typeface="monospace">
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Login"
+                android:textColor="@color/text1"
+                android:textSize="25sp"
+             >
 
                 <requestFocus />
             </Button>
 
             <Button
-                android:id="@+id/button_web"
-
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-
-                android:background="@drawable/buttonshape_web"
-                android:onClick="launch_browser"
-                android:padding="5dp"
-                android:shadowColor="#A8A8A8"
-                android:shadowDx="0"
-                android:shadowDy="0"
-                android:shadowRadius="5"
-                android:text="WEB"
-                android:textColor="#170012"
-                android:textSize="30sp"
-                android:typeface="monospace" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="10dp">
-
-            <TextView
-                android:id="@+id/outputTextView"
-                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
+                android:id="@+id/button_logout"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="Verdana"
-                android:gravity="bottom|center_horizontal"
-                android:maxLines="3"
-                android:text="@string/empty"
-                android:textColor="#ff0099cc"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:typeface="monospace" />
+                android:text="Logout"
+                android:textColor="@color/text1"
+                android:textSize="25sp"
+               />
 
-        </RelativeLayout>
+            <Button
+                android:id="@+id/button_web"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:onClick="launch_browser"
+                android:text="Google"
+                android:textColor="@color/text1"
+                android:textSize="25sp"
+                />
+        </LinearLayout>
+
 
     </LinearLayout>
 
+</ScrollView>
 </FrameLayout>

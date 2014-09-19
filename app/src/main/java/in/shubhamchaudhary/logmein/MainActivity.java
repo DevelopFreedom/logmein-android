@@ -26,18 +26,18 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -49,7 +49,6 @@ public class MainActivity extends ActionBarActivity {
     DatabaseEngine databaseEngine;
     ///Class Variables
     Button button_login, button_logout;
-    TextView outputTextView;
     Spinner spinner_user_list;
     ArrayList<String> user_list;
     ArrayAdapter adapter;
@@ -59,6 +58,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onResume() {
         // Make sure that when we return from manage use activity, the username is right
         updateHomescreenData();
+        startAnimation();
         super.onResume();
     }
 
@@ -69,9 +69,6 @@ public class MainActivity extends ActionBarActivity {
 
         networkEngine = NetworkEngine.getInstance(this);
         databaseEngine = DatabaseEngine.getInstance(this);
-
-        outputTextView = (TextView) findViewById(R.id.outputTextView);
-        outputTextView.setMovementMethod(new ScrollingMovementMethod());
 
         button_login = (Button) findViewById(R.id.button_login);
         button_login.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +92,7 @@ public class MainActivity extends ActionBarActivity {
         adapter.notifyDataSetChanged();
         spinnerUpdateFlag = false;
 
+
         spinner_user_list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long l) {
@@ -113,7 +111,22 @@ public class MainActivity extends ActionBarActivity {
                     .add(R.id.container, new PlaceholderFragment()).commit();
         }
         updateHomescreenData();
+
+
+        //animations
+        startAnimation();
     }
+
+    private void startAnimation() {
+        View line1 =  findViewById(R.id.animate1);
+        Animation left_to_right = AnimationUtils.loadAnimation(this, R.anim.infinite_slide_in_left);
+        line1.startAnimation(left_to_right);
+        View line2 =  findViewById(R.id.animate2);
+        Animation right_to_left = AnimationUtils.loadAnimation(this, R.anim.infinite_slide_in_right);
+        line2.startAnimation(right_to_left);
+    }
+
+
 
     public void updateHomescreenData() {
         if (spinnerUpdateFlag) {
@@ -132,10 +145,8 @@ public class MainActivity extends ActionBarActivity {
         String username = getSelectedUsername();
         if (username != null) {
             //if (username.length() != 0){
-            outputTextView.setText("Current user: " + username);
         } else {
             username = "Welcome, Please enter username and password for the first time!";
-            outputTextView.setText(username);
         }
 
     }
@@ -169,7 +180,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
     void showText(String text) {
-        outputTextView.append("\n" + text);
         //int scroll_amount = (int) (outputTextView.getLineCount() * outputTextView.getLineHeight()) - (outputTextView.getBottom() - outputTextView.getTop());
         //outputTextView.scrollTo(0, scroll_amount);
     }
