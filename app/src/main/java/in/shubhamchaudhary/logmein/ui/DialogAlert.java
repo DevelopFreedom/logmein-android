@@ -9,6 +9,7 @@ import android.preference.DialogPreference;
 import android.preference.Preference;
 import android.support.v4.app.DialogFragment;
 
+import in.shubhamchaudhary.logmein.DatabaseEngine;
 import in.shubhamchaudhary.logmein.R;
 
 /**
@@ -36,13 +37,12 @@ public class DialogAlert extends DialogFragment {
                     .setPositiveButton(positive_message,new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-
                 }
             })
-            .setNegativeButton(negative_message,new DialogInterface.OnClickListener() {
+            .setNegativeButton(negative_message, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-
+                    /*do nothing*/
                 }
             });
 

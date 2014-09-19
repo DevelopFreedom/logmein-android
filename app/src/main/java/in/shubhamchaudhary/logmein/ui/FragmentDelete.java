@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -28,6 +29,8 @@ public class FragmentDelete extends Fragment {
     DatabaseEngine databaseEngine;
     ArrayAdapter adapter;
     View v;
+    String username,title, message, positive_message, negative_message;
+    Boolean deleted;
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -55,17 +58,14 @@ Log.e("user_list",""+user_list.size());
                 setAlertStrings("Delete User", "Are you sure you want to delete " + spinner_user_list.getSelectedItem(), "YES", "NO");
                 //da.show(getActivity().getSupportFragmentManager(),"delete_user" );
                 showDialog().show();
+
             }
+
         });
+
+
         return v;
     }
-
-
-    /*Not using this method here..... instead make another fragment file to make it generic i.e. usable for other alerts*/
-    String title = "Alert!!!";//""+R.string.alert_title;
-    String message = "Do you want to proceed";//""+R.string.alert_message;
-    String positive_message = "YES";//""+R.string.alert_positive_message;
-    String negative_message = "NO";//""+R.string.alert_negative_message;
 
     //You can set title,message and positive and negative button strings as per your requirement
     public void setAlertStrings(String tit, String msg,String pos_msg, String neg_msg){
@@ -74,20 +74,35 @@ Log.e("user_list",""+user_list.size());
         this.positive_message = pos_msg;
         this.negative_message = neg_msg;
     }
+
+
+    public void update_spinner_list(String username) {
+        adapter.remove(username);
+        spinner_user_list.setSelection(0);
+    }//end of update_spinner_list
+
     public Dialog showDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(title)
                 .setMessage(message)
-                .setPositiveButton(positive_message,new DialogInterface.OnClickListener() {
+                .setPositiveButton(positive_message, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        username = ""+spinner_user_list.getSelectedItem();
+                        deleted = databaseEngine.deleteUser(username);
+                        if ( deleted ){
+                            Toast.makeText(getActivity(),"Successfully deleted user: "+username,Toast.LENGTH_SHORT).show();
+                            update_spinner_list(username);
 
+                        }else{
+                            Toast.makeText(getActivity(),"Problem deleting user: "+username,Toast.LENGTH_SHORT).show();
+                        }
                     }
                 })
-                .setNegativeButton(negative_message,new DialogInterface.OnClickListener() {
+                .setNegativeButton(negative_message, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
+                        Toast.makeText(getActivity(),"Cancelled",Toast.LENGTH_SHORT).show();
                     }
                 });
 
