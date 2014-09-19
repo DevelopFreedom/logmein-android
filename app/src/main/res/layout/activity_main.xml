@@ -105,27 +105,7 @@
                 android:typeface="monospace" />
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="10dp">
 
-            <TextView
-                android:id="@+id/outputTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="Verdana"
-                android:gravity="bottom|center_horizontal"
-                android:maxLines="3"
-                android:text="@string/empty"
-                android:textColor="#ff0099cc"
-                android:textSize="22sp"
-                android:textStyle="bold"
-                android:typeface="monospace" />
-
-        </RelativeLayout>
 
     </LinearLayout>
 
