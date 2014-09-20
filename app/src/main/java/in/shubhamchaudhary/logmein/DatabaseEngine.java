@@ -33,8 +33,6 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import in.shubhamchaudhary.logmein.ui.UserStructure;
-
 public class DatabaseEngine {
     // Singleton method with lazy initialization.
     private static DatabaseEngine instance = null;

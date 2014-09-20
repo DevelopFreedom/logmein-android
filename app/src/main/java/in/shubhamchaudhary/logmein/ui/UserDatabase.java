@@ -26,8 +26,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -48,6 +46,7 @@ import java.util.ArrayList;
 
 import in.shubhamchaudhary.logmein.DatabaseEngine;
 import in.shubhamchaudhary.logmein.R;
+import in.shubhamchaudhary.logmein.UserStructure;
 
 public class UserDatabase extends FragmentActivity implements DialogAlert.ReturnDialogMessage{
 

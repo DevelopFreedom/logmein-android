@@ -1,4 +1,4 @@
-package in.shubhamchaudhary.logmein.ui;
+package in.shubhamchaudhary.logmein;
 
 import java.io.Serializable;
 

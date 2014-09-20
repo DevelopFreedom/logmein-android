@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import in.shubhamchaudhary.logmein.DatabaseEngine;
 import in.shubhamchaudhary.logmein.R;
+import in.shubhamchaudhary.logmein.UserStructure;
 
 public class FragmentEdit extends Fragment {
 
