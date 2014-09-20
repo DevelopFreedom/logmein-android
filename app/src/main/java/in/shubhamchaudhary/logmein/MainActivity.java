@@ -38,6 +38,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -191,6 +192,11 @@ public class MainActivity extends ActionBarActivity {
         // Use username/password from textbox if both filled
         username = getSelectedUsername();
         password = databaseEngine.getUsernamePassword(username).getPassword();
+
+        if(password.isEmpty()){
+            Toast.makeText(this,"Password not saved for "+username,Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         try {
             status = networkEngine.login(username, password);
