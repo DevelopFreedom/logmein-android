@@ -219,38 +219,7 @@ public class UserDatabase extends FragmentActivity implements DialogAlert.Return
         }
         dialogAlert.show(getSupportFragmentManager(), null);
 
-//        Bundle bundle = new Bundle();
-//        Fragment frag = new FragmentEdit();
-//        FragmentManager fm = getSupportFragmentManager();
-//        FragmentTransaction fragment_transaction = fm.beginTransaction();
-//        bundle.putBoolean("add_update", add_update);
-//
-//        if(add_update){
-//            frag.setArguments(bundle);
-//            fragment_transaction.replace(R.id.fragment_blank, frag);
-//
-//        }else {
-//            String username = (String) spinner_user_list.getSelectedItem();
-//            UserStructure user = databaseEngine.getUsernamePassword(username);
-//            bundle.putSerializable("user", user);
-//            frag.setArguments(bundle);
-//            fragment_transaction.replace(R.id.fragment_blank, frag);
-//            fragment_transaction.addToBackStack(null);
-//        }
-//        buttons_enabled(false);
-//        fragment_transaction.commit();
-
     }//end
-
-    public void show_password(View v) {
-        CheckBox cb_show_pwd = (CheckBox) FragmentEdit.v.findViewById(R.id.cb_show_password);
-        EditText pwd = (EditText) FragmentEdit.v.findViewById(R.id.edit_password);
-        if (cb_show_pwd.isChecked()) {
-            pwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-            return;
-        }
-        pwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
-    }//end of show_password(View)
 
     public void update_spinner_list(String oldname, String newname) {
        // buttons_enabled(true);
@@ -268,13 +237,6 @@ public class UserDatabase extends FragmentActivity implements DialogAlert.Return
         public PlaceholderFragment() {
         }
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_user_database,
-                    container, false);
-            return rootView;
-        }
     }
 
 }//end of class UserDatabase

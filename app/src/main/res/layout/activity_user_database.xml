@@ -54,13 +54,6 @@
 
         </RelativeLayout>
 
-        <fragment
-            android:id="@+id/fragment_blank"
-            android:name="in.shubhamchaudhary.logmein.ui.FragmentBlank"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp" />
-
     </LinearLayout>
 
 

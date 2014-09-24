@@ -236,14 +236,6 @@ public class MainActivity extends ActionBarActivity {
 
         public PlaceholderFragment() {
         }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container,
-                    false);
-            return rootView;
-        }
     }
 }//end MainActivity class
 /* vim: set tabstop=4:shiftwidth=4:textwidth=79:et */

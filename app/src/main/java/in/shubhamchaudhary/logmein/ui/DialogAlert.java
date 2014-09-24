@@ -4,22 +4,16 @@ package in.shubhamchaudhary.logmein.ui;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.preference.DialogPreference;
-import android.preference.Preference;
 import android.support.v4.app.DialogFragment;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import in.shubhamchaudhary.logmein.DatabaseEngine;
 import in.shubhamchaudhary.logmein.R;
 
 /**
@@ -79,7 +73,7 @@ public class DialogAlert extends DialogFragment{
     public void initialize(){
         builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        v = inflater.inflate(R.layout.fragment_edit_layout, null);
+        v = inflater.inflate(R.layout.alert_dialog, null);
         button_update = (Button) v.findViewById(R.id.button_edit_save);
         textbox_username = (EditText) v.findViewById(R.id.edit_username);
         textbox_password = (EditText) v.findViewById(R.id.edit_password);
