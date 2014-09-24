@@ -1,5 +1,8 @@
 package in.shubhamchaudhary.logmein.ui;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -91,15 +94,18 @@ public class ManageUser extends ActionBarActivity implements DialogAlert.ReturnD
     }
 
     public void delete_user() {
-        Intent intent = new Intent(this, DeleteUser.class);
-        startActivity(intent);
+        showDeleteDialog("Delete User", "Are you sure you want to delete " + username, "YES", "NO").show();
     }
 
 
     public void onClickPositive(String local_username, String password){
 
-        if( username.isEmpty() ){
+        if( local_username.isEmpty()){
             Toast.makeText(this,"Username cannot be an empty string",Toast.LENGTH_LONG).show();
+            return;
+        }
+        if( password.isEmpty()){
+            Toast.makeText(this,"Password cannot be an empty string",Toast.LENGTH_LONG).show();
             return;
         }
         UserStructure userStructure = new UserStructure();
@@ -116,11 +122,9 @@ public class ManageUser extends ActionBarActivity implements DialogAlert.ReturnD
 
     public void onClickNegative(){
         Toast.makeText(this,"Activity cancelled",Toast.LENGTH_SHORT).show();
-        if(add_update){
-            this.finish();
-        }else{
-            dialogAlert.dismiss();
-        }
+
+        dialogAlert.dismiss();
+
     }
     public void show_dialog_box() {
         dialogAlert = new DialogAlert();
@@ -147,7 +151,6 @@ public class ManageUser extends ActionBarActivity implements DialogAlert.ReturnD
         if(!databaseEngine.existsUser(userStructure.getUsername())){
             if(databaseEngine.insert(userStructure)){
                 Toast.makeText(this, userStructure.getUsername() + " entered into your inventory", Toast.LENGTH_SHORT).show();
-                //textbox_password.clearComposingText();
             } else {
                 Toast.makeText(this," problem inserting record", Toast.LENGTH_SHORT).show();
             }
@@ -160,20 +163,44 @@ public class ManageUser extends ActionBarActivity implements DialogAlert.ReturnD
 
     public void updateCredentials(UserStructure userStructure){
         int i = databaseEngine.updateUser(userStructure, username);
-        Boolean flag = false;
         if (i == 1) {
             Log.e("Updated", "Updated user");
             Toast.makeText(this, "Updated account", Toast.LENGTH_SHORT).show();
-            flag = true;
         } else if (i == 0) {
             Toast.makeText(this, "Problem in updating account", Toast.LENGTH_SHORT).show();
             Log.e("Updated", "Error updating");
         } else {
             Toast.makeText(this, "Updated more than 1 records", Toast.LENGTH_SHORT).show();
             Log.e("Updated", "Updated more than 1 records");
-            flag = true;
         }
 
     }//end of updateCredentials
+
+
+    public Dialog showDeleteDialog(String title, String message,String positive_message, String negative_message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(positive_message, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Boolean deleted = databaseEngine.deleteUser(username);
+                        if ( deleted ){
+                            Toast.makeText(getApplicationContext(),"Successfully deleted user: "+username,Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(getApplicationContext(),"Problem deleting user: "+username,Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .setNegativeButton(negative_message, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(getApplicationContext(),"Cancelled",Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        return builder.create();
+
+    }
 
 }//end of class
