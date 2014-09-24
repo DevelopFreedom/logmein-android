@@ -26,9 +26,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.UserDatabase"
-            android:label="@string/title_activity_user_database" />
-        <activity
             android:name=".ui.ManageUser"
             android:label="@string/title_activity_manage_user" >
         </activity>

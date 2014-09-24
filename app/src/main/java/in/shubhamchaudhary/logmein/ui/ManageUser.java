@@ -11,27 +11,39 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import in.shubhamchaudhary.logmein.DatabaseEngine;
 import in.shubhamchaudhary.logmein.R;
+import in.shubhamchaudhary.logmein.UserStructure;
 
-public class ManageUser extends ActionBarActivity {
+public class ManageUser extends ActionBarActivity implements DialogAlert.ReturnDialogMessage{
 
-    Button update,add,delete;
+    Button update, add, delete;
+    boolean add_update;
+    String username;
+    DatabaseEngine databaseEngine;
+    DialogAlert dialogAlert;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-       super.onCreate(savedInstanceState);
-       setContentView(R.layout.activity_manage_user);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_manage_user);
 
-       update = (Button) findViewById(R.id.button_update);
-       update.setOnClickListener(new View.OnClickListener() {
+        Intent intent = getIntent();
+        username = intent.getStringExtra("username");
+        databaseEngine = DatabaseEngine.getInstance(this);
+
+        update = (Button) findViewById(R.id.button_update);
+        update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 update_user();
             }
         });
 
-       add = (Button) findViewById(R.id.button_add);
-       add.setOnClickListener(new View.OnClickListener() {
+        add = (Button) findViewById(R.id.button_add);
+        add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 add_user();
@@ -67,24 +79,101 @@ public class ManageUser extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void update_user(){
-        Intent intent = new Intent(this, UserDatabase.class);
-        //true for add and false for update
-        intent.putExtra("add_update",false);
-        startActivity(intent);
-
+    public void update_user() {
+        add_update = false;
+        show_dialog_box();
     }
 
-    public void add_user(){
-        Intent intent = new Intent(this, UserDatabase.class);
-        //true for add and false for update
-        intent.putExtra("add_update",true);
-        startActivity(intent);
+    public void add_user() {
 
+        add_update = true;
+        show_dialog_box();
     }
 
-    public void delete_user(){
-        Intent intent = new Intent(this,DeleteUser.class);
+    public void delete_user() {
+        Intent intent = new Intent(this, DeleteUser.class);
         startActivity(intent);
     }
-}
+
+
+    public void onClickPositive(String local_username, String password){
+
+        if( username.isEmpty() ){
+            Toast.makeText(this,"Username cannot be an empty string",Toast.LENGTH_LONG).show();
+            return;
+        }
+        UserStructure userStructure = new UserStructure();
+        userStructure.setUsername(local_username);
+        userStructure.setPassword(password);
+
+        if(add_update){
+            saveCredential(userStructure);
+        }else{
+            updateCredentials(userStructure);
+        }
+        dialogAlert.dismiss();
+    }
+
+    public void onClickNegative(){
+        Toast.makeText(this,"Activity cancelled",Toast.LENGTH_SHORT).show();
+        if(add_update){
+            this.finish();
+        }else{
+            dialogAlert.dismiss();
+        }
+    }
+    public void show_dialog_box() {
+        dialogAlert = new DialogAlert();
+
+        if (add_update) {
+            dialogAlert.setAlertStrings("Add user", "", "SAVE", "CANCEL");
+        } else {
+            dialogAlert.setAlertStrings("Update user", "", "UPDATE", "CANCEL");
+            UserStructure user = databaseEngine.getUsernamePassword(username);
+
+            if (user != null) {
+                dialogAlert.fill_textboxes(username, user.getPassword());
+            } else {
+                Toast.makeText(this, "Problem fetching record for username: " + username, Toast.LENGTH_SHORT).show();
+            }
+        }
+        dialogAlert.show(getSupportFragmentManager(), null);
+
+    }//end of edit_user_profile
+
+
+    void saveCredential(UserStructure userStructure) {
+
+        if(!databaseEngine.existsUser(userStructure.getUsername())){
+            if(databaseEngine.insert(userStructure)){
+                Toast.makeText(this, userStructure.getUsername() + " entered into your inventory", Toast.LENGTH_SHORT).show();
+                //textbox_password.clearComposingText();
+            } else {
+                Toast.makeText(this," problem inserting record", Toast.LENGTH_SHORT).show();
+            }
+
+        } else{
+            Toast.makeText(this,"Username already exists", Toast.LENGTH_SHORT).show();
+        }
+
+    }//end saveCredential
+
+    public void updateCredentials(UserStructure userStructure){
+        int i = databaseEngine.updateUser(userStructure, username);
+        Boolean flag = false;
+        if (i == 1) {
+            Log.e("Updated", "Updated user");
+            Toast.makeText(this, "Updated account", Toast.LENGTH_SHORT).show();
+            flag = true;
+        } else if (i == 0) {
+            Toast.makeText(this, "Problem in updating account", Toast.LENGTH_SHORT).show();
+            Log.e("Updated", "Error updating");
+        } else {
+            Toast.makeText(this, "Updated more than 1 records", Toast.LENGTH_SHORT).show();
+            Log.e("Updated", "Updated more than 1 records");
+            flag = true;
+        }
+
+    }//end of updateCredentials
+
+}//end of class

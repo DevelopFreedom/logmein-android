@@ -218,8 +218,8 @@ public class MainActivity extends ActionBarActivity {
     public void manage_user(View v) {
 
         Intent intent_user_db = new Intent(this, ManageUser.class);
-//        String un = textbox_username.getText().toString();
-//        intent_user_db.putExtra("username", un);
+       String un = ""+spinner_user_list.getSelectedItem();
+        intent_user_db.putExtra("username", un);
         startActivity(intent_user_db);
 
     }//end of manage_user(View)
