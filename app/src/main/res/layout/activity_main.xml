@@ -8,114 +8,142 @@
     tools:ignore="MergeRootFrame">
 
 
-<ScrollView
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-
-    <LinearLayout
-        android:layout_gravity="center_vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="30dp"
-            android:background="@color/grey">
-
-            <TextView
-                android:id="@+id/tb_user_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="left"
-                android:text="Current User:"
-                android:textStyle="italic"
-                android:textColor="@color/text2"
-                android:textSize="30sp"
-               />
-
-            <Spinner
-                android:layout_marginTop="12dp"
-                android:id="@+id/spinner_user_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_toRightOf="@+id/tb_user_list" />
-        </RelativeLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:layout_below="@+id/textView1"
-            android:layout_centerHorizontal="true"
-            android:background="@color/text2"
-            android:layout_marginBottom="35dp"
-            />
-
-        <View
-            android:id="@+id/animate1"
-            android:layout_width="fill_parent"
-            android:layout_height="3dp"
-            android:background="@color/grey"
-            android:layout_marginBottom="5dp"
-
-            />
-        <View
-            android:id="@+id/animate2"
-            android:layout_width="fill_parent"
-            android:layout_height="3dp"
-            android:background="@color/grey"
-            android:layout_marginBottom="10dp"
-
-            />
-
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:orientation="vertical"
             android:padding="10dp">
 
-            <Button
-                android:id="@+id/button_login"
-                android:layout_width="fill_parent"
+            <RelativeLayout
+                android:id="@+id/layout_spinner"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Login"
-                android:textColor="@color/text1"
-                android:textSize="25sp"
-             >
+                android:orientation="horizontal"
+                android:padding="15dp"
+                android:background="@color/grey">
 
-                <requestFocus />
-            </Button>
+                <TextView
+                    android:id="@+id/tb_user_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="Current User:"
+                    android:textStyle="italic"
+                    android:textColor="@color/text2"
+                    android:textSize="20sp"
+                    />
 
-            <Button
-                android:layout_marginTop="10dp"
-                android:id="@+id/button_logout"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:text="Logout"
-                android:textColor="@color/text1"
-                android:textSize="25sp"
-               />
+                <Spinner
+                    android:layout_marginTop="20dp"
+                    android:id="@+id/spinner_user_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toRightOf="@+id/tb_user_list" />
 
-            <Button
-                android:id="@+id/button_web"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:onClick="launch_browser"
-                android:text="Google"
-                android:textColor="@color/text1"
-                android:textSize="25sp"
+                <LinearLayout
+                    android:id="@+id/layout_two_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="10dp"
+                    android:layout_alignParentRight="true"
+                    android:padding="10dp">
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Edit"
+                        android:layout_toRightOf="@+id/spinner_user_list"
+                        android:id="@+id/button_edit" />
+
+                    <Button
+                        style="?android:attr/buttonStyleSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Del"
+                        android:id="@+id/button_del"
+                        />
+                </LinearLayout>
+
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_below="@+id/textView1"
+                android:layout_centerHorizontal="true"
+                android:background="@color/text2"
+                android:layout_marginBottom="35dp"
                 />
+
+            <View
+                android:id="@+id/animate1"
+                android:layout_width="fill_parent"
+                android:layout_height="3dp"
+                android:background="@color/grey"
+                android:layout_marginBottom="5dp"
+
+                />
+            <View
+                android:id="@+id/animate2"
+                android:layout_width="fill_parent"
+                android:layout_height="3dp"
+                android:background="@color/grey"
+                android:layout_marginBottom="10dp"
+
+                />
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <Button
+                    android:id="@+id/button_login"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Login"
+                    android:textColor="@color/text1"
+                    android:textSize="25sp"
+                    >
+
+                    <requestFocus />
+                </Button>
+
+                <Button
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/button_logout"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="Logout"
+                    android:textColor="@color/text1"
+                    android:textSize="25sp"
+                    />
+
+                <Button
+                    android:id="@+id/button_web"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:onClick="launch_browser"
+                    android:text="Google"
+                    android:textColor="@color/text1"
+                    android:textSize="25sp"
+                    />
+            </LinearLayout>
+
+
         </LinearLayout>
 
+    </ScrollView>
 
-    </LinearLayout>
-
-</ScrollView>
 </FrameLayout>
