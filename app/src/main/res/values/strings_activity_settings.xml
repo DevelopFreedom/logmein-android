@@ -1,0 +1,13 @@
+<resources>
+        <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings related to Settings -->
+
+    <string name="pref_header_general"></string>
+    <string name="pref_header_notifications">Notifications</string>
+    <string name="pref_title_persistent_notification">Show Persistent Notification</string>
+    <string name="pref_summary_persistent_notification">Show a notification for quick login</string>
+
+    <string name="pref_startup">Login at startup</string>
+    <string name="pref_startup_summ">If you tick this, whenever you open this app you\'ll be logged in</string>
+</resources>

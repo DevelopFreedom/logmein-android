@@ -3,8 +3,6 @@
 
     <string name="app_name">LogMeIn</string>
     <string name="action_settings">Settings</string>
-    <string name="pref_startup">Login at startup</string>
-    <string name="pref_startup_summ">If you tick this, whenever you open this app you\'ll be logged in. Note that this might cause slight delay in startup</string>
     <string name="Button">Button</string>
     <string name="button_save">Save</string>
     <string name="button_logmein">LogMeIn</string>

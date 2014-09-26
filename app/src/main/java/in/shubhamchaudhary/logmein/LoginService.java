@@ -32,6 +32,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import in.shubhamchaudhary.logmein.ui.MainActivity;
+import in.shubhamchaudhary.logmein.ui.SettingsActivity;
 
 public class LoginService extends Service {
 
@@ -128,7 +129,7 @@ public class LoginService extends Service {
         // Use username/password from textbox if both filled
         //username = getSelectedUsername();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
-        username = preferences.getString("keyCurrentUsername","11uit424");
+        username = preferences.getString(SettingsActivity.KEY_CURRENT_USERNAME,SettingsActivity.DEFAULT_KEY_CURRENT_USERNAME);
         password = databaseEngine.getUsernamePassword(username).getPassword();
 
         if(password.isEmpty()){

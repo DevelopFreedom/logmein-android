@@ -142,17 +142,22 @@ public class MainActivity extends ActionBarActivity {
         //animations
         startAnimation();
 
-        boolean prefNeedPersistence = true;
-        if (prefNeedPersistence) {
-            startService(new Intent(this, LoginService.class));
-        }
-
         //FIXME: Not the best way to call login method
         String intentMethod = getIntent().getStringExtra("methodName");
         if (intentMethod != null && intentMethod.equals("login")) {
             login();
             finish();
         }
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+        boolean prefNeedPersistence = preferences.getBoolean(SettingsActivity.KEY_PERSISTENCE, SettingsActivity.DEFAULT_KEY_PERSISTENCE);
+        boolean perfStartupLogin = preferences.getBoolean(SettingsActivity.KEY_STARTUP_LOGIN,SettingsActivity.DEFAULT_KEY_STARTUP_LOGIN);
+        if (prefNeedPersistence) {
+            startService(new Intent(this, LoginService.class));
+        }
+        if (perfStartupLogin)
+            login();
+
     }
 
     private void startAnimation() {
@@ -186,9 +191,10 @@ public class MainActivity extends ActionBarActivity {
         if (username != null) {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("keyCurrentUsername", username);
+            editor.putString(SettingsActivity.KEY_CURRENT_USERNAME, username);
             editor.apply();
         } else {
+            //TODO: What happens when empty
             username = "Welcome, Please enter username and password for the first time!";
         }
 
@@ -226,10 +232,14 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             //TODO: Calling manage_user until we have some settings
-            manage_user(this.findViewById(android.R.id.content));
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
             return true;
         } else if (id == R.id.action_manage_user) {
-            manage_user(this.findViewById(android.R.id.content));
+            Intent intent_user_db = new Intent(this, ManageUser.class);
+            String un = ""+spinner_user_list.getSelectedItem();
+            intent_user_db.putExtra("username", un);
+            startActivity(intent_user_db);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -268,15 +278,6 @@ public class MainActivity extends ActionBarActivity {
             e.printStackTrace();
         }
     }//end logout
-
-    public void manage_user(View v) {
-
-        Intent intent_user_db = new Intent(this, ManageUser.class);
-       String un = ""+spinner_user_list.getSelectedItem();
-        intent_user_db.putExtra("username", un);
-        startActivity(intent_user_db);
-
-    }//end of manage_user(View)
 
     public void launch_browser(View v) {
         startActivity(new Intent(Intent.ACTION_VIEW,

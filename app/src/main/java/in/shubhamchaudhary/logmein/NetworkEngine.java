@@ -35,6 +35,8 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 
+import in.shubhamchaudhary.logmein.ui.SettingsActivity;
+
 public class NetworkEngine {
 
     public String BASE_URL = "http://172.16.4.201/cgi-bin/login";
@@ -211,7 +213,7 @@ public class NetworkEngine {
 
     public String getSelectedUsername() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(m_context);
-        return preferences.getString("keyCurrentUsername","11uit424");
+        return preferences.getString(SettingsActivity.KEY_CURRENT_USERNAME,SettingsActivity.DEFAULT_KEY_CURRENT_USERNAME);
 /*
         View rootView = ((Activity)m_context).getWindow().getDecorView().findViewById(android.R.id.content);
         return (String) ((Spinner)rootView.findViewById(R.id.spinner_user_list)).getSelectedItem();
