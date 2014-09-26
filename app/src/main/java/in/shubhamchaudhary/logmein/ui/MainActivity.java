@@ -62,12 +62,19 @@ public class MainActivity extends ActionBarActivity {
     ArrayList<String> user_list;
     ArrayAdapter adapter;
     boolean spinnerUpdateFlag;
+    SharedPreferences preferences;
 
     @Override
     protected void onResume() {
         // Make sure that when we return from manage use activity, the username is right
         updateHomescreenData();
         startAnimation();
+        if (!preferences.getBoolean(SettingsActivity.KEY_PERSISTENCE,SettingsActivity.DEFAULT_KEY_PERSISTENCE)) {
+            stopService(new Intent(this, LoginService.class));
+        } else {
+            //XXX: Start only if not running
+            startService(new Intent(this, LoginService.class));
+        }
         super.onResume();
     }
 
@@ -78,6 +85,8 @@ public class MainActivity extends ActionBarActivity {
 
         networkEngine = NetworkEngine.getInstance(this);
         databaseEngine = DatabaseEngine.getInstance(this);
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
 
         button_login = (Button) findViewById(R.id.button_login);
         button_login.setOnClickListener(new View.OnClickListener() {
@@ -149,7 +158,6 @@ public class MainActivity extends ActionBarActivity {
             finish();
         }
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
         boolean prefNeedPersistence = preferences.getBoolean(SettingsActivity.KEY_PERSISTENCE, SettingsActivity.DEFAULT_KEY_PERSISTENCE);
         boolean perfStartupLogin = preferences.getBoolean(SettingsActivity.KEY_STARTUP_LOGIN,SettingsActivity.DEFAULT_KEY_STARTUP_LOGIN);
         if (prefNeedPersistence) {
@@ -189,7 +197,6 @@ public class MainActivity extends ActionBarActivity {
 
         String username = getSelectedUsername();
         if (username != null) {
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString(SettingsActivity.KEY_CURRENT_USERNAME, username);
             editor.apply();

@@ -70,8 +70,10 @@ public class LoginService extends Service {
 
     @Override
     public void onDestroy() {
+        Log.d("Service","Destroying notifs");
         // Cancel the persistent notification.
         mNotificationManager.cancel(ID);
+        mNotificationManager.cancelAll();
         super.onDestroy();
     }
 
