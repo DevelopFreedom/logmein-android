@@ -25,8 +25,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -44,6 +46,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import in.shubhamchaudhary.logmein.DatabaseEngine;
+import in.shubhamchaudhary.logmein.LoginService;
 import in.shubhamchaudhary.logmein.NetworkEngine;
 import in.shubhamchaudhary.logmein.R;
 
@@ -138,6 +141,18 @@ public class MainActivity extends ActionBarActivity {
 
         //animations
         startAnimation();
+
+        boolean prefNeedPersistence = true;
+        if (prefNeedPersistence) {
+            startService(new Intent(this, LoginService.class));
+        }
+
+        //FIXME: Not the best way to call login method
+        String intentMethod = getIntent().getStringExtra("methodName");
+        if (intentMethod != null && intentMethod.equals("login")) {
+            login();
+            finish();
+        }
     }
 
     private void startAnimation() {
@@ -169,11 +184,26 @@ public class MainActivity extends ActionBarActivity {
 
         String username = getSelectedUsername();
         if (username != null) {
-            //if (username.length() != 0){
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("keyCurrentUsername", username);
+            editor.apply();
         } else {
             username = "Welcome, Please enter username and password for the first time!";
         }
 
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        Log.d("NewIntent", "New intent called: "+intent.getStringExtra("methodName"));
+        if(intent.getStringExtra("methodName").equals("login")){
+            login();
+        } else if(intent.getStringExtra("methodName").equals("login")){
+            logout();
+        } else {
+            super.onNewIntent(intent);
+        }
     }
 
     public String getSelectedUsername() {

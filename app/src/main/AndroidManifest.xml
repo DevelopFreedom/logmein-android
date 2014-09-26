@@ -29,6 +29,12 @@
             android:name=".ui.ManageUser"
             android:label="@string/title_activity_manage_user" >
         </activity>
+
+        <service
+            android:name=".LoginService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
 
 </manifest>
