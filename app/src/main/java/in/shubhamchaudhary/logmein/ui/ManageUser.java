@@ -1,14 +1,8 @@
 package in.shubhamchaudhary.logmein.ui;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,14 +46,6 @@ public class ManageUser extends ActionBarActivity implements DialogAlert.ReturnD
                 add_user();
             }
         });
-
-        delete = (Button) findViewById(R.id.button_delete);
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                delete_user();
-            }
-        });
     }
 
 
@@ -92,11 +78,6 @@ public class ManageUser extends ActionBarActivity implements DialogAlert.ReturnD
         add_update = true;
         show_dialog_box();
     }
-
-    public void delete_user() {
-        showDeleteDialog("Delete User", "Are you sure you want to delete " + username, "YES", "NO").show();
-    }
-
 
     public void onClickPositive(String local_username, String password){
 
@@ -175,32 +156,5 @@ public class ManageUser extends ActionBarActivity implements DialogAlert.ReturnD
         }
 
     }//end of updateCredentials
-
-
-    public Dialog showDeleteDialog(String title, String message,String positive_message, String negative_message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(positive_message, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Boolean deleted = databaseEngine.deleteUser(username);
-                        if ( deleted ){
-                            Toast.makeText(getApplicationContext(),"Successfully deleted user: "+username,Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(getApplicationContext(),"Problem deleting user: "+username,Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                })
-                .setNegativeButton(negative_message, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(getApplicationContext(),"Cancelled",Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-        return builder.create();
-
-    }
 
 }//end of class

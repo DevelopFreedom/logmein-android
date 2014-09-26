@@ -21,17 +21,18 @@
 
 package in.shubhamchaudhary.logmein.ui;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -45,7 +46,6 @@ import java.util.ArrayList;
 import in.shubhamchaudhary.logmein.DatabaseEngine;
 import in.shubhamchaudhary.logmein.NetworkEngine;
 import in.shubhamchaudhary.logmein.R;
-import in.shubhamchaudhary.logmein.ui.ManageUser;
 
 public class MainActivity extends ActionBarActivity {
     /* Engines */
@@ -53,6 +53,8 @@ public class MainActivity extends ActionBarActivity {
     DatabaseEngine databaseEngine;
     ///Class Variables
     Button button_login, button_logout;
+    Button button_edit;
+    Button button_del;
     Spinner spinner_user_list;
     ArrayList<String> user_list;
     ArrayAdapter adapter;
@@ -87,6 +89,23 @@ public class MainActivity extends ActionBarActivity {
                 logout();
             }
         });
+
+        button_edit = (Button ) findViewById(R.id.button_edit);
+        button_edit.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //TODO
+            }
+        });
+
+        button_del = (Button ) findViewById(R.id.button_del);
+        button_del.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                //TODO
+                String username = spinner_user_list.getSelectedItem().toString();
+                showDeleteDialog("Delete User", "Are you sure you want to delete " + username, "YES", "NO").show();
+            }
+        });
+
 
         user_list = databaseEngine.userList();
         adapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, user_list);
@@ -139,6 +158,8 @@ public class MainActivity extends ActionBarActivity {
         } else {
             user_list = databaseEngine.userList();
             int pos = spinner_user_list.getSelectedItemPosition();
+            if (pos >= user_list.size())
+                pos = user_list.size() - 1;
             adapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, user_list);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
             spinner_user_list.setAdapter(adapter);
@@ -156,7 +177,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public String getSelectedUsername() {
-        return (String)spinner_user_list.getSelectedItem();
+        return (String) spinner_user_list.getSelectedItem();
     }
 
     @Override
@@ -240,5 +261,36 @@ public class MainActivity extends ActionBarActivity {
         public PlaceholderFragment() {
         }
     }
+
+
+    public Dialog showDeleteDialog(String title, String message,String positive_message, String negative_message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(positive_message, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String username = spinner_user_list.getSelectedItem().toString();
+                        Boolean deleted = databaseEngine.deleteUser(username);
+                        if ( deleted ){
+                            Toast.makeText(getApplicationContext(),"Successfully deleted user: "+username,Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(getApplicationContext(),"Problem deleting user: "+username,Toast.LENGTH_SHORT).show();
+                        }
+                        //Remove the deleted username from the adapter/spinner
+                        updateHomescreenData();
+                    }
+                })
+                .setNegativeButton(negative_message, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Toast.makeText(getApplicationContext(),"Cancelled",Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        return builder.create();
+
+    }
+
 }//end MainActivity class
 /* vim: set tabstop=4:shiftwidth=4:textwidth=79:et */
