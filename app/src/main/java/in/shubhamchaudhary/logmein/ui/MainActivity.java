@@ -156,6 +156,9 @@ public class MainActivity extends ActionBarActivity {
         if (intentMethod != null && intentMethod.equals("login")) {
             login();
             finish();
+        } else if (intentMethod != null && intentMethod.equals("logout")) {
+            logout();
+            finish();
         }
 
         boolean prefNeedPersistence = preferences.getBoolean(SettingsActivity.KEY_PERSISTENCE, SettingsActivity.DEFAULT_KEY_PERSISTENCE);
@@ -209,10 +212,11 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onNewIntent(Intent intent) {
+        //FIXME: This is not working. This task is done by ifs in onCreate
         Log.d("NewIntent", "New intent called: "+intent.getStringExtra("methodName"));
         if(intent.getStringExtra("methodName").equals("login")){
             login();
-        } else if(intent.getStringExtra("methodName").equals("login")){
+        } else if(intent.getStringExtra("methodName").equals("logout")){
             logout();
         } else {
             super.onNewIntent(intent);

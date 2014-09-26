@@ -101,25 +101,30 @@ public class LoginService extends Service {
         Intent launchIntent = new Intent(this, MainActivity.class);
         Intent loginIntent = new Intent(this, MainActivity.class);
         loginIntent.putExtra("methodName","login");    //FIXME: Not best way to invoke login
+        Intent logoutIntent = new Intent(this, MainActivity.class);
+        logoutIntent.putExtra("methodName","logout");
 
         // The PendingIntent to launch our activity if the user selects this
         // notification
         PendingIntent contentLaunchIntent = PendingIntent.getActivity(this, -1,
                 launchIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        PendingIntent contentLoginIntent = PendingIntent.getActivity(this, -1,
+        PendingIntent contentLoginIntent = PendingIntent.getActivity(this, -2,
                 loginIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        PendingIntent contentLogoutIntent = PendingIntent.getActivity(this, -3,
+                logoutIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification notif  = new Notification.Builder(this)
                 .setContentTitle("LogMeIn")
-                .setContentText("Click below to login")
+                .setContentText("Click below to login/logout")
                 .setSmallIcon(R.drawable.ic_launcher)
                 .setContentIntent(contentLaunchIntent)
                 .setOngoing(true)
                 //.setAutoCancel(true)
                 //.setStyle(new Notification.BigTextStyle().bigText(longText))
                 .addAction(R.drawable.ic_launcher, "Login", contentLoginIntent)
-                //.addAction(R.drawable.ic_launcher, "Logout", contentLaunchIntent)
+                .addAction(R.drawable.ic_launcher, "Logout", contentLogoutIntent)
                 .build();
         mNotificationManager.notify(0, notif);
     }
