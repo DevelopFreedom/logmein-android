@@ -21,12 +21,11 @@
 
 package in.shubhamchaudhary.logmein;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.View;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -211,8 +210,12 @@ public class NetworkEngine {
     }
 
     public String getSelectedUsername() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(m_context);
+        return preferences.getString("keyCurrentUsername","11uit424");
+/*
         View rootView = ((Activity)m_context).getWindow().getDecorView().findViewById(android.R.id.content);
         return (String) ((Spinner)rootView.findViewById(R.id.spinner_user_list)).getSelectedItem();
+*/
     }
 
     public class NetworkTask extends AsyncTask<String, Void, StatusCode> {
