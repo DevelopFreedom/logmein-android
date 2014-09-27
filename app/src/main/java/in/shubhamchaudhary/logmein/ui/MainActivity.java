@@ -39,6 +39,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -103,6 +104,7 @@ public class MainActivity extends ActionBarActivity {
 //            }
 //        });
 
+/*
         button_edit = (Button ) findViewById(R.id.button_edit);
         button_edit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -118,6 +120,7 @@ public class MainActivity extends ActionBarActivity {
                 showDeleteDialog("Delete User", "Are you sure you want to delete " + username, "YES", "NO").show();
             }
         });
+*/
 
 
         user_list = databaseEngine.userList();
