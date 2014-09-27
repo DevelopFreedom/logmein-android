@@ -6,116 +6,94 @@
     android:background="@color/dark_grey"
     tools:context="in.shubhamchaudhary.logmein.MainActivity"
     tools:ignore="MergeRootFrame">
-
-
-<ScrollView
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-
-    <LinearLayout
-        android:layout_gravity="center_vertical"
-        android:layout_width="match_parent"
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:layout_gravity="center_horizontal"
+    android:background="@color/blue">
+    <TextView
+        android:id="@+id/tb_user_list"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp">
+        android:layout_marginTop="10dp"
+        android:gravity="left"
+        android:text="Current User:"
+        android:textColor="@color/grey"
+        android:textSize="25sp"
+        />
+
+    <Spinner
+        android:layout_marginTop="10dp"
+        android:id="@+id/spinner_user_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_toRightOf="@+id/tb_user_list" />
+
+</LinearLayout>
+
+
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="30dp"
-            android:background="@color/grey">
-
-            <TextView
-                android:id="@+id/tb_user_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="left"
-                android:text="Current User:"
-                android:textStyle="italic"
-                android:textColor="@color/text2"
-                android:textSize="30sp"
-               />
-
-            <Spinner
-                android:layout_marginTop="12dp"
-                android:id="@+id/spinner_user_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_toRightOf="@+id/tb_user_list" />
-        </RelativeLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:layout_below="@+id/textView1"
-            android:layout_centerHorizontal="true"
-            android:background="@color/text2"
-            android:layout_marginBottom="35dp"
-            />
-
-        <View
-            android:id="@+id/animate1"
-            android:layout_width="fill_parent"
-            android:layout_height="3dp"
-            android:background="@color/grey"
-            android:layout_marginBottom="5dp"
-
-            />
-        <View
-            android:id="@+id/animate2"
-            android:layout_width="fill_parent"
-            android:layout_height="3dp"
-            android:background="@color/grey"
-            android:layout_marginBottom="10dp"
-
-            />
-
-
-        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:layout_gravity="center"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:gravity="center">
 
-            <Button
+
+
+            m<ImageButton
+                android:scaleType="fitXY"
+                android:layout_above="@+id/center_wheel"
                 android:id="@+id/button_login"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Login"
-                android:textColor="@color/text1"
-                android:textSize="25sp"
-             >
+                android:layout_width="284dp"
+                android:layout_height="142dp"
+                android:src="@drawable/login_selector"
+                android:layout_marginBottom="-33dp"
+                android:layout_marginLeft="7dp"
+                android:background="@null"
+                >
+            </ImageButton>
 
-                <requestFocus />
-            </Button>
 
-            <Button
-                android:layout_marginTop="10dp"
+
+
+            <ImageButton
+                android:layout_below="@+id/center_wheel"
                 android:id="@+id/button_logout"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:text="Logout"
+                android:layout_width="142dp"
+               android:layout_marginTop="-38dp"
+                android:layout_marginLeft="7dp"
+                android:layout_height="136dp"
                 android:textColor="@color/text1"
                 android:textSize="25sp"
+                android:background="@null"
+                android:src="@drawable/logout_selector"
                />
 
-            <Button
+            <ImageButton
+                android:src="@drawable/web_selector"
+                android:background="@null"
+                android:layout_below="@+id/center_wheel"
+                android:layout_toRightOf="@+id/button_logout"
+                android:layout_alignTop="@+id/button_logout"
+                android:layout_marginLeft="5dp"
                 android:id="@+id/button_web"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_width="141dp"
+                android:layout_height="136dp"
                 android:onClick="launch_browser"
-                android:text="Google"
-                android:textColor="@color/text1"
-                android:textSize="25sp"
                 />
-        </LinearLayout>
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="75dp"
+                android:id="@+id/center_wheel"
+                android:layout_centerInParent="true"
+
+                android:src="@drawable/center_wheel"/>
+        </RelativeLayout>
 
 
-    </LinearLayout>
 
-</ScrollView>
+
 </FrameLayout>
