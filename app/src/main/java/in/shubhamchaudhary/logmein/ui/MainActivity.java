@@ -39,7 +39,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -55,9 +56,9 @@ public class MainActivity extends ActionBarActivity {
     NetworkEngine networkEngine;
     DatabaseEngine databaseEngine;
     ///Class Variables
-    Button button_login, button_logout;
     Button button_edit;
     Button button_del;
+    ImageButton button_login, button_logout;
     Spinner spinner_user_list;
     ArrayList<String> user_list;
     ArrayAdapter adapter;
@@ -88,19 +89,19 @@ public class MainActivity extends ActionBarActivity {
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
 
-        button_login = (Button) findViewById(R.id.button_login);
+        button_login = (ImageButton) findViewById(R.id.button_login);
         button_login.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 login();
             }
         });
 
-        button_logout = (Button) findViewById(R.id.button_logout);
-        button_logout.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                logout();
-            }
-        });
+//        button_logout = (Button) findViewById(R.id.button_logout);
+//        button_logout.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                logout();
+//            }
+//        });
 
         button_edit = (Button ) findViewById(R.id.button_edit);
         button_edit.setOnClickListener(new View.OnClickListener() {
@@ -172,12 +173,9 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void startAnimation() {
-        View line1 =  findViewById(R.id.animate1);
-        Animation left_to_right = AnimationUtils.loadAnimation(this, R.anim.infinite_slide_in_left);
-        line1.startAnimation(left_to_right);
-        View line2 =  findViewById(R.id.animate2);
-        Animation right_to_left = AnimationUtils.loadAnimation(this, R.anim.infinite_slide_in_right);
-        line2.startAnimation(right_to_left);
+        ImageView centerWheel = (ImageView)findViewById(R.id.center_wheel);
+        Animation rotation = AnimationUtils.loadAnimation(this,R.anim.rotation_start);
+        centerWheel.startAnimation(rotation);
     }
 
 
