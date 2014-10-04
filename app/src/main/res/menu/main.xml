@@ -4,7 +4,7 @@
     tools:context="in.shubhamchaudhary.logmein.ui.MainActivity">
 
     <item
-        android:id="@+id/action_manage_user"
+        android:id="@+id/action_settings"
         android:title="@string/manage_user"
         app:showAsAction="always"
         android:icon="@drawable/ic_action_settings"/>
