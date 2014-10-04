@@ -33,6 +33,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -105,14 +106,17 @@ public class MainActivity extends ActionBarActivity {
 //            }
 //        });
 
-/*
+
         button_edit = (Button ) findViewById(R.id.button_edit);
         button_edit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //TODO
+                LayoutInflater inflater = getLayoutInflater();
+                ManagerUserServices managerUserServices = new ManagerUserServices(MainActivity.this);
+                managerUserServices.update(spinner_user_list.getSelectedItem().toString(),inflater);
             }
         });
-*/
+
         button_del = (Button ) findViewById(R.id.button_del);
         button_del.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

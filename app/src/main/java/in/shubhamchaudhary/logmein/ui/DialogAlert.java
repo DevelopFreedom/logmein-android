@@ -74,11 +74,11 @@ public class DialogAlert extends DialogFragment{
         builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         v = inflater.inflate(R.layout.alert_dialog, null);
-        button_update = (Button) v.findViewById(R.id.button_edit_save);
+//        button_update = (Button) v.findViewById(R.id.button_edit_save);
+//        button_cancel = (Button) v.findViewById(R.id.button_edit_cancel);
         textbox_username = (EditText) v.findViewById(R.id.edit_username);
         textbox_password = (EditText) v.findViewById(R.id.edit_password);
         cb_show_pwd = (CheckBox) v.findViewById(R.id.cb_show_password);
-        button_cancel = (Button) v.findViewById(R.id.button_edit_cancel);
         initialized_flag = true;
 
         textbox_username.setText(username);
