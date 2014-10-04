@@ -40,7 +40,7 @@ public class ManagerUserServices {
         databaseEngine = DatabaseEngine.getInstance(this.context);
     }
 
-    public void initialise(String un,LayoutInflater inflater){
+    public void initialise(LayoutInflater inflater){
         v = inflater.inflate(R.layout.alert_dialog, null);
 
 //        button_update = (Button) v.findViewById(R.id.button_edit_save);
@@ -48,10 +48,6 @@ public class ManagerUserServices {
         textbox_username = (EditText) v.findViewById(R.id.edit_username);
         textbox_password = (EditText) v.findViewById(R.id.edit_password);
         cb_show_pwd = (CheckBox) v.findViewById(R.id.cb_show_password);
-
-        textbox_username.setText(un);
-        UserStructure us = databaseEngine.getUsernamePassword(un);
-        textbox_password.setText(us.getPassword());
 
         cb_show_pwd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,21 +110,26 @@ public class ManagerUserServices {
 
     public void update(String un,LayoutInflater inflater){
         this.username = un;
-//        LayoutInflater inflater = getActiivty().getLayoutInflater();
-        initialise(un,inflater);
+        initialise(inflater);
+        textbox_username.setText(un);
+        UserStructure us = databaseEngine.getUsernamePassword(un);
+        textbox_password.setText(us.getPassword());
+
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
-        builder.setView(v).setTitle("Update user").setPositiveButton("UPDATE",new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                add_update = false;
-                add_update(textbox_username.getText().toString(),textbox_password.getText().toString());
-            }
-        })
+        builder.setView(v)
+               .setTitle("Update user")
+               .setPositiveButton("UPDATE", new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialogInterface, int i) {
+                       add_update = false;
+                       add_update(textbox_username.getText().toString(), textbox_password.getText().toString());
+                   }
+               })
         .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(context,"Activity cancelled",Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Activity cancelled", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -136,6 +137,28 @@ public class ManagerUserServices {
 
     }//end of edit
 
+    public void add(LayoutInflater inflater){
+        initialise(inflater);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
+        builder.setView(v)
+               .setTitle("Add User")
+               .setPositiveButton("SAVE",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                add_update = true;
+                add_update(textbox_username.getText().toString(),textbox_password.getText().toString());
+            }
+        })
+        .setNegativeButton("CANCEL",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Toast.makeText(context,"Activity cancelled",Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.create().show();
+
+    }
     public void delete(String un) {
         this.username = un;
         AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
@@ -144,7 +167,6 @@ public class ManagerUserServices {
                 .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Log.e("Dleetee","positive");
                         //String username = spinner_user_list.getSelectedItem().toString();
                         Boolean updated = databaseEngine.deleteUser(username);
                         if ( updated ){
@@ -158,7 +180,6 @@ public class ManagerUserServices {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Toast.makeText(context,"Cancelled",Toast.LENGTH_SHORT).show();
-                        Log.e("Dleetee","negative");
                     }
                 });
 

@@ -61,6 +61,7 @@ public class MainActivity extends ActionBarActivity {
     ///Class Variables
     Button button_edit;
     Button button_del;
+    Button button_add;
     ImageButton button_login, button_logout;
     Spinner spinner_user_list;
     ArrayList<String> user_list;
@@ -107,26 +108,33 @@ public class MainActivity extends ActionBarActivity {
 //        });
 
 
-        button_edit = (Button ) findViewById(R.id.button_edit);
-        button_edit.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                //TODO
-                LayoutInflater inflater = getLayoutInflater();
-                ManagerUserServices managerUserServices = new ManagerUserServices(MainActivity.this);
-                managerUserServices.update(spinner_user_list.getSelectedItem().toString(),inflater);
-            }
-        });
-
         button_del = (Button ) findViewById(R.id.button_del);
         button_del.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //TODO
                 String username = spinner_user_list.getSelectedItem().toString();
 //                showDeleteDialog("Delete User", "Are you sure you want to delete " + username, "YES", "NO").show();
                 ManagerUserServices managerUserServices = new ManagerUserServices(MainActivity.this);
                 managerUserServices.delete(spinner_user_list.getSelectedItem().toString());
 //                spinnerUpdateFlag = false;
 //                updateHomescreenData();
+            }
+        });
+
+        button_add = (Button) findViewById(R.id.button_add);
+        button_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ManagerUserServices managerUserServices = new ManagerUserServices(MainActivity.this);
+                managerUserServices.add(getLayoutInflater());
+            }
+        });
+
+        button_edit = (Button ) findViewById(R.id.button_edit);
+        button_edit.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                LayoutInflater inflater = getLayoutInflater();
+                ManagerUserServices managerUserServices = new ManagerUserServices(MainActivity.this);
+                managerUserServices.update(spinner_user_list.getSelectedItem().toString(),inflater);
             }
         });
 
