@@ -23,6 +23,7 @@ package in.shubhamchaudhary.logmein.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -111,16 +112,20 @@ public class MainActivity extends ActionBarActivity {
                 //TODO
             }
         });
-
+*/
         button_del = (Button ) findViewById(R.id.button_del);
         button_del.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //TODO
                 String username = spinner_user_list.getSelectedItem().toString();
-                showDeleteDialog("Delete User", "Are you sure you want to delete " + username, "YES", "NO").show();
+//                showDeleteDialog("Delete User", "Are you sure you want to delete " + username, "YES", "NO").show();
+                ManagerUserServices managerUserServices = new ManagerUserServices(MainActivity.this);
+                managerUserServices.delete(spinner_user_list.getSelectedItem().toString());
+//                spinnerUpdateFlag = false;
+//                updateHomescreenData();
             }
         });
-*/
+
 
 
         user_list = databaseEngine.userList();
@@ -138,7 +143,7 @@ public class MainActivity extends ActionBarActivity {
                 // An item was selected. We can retrieve the selected item using
                 // parent.getItemAtPosition(pos)
                 parent.setSelection(pos);
-                updateHomescreenData();
+
             }
 
             @Override
@@ -192,6 +197,7 @@ public class MainActivity extends ActionBarActivity {
             int pos = spinner_user_list.getSelectedItemPosition();
             if (pos >= user_list.size())
                 pos = user_list.size() - 1;
+
             adapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, user_list);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
             spinner_user_list.setAdapter(adapter);
