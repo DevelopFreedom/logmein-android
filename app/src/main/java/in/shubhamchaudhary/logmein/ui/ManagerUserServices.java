@@ -57,15 +57,15 @@ public class ManagerUserServices {
         });
     }
 
-    public void add_update(String un,String pwd){
+    public boolean add_update(String un,String pwd){
 
         if( un.trim().isEmpty()){
             Toast.makeText(this.context,"Username cannot be an empty string",Toast.LENGTH_LONG).show();
-            return;
+            return false;
         }
         if( pwd.trim().isEmpty()){
             Toast.makeText(this.context,"Password cannot be an empty string",Toast.LENGTH_LONG).show();
-            return;
+            return false;
         }
 
         UserStructure userStructure = new UserStructure();
@@ -73,38 +73,44 @@ public class ManagerUserServices {
         userStructure.setPassword(pwd);
 
         if(add_update){
-            saveCredential(userStructure);
+            return saveCredential(userStructure);
         }else{
-            updateCredentials(userStructure);
+            return updateCredentials(userStructure);
         }
     }
 
-    void saveCredential(UserStructure userStructure) {
+    boolean saveCredential(UserStructure userStructure) {
 
         if(!databaseEngine.existsUser(userStructure.getUsername())){
             if(databaseEngine.insert(userStructure)){
                 Toast.makeText(this.context, userStructure.getUsername() + " entered into your inventory", Toast.LENGTH_SHORT).show();
+                return true;
             } else {
                 Toast.makeText(this.context," problem inserting record", Toast.LENGTH_SHORT).show();
+                return false;
             }
 
         } else{
             Toast.makeText(this.context,"Username already exists", Toast.LENGTH_SHORT).show();
+            return false;
         }
 
     }//end saveCredential
 
-    public void updateCredentials(UserStructure userStructure){
+    public boolean updateCredentials(UserStructure userStructure){
         int i = databaseEngine.updateUser(userStructure, username);
         if (i == 1) {
             Log.e("Updated", "Updated user");
             Toast.makeText(this.context, "Updated account", Toast.LENGTH_SHORT).show();
+            return true;
         } else if (i == 0) {
             Toast.makeText(this.context, "Problem in updating account", Toast.LENGTH_SHORT).show();
             Log.e("Updated", "Error updating");
+            return false;
         } else {
             Toast.makeText(this.context, "Updated more than 1 records", Toast.LENGTH_SHORT).show();
             Log.e("Updated", "Updated more than 1 records");
+            return true;
         }
 
     }//end of updateCredentials
@@ -123,8 +129,8 @@ public class ManagerUserServices {
                .setPositiveButton("UPDATE", new DialogInterface.OnClickListener() {
                    @Override
                    public void onClick(DialogInterface dialogInterface, int i) {
-                       add_update = false;
-                       add_update(textbox_username.getText().toString(), textbox_password.getText().toString());
+//                       add_update = false;
+//                       add_update(textbox_username.getText().toString(), textbox_password.getText().toString());
                    }
                })
         .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -134,8 +140,19 @@ public class ManagerUserServices {
             }
         });
 
-        builder.create().show();
+//        builder.create().show();
+        final AlertDialog dialog = builder.create();
+        dialog.show();
 
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                add_update = false;
+                if(add_update(textbox_username.getText().toString(),textbox_password.getText().toString())){
+                    dialog.dismiss();
+                }
+            }
+        });
     }//end of edit
 
     public void add(LayoutInflater inflater){
@@ -147,8 +164,8 @@ public class ManagerUserServices {
                .setPositiveButton("SAVE",new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                add_update = true;
-                add_update(textbox_username.getText().toString(),textbox_password.getText().toString());
+//                add_update = true;
+//                add_update(textbox_username.getText().toString(),textbox_password.getText().toString());
             }
         })
         .setNegativeButton("CANCEL",new DialogInterface.OnClickListener() {
@@ -157,7 +174,19 @@ public class ManagerUserServices {
                 Toast.makeText(context,"Activity cancelled",Toast.LENGTH_SHORT).show();
             }
         });
-        builder.create().show();
+
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                add_update = true;
+                if(add_update(textbox_username.getText().toString(),textbox_password.getText().toString())){
+                    dialog.dismiss();
+                }
+            }
+        });
 
     }
     public void delete(String un) {

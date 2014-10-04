@@ -167,7 +167,6 @@ public class DatabaseEngine {
             user.setUsername(un);
             user.setPassword(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.PASSWORD)));
 
-
             /*
             //String[] columns=new String[]{DatabaseOpenHelper.USERNAME,DatabaseOpenHelper.PASSWORD};
             cursor = database.rawQuery("select * from ? where username=?", new String[]{DatabaseOpenHelper.TABLE,un} );
