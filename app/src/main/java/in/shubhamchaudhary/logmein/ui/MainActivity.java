@@ -66,7 +66,6 @@ public class MainActivity extends ActionBarActivity {
     ArrayAdapter adapter;
     boolean spinnerUpdateFlag;
     SharedPreferences preferences;
-    MainActivity mainActivity;
 
     @Override
     protected void onResume() {
@@ -91,8 +90,6 @@ public class MainActivity extends ActionBarActivity {
         databaseEngine = DatabaseEngine.getInstance(this);
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
-        mainActivity = this;
-
 
         button_login = (ImageButton) findViewById(R.id.button_login);
         button_login.setOnClickListener(new View.OnClickListener() {
@@ -122,7 +119,7 @@ public class MainActivity extends ActionBarActivity {
                 //TODO
                 String username = spinner_user_list.getSelectedItem().toString();
 //                showDeleteDialog("Delete User", "Are you sure you want to delete " + username, "YES", "NO").show();
-                ManagerUserServices managerUserServices = new ManagerUserServices(mainActivity);
+                ManagerUserServices managerUserServices = new ManagerUserServices(MainActivity.this);
                 managerUserServices.delete(spinner_user_list.getSelectedItem().toString());
 //                spinnerUpdateFlag = false;
 //                updateHomescreenData();
