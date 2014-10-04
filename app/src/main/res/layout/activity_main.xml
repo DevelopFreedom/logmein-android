@@ -231,7 +231,6 @@
 
                 android:src="@drawable/center_wheel"/>
         </RelativeLayout>
-
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
