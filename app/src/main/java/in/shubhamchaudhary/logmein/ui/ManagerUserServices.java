@@ -59,14 +59,15 @@ public class ManagerUserServices {
 
     public void add_update(String un,String pwd){
 
-        if( un.isEmpty()){
+        if( un.trim().isEmpty()){
             Toast.makeText(this.context,"Username cannot be an empty string",Toast.LENGTH_LONG).show();
             return;
         }
-        if( pwd.isEmpty()){
+        if( pwd.trim().isEmpty()){
             Toast.makeText(this.context,"Password cannot be an empty string",Toast.LENGTH_LONG).show();
             return;
         }
+
         UserStructure userStructure = new UserStructure();
         userStructure.setUsername(un);
         userStructure.setPassword(pwd);
