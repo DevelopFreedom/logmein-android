@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="dark_grey">#ff2d2d2d</color>
-    <color name="grey">#ffffffff</color>
+    <color name="grey">#ffdcdcdc</color>
     <color name="text2">#ff033a03</color>
     <color name="text1">#ff222120</color>
     <color name="orange">#ff804a04</color>
-    <color name="blue">#ff0f798e</color>
+    <color name="blue">#2D76B6</color>
     <color name="yellow">#ffafb009</color>
 
 

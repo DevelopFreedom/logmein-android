@@ -61,7 +61,7 @@ public class MainActivity extends ActionBarActivity {
     Button button_edit;
     Button button_del;
     Button button_add;
-    ImageButton button_login, button_logout;
+    ImageButton button_login, button_logout,button_web;
     Spinner spinner_user_list;
     ArrayList<String> user_list;
     ArrayAdapter adapter;
@@ -99,7 +99,8 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-//        button_logout = (Button) findViewById(R.id.button_logout);
+        button_logout = (ImageButton) findViewById(R.id.button_logout);
+        button_web = (ImageButton) findViewById(R.id.button_web);
 //        button_logout.setOnClickListener(new View.OnClickListener() {
 //            public void onClick(View v) {
 //                logout();
@@ -193,8 +194,31 @@ public class MainActivity extends ActionBarActivity {
 
     private void startAnimation() {
         ImageView centerWheel = (ImageView)findViewById(R.id.center_wheel);
+        View infoView = findViewById(R.id.info);
         Animation rotation = AnimationUtils.loadAnimation(this,R.anim.rotation_start);
         centerWheel.startAnimation(rotation);
+
+
+        Animation slideLeft = AnimationUtils.loadAnimation(this,R.anim.slide_in_left);
+        button_logout.startAnimation(slideLeft);
+
+
+        Animation slideRight = AnimationUtils.loadAnimation(this,R.anim.slide_in_right);
+        button_web.startAnimation(slideRight);
+
+
+        Animation slideTop = AnimationUtils.loadAnimation(this,R.anim.slide_in_top);
+        infoView.startAnimation(slideTop);
+        button_login.startAnimation(slideTop);
+
+
+        Animation slideBottom = AnimationUtils.loadAnimation(this,R.anim.slide_in_bottom);
+
+
+        Animation popBehind = AnimationUtils.loadAnimation(this,R.anim.pop_enter_behind);
+        centerWheel.startAnimation(popBehind);
+
+
     }
 
 
