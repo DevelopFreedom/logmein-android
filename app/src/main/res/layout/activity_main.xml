@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
@@ -6,253 +6,292 @@
     android:background="@color/dark_grey"
     tools:context="in.shubhamchaudhary.logmein.ui.MainActivity"
     tools:ignore="MergeRootFrame">
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="10dp"
-    android:layout_gravity="center_horizontal"
-    android:background="@color/blue">
-    <TextView
-        android:id="@+id/tb_user_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="left"
-        android:text="Current User:"
-        android:textColor="@color/grey"
-        android:textSize="25sp"
-        />
 
-    <Spinner
-        android:layout_marginTop="10dp"
-        android:id="@+id/spinner_user_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_toRightOf="@+id/tb_user_list" />
-
-</LinearLayout>
-
-<!--
-    <ScrollView
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/info"
+        >
 
         <LinearLayout
-            android:layout_gravity="center_vertical"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp">
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:background="@color/blue"
+            android:id="@+id/current_user"
 
-            <RelativeLayout
-                android:id="@+id/layout_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="15dp"
-                android:background="@color/grey">
+            >
 
-                <TextView
-                    android:id="@+id/tb_user_list"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp"
-                    android:layout_gravity="center_vertical"
-                    android:text="Current User:"
-                    android:textStyle="italic"
-                    android:textColor="@color/text2"
-                    android:textSize="20sp"
-                    />
-
-                <Spinner
-                    android:layout_marginTop="20dp"
-                    android:id="@+id/spinner_user_list"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@+id/tb_user_list" />
-
-                <LinearLayout
-                    android:id="@+id/layout_two_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="10dp"
-                    android:layout_alignParentRight="true"
-                    android:padding="10dp">
-                    <Button
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Edit"
-                        android:layout_toRightOf="@+id/spinner_user_list"
-                        android:id="@+id/button_edit" />
-
-                    <Button
-                        style="?android:attr/buttonStyleSmall"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Del"
-                        android:id="@+id/button_del"
-                        />
-                </LinearLayout>
-
-            </RelativeLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:layout_below="@+id/textView1"
-                android:layout_centerHorizontal="true"
-                android:background="@color/text2"
-                android:layout_marginBottom="35dp"
-                />
-
-            <View
-                android:id="@+id/animate1"
-                android:layout_width="fill_parent"
-                android:layout_height="3dp"
-                android:background="@color/grey"
-                android:layout_marginBottom="5dp"
-
-                />
-            <View
-                android:id="@+id/animate2"
-                android:layout_width="fill_parent"
-                android:layout_height="3dp"
-                android:background="@color/grey"
-                android:layout_marginBottom="10dp"
-
-                />
-
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/tb_user_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:layout_marginTop="10dp"
+                android:gravity="left"
+                android:text="Current User:"
+                android:textColor="@color/grey"
+                android:textSize="25sp" />
 
-                <Button
-                    android:id="@+id/button_login"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Login"
-                    android:textColor="@color/text1"
-                    android:textSize="25sp"
-                    >
-
-                    <requestFocus />
-                </Button>
-
-                <Button
-                    android:layout_marginTop="10dp"
-                    android:id="@+id/button_logout"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:text="Logout"
-                    android:textColor="@color/text1"
-                    android:textSize="25sp"
-                    />
-
-                <Button
-                    android:id="@+id/button_web"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:onClick="launch_browser"
-                    android:text="Google"
-                    android:textColor="@color/text1"
-                    android:textSize="25sp"
-                    />
-            </LinearLayout>
-
+            <Spinner
+                android:id="@+id/spinner_user_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@+id/tb_user_list" />
 
         </LinearLayout>
 
-    </ScrollView>
--->
-
-
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center"
-            android:gravity="center">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
 
-
-
-            m<ImageButton
-                android:scaleType="fitXY"
-                android:layout_above="@+id/center_wheel"
-                android:id="@+id/button_login"
-                android:layout_width="284dp"
-                android:layout_height="142dp"
-                android:src="@drawable/login_selector"
-                android:layout_marginBottom="-33dp"
-                android:layout_marginLeft="7dp"
-                android:background="@null"
-                >
-            </ImageButton>
-
-
-
-
-            <ImageButton
-                android:layout_below="@+id/center_wheel"
-                android:id="@+id/button_logout"
-                android:layout_width="142dp"
-               android:layout_marginTop="-38dp"
-                android:layout_marginLeft="7dp"
-                android:layout_height="136dp"
-                android:textColor="@color/text1"
-                android:textSize="25sp"
-                android:background="@null"
-                android:src="@drawable/logout_selector"
-               />
-
-            <ImageButton
-                android:src="@drawable/web_selector"
-                android:background="@null"
-                android:layout_below="@+id/center_wheel"
-                android:layout_toRightOf="@+id/button_logout"
-                android:layout_alignTop="@+id/button_logout"
-                android:layout_marginLeft="5dp"
-                android:id="@+id/button_web"
-                android:layout_width="141dp"
-                android:layout_height="136dp"
-                android:onClick="launch_browser"
+            <Button
+                android:id="@+id/button_del"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left|bottom"
+                android:text="Del"
+                android:textColor="@color/dark_grey"
+                android:layout_margin="5dp"
+                android:background="@drawable/button_selector"
                 />
-            <ImageView
-                android:layout_width="70dp"
-                android:layout_height="75dp"
-                android:id="@+id/center_wheel"
-                android:layout_centerInParent="true"
 
-                android:src="@drawable/center_wheel"/>
-        </RelativeLayout>
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Del"
-        android:id="@+id/button_del"
-        android:layout_gravity="left|bottom" />
+            <Button
+                android:id="@+id/button_edit"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|bottom"
+                android:layout_toRightOf="@+id/spinner_user_list"
+                android:textColor="@color/dark_grey"
+                android:layout_margin="5dp"
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Edit"
-        android:layout_toRightOf="@+id/spinner_user_list"
-        android:id="@+id/button_edit"
-        android:layout_gravity="right|bottom" />
+                android:text="Edit"
+                android:background="@drawable/button_selector"
+                />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
+            <Button
+                android:id="@+id/button_add"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|bottom"
+                android:text="Add"
+                android:textColor="@color/dark_grey"
+                android:layout_margin="5dp"
+
+                android:background="@drawable/button_selector"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!--
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <LinearLayout
+                android:layout_gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <RelativeLayout
+                    android:id="@+id/layout_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="15dp"
+                    android:background="@color/grey">
+
+                    <TextView
+                        android:id="@+id/tb_user_list"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:text="Current User:"
+                        android:textStyle="italic"
+                        android:textColor="@color/text2"
+                        android:textSize="20sp"
+                        />
+
+                    <Spinner
+                        android:layout_marginTop="20dp"
+                        android:id="@+id/spinner_user_list"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_toRightOf="@+id/tb_user_list" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_two_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_alignParentRight="true"
+                        android:padding="10dp">
+                        <Button
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Edit"
+                            android:layout_toRightOf="@+id/spinner_user_list"
+                            android:id="@+id/button_edit" />
+
+                        <Button
+                            style="?android:attr/buttonStyleSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Del"
+                            android:id="@+id/button_del"
+                            />
+                    </LinearLayout>
+
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
+                    android:layout_below="@+id/textView1"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/text2"
+                    android:layout_marginBottom="35dp"
+                    />
+
+                <View
+                    android:id="@+id/animate1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="3dp"
+                    android:background="@color/grey"
+                    android:layout_marginBottom="5dp"
+
+                    />
+                <View
+                    android:id="@+id/animate2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="3dp"
+                    android:background="@color/grey"
+                    android:layout_marginBottom="10dp"
+
+                    />
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <Button
+                        android:id="@+id/button_login"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Login"
+                        android:textColor="@color/text1"
+                        android:textSize="25sp"
+                        >
+
+                        <requestFocus />
+                    </Button>
+
+                    <Button
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/button_logout"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:text="Logout"
+                        android:textColor="@color/text1"
+                        android:textSize="25sp"
+                        />
+
+                    <Button
+                        android:id="@+id/button_web"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:onClick="launch_browser"
+                        android:text="Google"
+                        android:textColor="@color/text1"
+                        android:textSize="25sp"
+                        />
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </ScrollView>
+    -->
+
+
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add"
-        android:id="@+id/button_add"
-        android:layout_gravity="center|bottom" />
-</FrameLayout>
+        android:layout_height="fill_parent"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/info"
+        >
+
+
+
+
+        <ImageButton
+            android:id="@+id/button_login"
+            android:layout_width="284dp"
+            android:layout_height="142dp"
+            android:layout_above="@+id/center_wheel"
+            android:layout_marginBottom="-33dp"
+            android:layout_marginLeft="7dp"
+            android:background="@null"
+            android:scaleType="fitXY"
+            android:src="@drawable/login_selector"></ImageButton>
+
+
+        <ImageButton
+            android:id="@+id/button_logout"
+            android:layout_width="142dp"
+            android:layout_height="136dp"
+            android:layout_below="@+id/center_wheel"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="-38dp"
+            android:background="@null"
+            android:src="@drawable/logout_selector"
+            android:textColor="@color/text1"
+            android:textSize="25sp" />
+
+        <ImageButton
+            android:id="@+id/button_web"
+            android:layout_width="141dp"
+            android:layout_height="136dp"
+            android:layout_alignTop="@+id/button_logout"
+            android:layout_below="@+id/center_wheel"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/button_logout"
+            android:background="@null"
+            android:onClick="launch_browser"
+            android:src="@drawable/web_selector" />
+
+        <ImageView
+            android:id="@+id/center_wheel"
+            android:layout_width="70dp"
+            android:layout_height="75dp"
+            android:layout_centerInParent="true"
+
+            android:src="@drawable/center_wheel" />
+    </RelativeLayout>
+
+
+</RelativeLayout>
