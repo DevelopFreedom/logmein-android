@@ -115,8 +115,9 @@ public class MainActivity extends ActionBarActivity {
 //                showDeleteDialog("Delete User", "Are you sure you want to delete " + username, "YES", "NO").show();
                 ManagerUserServices managerUserServices = new ManagerUserServices(MainActivity.this);
                 managerUserServices.delete(spinner_user_list.getSelectedItem().toString());
-//                spinnerUpdateFlag = false;
-//                updateHomescreenData();
+
+                spinnerUpdateFlag = false;
+                updateHomescreenData();
             }
         });
 

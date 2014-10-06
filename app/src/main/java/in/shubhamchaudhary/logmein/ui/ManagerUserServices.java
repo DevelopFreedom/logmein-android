@@ -33,7 +33,7 @@ public class ManagerUserServices {
     Button button_update, button_cancel;
     EditText textbox_username = null, textbox_password = null;
     CheckBox cb_show_pwd;
-
+    Boolean updated;
 
     ManagerUserServices(Context context){
         this.context = context;
@@ -142,6 +142,7 @@ public class ManagerUserServices {
 
 //        builder.create().show();
         final AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
 
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
@@ -176,6 +177,7 @@ public class ManagerUserServices {
         });
 
         final AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
 
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
@@ -198,7 +200,7 @@ public class ManagerUserServices {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //String username = spinner_user_list.getSelectedItem().toString();
-                        Boolean updated = databaseEngine.deleteUser(username);
+                        updated = databaseEngine.deleteUser(username);
                         if ( updated ){
                             Toast.makeText(context, "Successfully deleted user: " + username, Toast.LENGTH_SHORT).show();
                         }else{
@@ -212,8 +214,9 @@ public class ManagerUserServices {
                         Toast.makeText(context,"Cancelled",Toast.LENGTH_SHORT).show();
                     }
                 });
-
-        builder.create().show();
+        Dialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 
     public void show_password() {
