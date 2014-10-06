@@ -102,6 +102,13 @@ public class DatabaseEngine {
         }
     }
 
+    public boolean isUserListEmpty(){
+        if(userList().isEmpty()){
+            return true;
+        }
+        return false;
+    }
+
     /*
      * return list of all the users in database
      */

@@ -111,6 +111,10 @@ public class MainActivity extends ActionBarActivity {
         button_del = (Button ) findViewById(R.id.button_del);
         button_del.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                if(databaseEngine.isUserListEmpty()){
+                    Toast.makeText(MainActivity.this,"User List is empty",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 String username = spinner_user_list.getSelectedItem().toString();
 //                showDeleteDialog("Delete User", "Are you sure you want to delete " + username, "YES", "NO").show();
                 ManagerUserServices managerUserServices = new ManagerUserServices(MainActivity.this);
@@ -133,6 +137,10 @@ public class MainActivity extends ActionBarActivity {
         button_edit = (Button ) findViewById(R.id.button_edit);
         button_edit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                if(databaseEngine.isUserListEmpty()){
+                    Toast.makeText(MainActivity.this,"User List is empty",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 LayoutInflater inflater = getLayoutInflater();
                 ManagerUserServices managerUserServices = new ManagerUserServices(MainActivity.this);
                 managerUserServices.update(spinner_user_list.getSelectedItem().toString(),inflater);
@@ -222,25 +230,27 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-
-
     public void updateHomescreenData() {
         if (spinnerUpdateFlag) {
             spinnerUpdateFlag = false; //Avoid recursive loop via onItemSelected Listner
             return;
         } else {
             user_list = databaseEngine.userList();
-            int pos = spinner_user_list.getSelectedItemPosition();
-            if (pos >= user_list.size())
-                pos = user_list.size() - 1;
-
-            adapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, user_list);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-            spinner_user_list.setAdapter(adapter);
-            spinner_user_list.setSelection(pos);
-            spinnerUpdateFlag = true;
+//            if (user_list.isEmpty()) {
+//                adapter.clear();
+//                spinner_user_list.setAdapter(adapter);
+//
+//            } else {
+                int pos = spinner_user_list.getSelectedItemPosition();
+                if (pos >= user_list.size())
+                    pos = user_list.size() - 1;
+                adapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, user_list);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                spinner_user_list.setAdapter(adapter);
+                spinner_user_list.setSelection(pos);
+                spinnerUpdateFlag = true;
+//            }
         }
-
         String username = getSelectedUsername();
         if (username != null) {
             SharedPreferences.Editor editor = preferences.edit();
@@ -304,6 +314,10 @@ public class MainActivity extends ActionBarActivity {
     }
 
     void login() {
+        if(databaseEngine.isUserListEmpty()){
+            Toast.makeText(MainActivity.this,"User List is empty",Toast.LENGTH_SHORT).show();
+            return;
+        }
         NetworkEngine.StatusCode status = null;
         Log.d("login", "Insiide Login");
         String username, password;
@@ -376,6 +390,7 @@ public class MainActivity extends ActionBarActivity {
         return builder.create();
 
     }
+
 
 }//end MainActivity class
 /* vim: set tabstop=4:shiftwidth=4:textwidth=79:et */
