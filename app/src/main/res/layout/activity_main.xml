@@ -8,21 +8,20 @@
     tools:ignore="MergeRootFrame">
 
     <LinearLayout
+        android:id="@+id/info"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_centerHorizontal="true"
-        android:id="@+id/info"
-        >
+        android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/current_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:background="@color/blue"
             android:orientation="horizontal"
             android:padding="10dp"
-            android:background="@color/blue"
-            android:id="@+id/current_user"
 
             >
 
@@ -50,8 +49,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/button_del"
@@ -59,11 +58,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|bottom"
-                android:text="Del"
-                android:textColor="@color/dark_grey"
                 android:layout_margin="5dp"
                 android:background="@drawable/button_selector"
-                />
+                android:text="Del"
+                android:textColor="@color/dark_grey" />
 
             <Button
                 android:id="@+id/button_edit"
@@ -71,13 +69,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|bottom"
-                android:layout_toRightOf="@+id/spinner_user_list"
-                android:textColor="@color/dark_grey"
                 android:layout_margin="5dp"
+                android:layout_toRightOf="@+id/spinner_user_list"
+                android:background="@drawable/button_selector"
 
                 android:text="Edit"
-                android:background="@drawable/button_selector"
-                />
+                android:textColor="@color/dark_grey" />
 
             <Button
                 android:id="@+id/button_add"
@@ -85,168 +82,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|bottom"
-                android:text="Add"
-                android:textColor="@color/dark_grey"
                 android:layout_margin="5dp"
-
                 android:background="@drawable/button_selector"
-                />
+                android:text="Add"
+
+                android:textColor="@color/dark_grey" />
 
         </LinearLayout>
 
     </LinearLayout>
 
-    <!--
-        <ScrollView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-
-            <LinearLayout
-                android:layout_gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
-
-                <RelativeLayout
-                    android:id="@+id/layout_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="15dp"
-                    android:background="@color/grey">
-
-                    <TextView
-                        android:id="@+id/tb_user_list"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="30dp"
-                        android:layout_gravity="center_vertical"
-                        android:text="Current User:"
-                        android:textStyle="italic"
-                        android:textColor="@color/text2"
-                        android:textSize="20sp"
-                        />
-
-                    <Spinner
-                        android:layout_marginTop="20dp"
-                        android:id="@+id/spinner_user_list"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_toRightOf="@+id/tb_user_list" />
-
-                    <LinearLayout
-                        android:id="@+id/layout_two_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginLeft="10dp"
-                        android:layout_alignParentRight="true"
-                        android:padding="10dp">
-                        <Button
-                            style="?android:attr/buttonStyleSmall"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Edit"
-                            android:layout_toRightOf="@+id/spinner_user_list"
-                            android:id="@+id/button_edit" />
-
-                        <Button
-                            style="?android:attr/buttonStyleSmall"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Del"
-                            android:id="@+id/button_del"
-                            />
-                    </LinearLayout>
-
-                </RelativeLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="3dp"
-                    android:layout_below="@+id/textView1"
-                    android:layout_centerHorizontal="true"
-                    android:background="@color/text2"
-                    android:layout_marginBottom="35dp"
-                    />
-
-                <View
-                    android:id="@+id/animate1"
-                    android:layout_width="fill_parent"
-                    android:layout_height="3dp"
-                    android:background="@color/grey"
-                    android:layout_marginBottom="5dp"
-
-                    />
-                <View
-                    android:id="@+id/animate2"
-                    android:layout_width="fill_parent"
-                    android:layout_height="3dp"
-                    android:background="@color/grey"
-                    android:layout_marginBottom="10dp"
-
-                    />
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <Button
-                        android:id="@+id/button_login"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Login"
-                        android:textColor="@color/text1"
-                        android:textSize="25sp"
-                        >
-
-                        <requestFocus />
-                    </Button>
-
-                    <Button
-                        android:layout_marginTop="10dp"
-                        android:id="@+id/button_logout"
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:text="Logout"
-                        android:textColor="@color/text1"
-                        android:textSize="25sp"
-                        />
-
-                    <Button
-                        android:id="@+id/button_web"
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:onClick="launch_browser"
-                        android:text="Google"
-                        android:textColor="@color/text1"
-                        android:textSize="25sp"
-                        />
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-        </ScrollView>
-    -->
-
-
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
-        android:gravity="center"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/info"
-        >
-
-
-
+        android:layout_centerHorizontal="true"
+        android:gravity="center">
 
         <ImageButton
             android:id="@+id/button_login"
