@@ -9,11 +9,4 @@
         app:showAsAction="always"
         android:icon="@drawable/ic_action_settings"/>
 
-    <item
-        android:id="@+id/action_manage_user"
-        android:title="@string/manage_user"
-        app:showAsAction="always"
-        />
-
-
 </menu>

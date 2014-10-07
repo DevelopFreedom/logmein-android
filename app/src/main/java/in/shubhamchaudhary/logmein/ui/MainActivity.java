@@ -299,11 +299,6 @@ public class MainActivity extends ActionBarActivity {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
             return true;
-        } else if (id == R.id.action_manage_user) {
-            Intent intent_user_db = new Intent(this, ManageUser.class);
-            String un = ""+spinner_user_list.getSelectedItem();
-            intent_user_db.putExtra("username", un);
-            startActivity(intent_user_db);
         }
         return super.onOptionsItemSelected(item);
     }

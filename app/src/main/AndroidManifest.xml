@@ -25,10 +25,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ui.ManageUser"
-            android:label="@string/title_activity_manage_user" >
-        </activity>
 
         <service
             android:name=".LoginService"
