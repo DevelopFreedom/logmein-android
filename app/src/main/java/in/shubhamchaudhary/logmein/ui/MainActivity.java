@@ -111,7 +111,7 @@ public class MainActivity extends ActionBarActivity {
         button_del = (Button ) findViewById(R.id.button_del);
         button_del.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(databaseEngine.isUserListEmpty()){
+                if(getSelectedUsername() == null){
                     Toast.makeText(MainActivity.this,"User List is empty",Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -137,7 +137,7 @@ public class MainActivity extends ActionBarActivity {
         button_edit = (Button ) findViewById(R.id.button_edit);
         button_edit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(databaseEngine.isUserListEmpty()){
+                if(getSelectedUsername() == null){
                     Toast.makeText(MainActivity.this,"User List is empty",Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -314,7 +314,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     void login() {
-        if(databaseEngine.isUserListEmpty()){
+        if(getSelectedUsername() == null){
             Toast.makeText(MainActivity.this,"User List is empty",Toast.LENGTH_SHORT).show();
             return;
         }
