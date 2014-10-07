@@ -21,9 +21,6 @@
 
 package in.shubhamchaudhary.logmein.ui;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -156,6 +153,9 @@ public class MainActivity extends ActionBarActivity {
         spinner_user_list.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         spinnerUpdateFlag = false;
+        //Recover saved position
+        int saved_pos = preferences.getInt(SettingsActivity.KEY_CURRENT_USERNAME_POS, 0);
+        spinner_user_list.setSelection(saved_pos%user_list.size());
 
 
         spinner_user_list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -163,12 +163,16 @@ public class MainActivity extends ActionBarActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long l) {
                 // An item was selected. We can retrieve the selected item using
                 // parent.getItemAtPosition(pos)
+                Log.d("Main","onSelect: calling updateHomescreenData");
+                updateHomescreenData();
                 parent.setSelection(pos);
-
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) { }
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                Log.d("Main","onNothinSelect: calling updateHomescreenData");
+                updateHomescreenData();
+            }
         });
 
         if (savedInstanceState == null) {
@@ -199,7 +203,7 @@ public class MainActivity extends ActionBarActivity {
         if (perfStartupLogin)
             login();
 
-    }
+    }//end onCreate
 
     private void startAnimation() {
         ImageView centerWheel = (ImageView)findViewById(R.id.center_wheel);
@@ -231,37 +235,44 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void updateHomescreenData() {
+        Log.d("Main","Updating Home Screen"+spinnerUpdateFlag);
+        int pos = spinner_user_list.getSelectedItemPosition();
         if (spinnerUpdateFlag) {
             spinnerUpdateFlag = false; //Avoid recursive loop via onItemSelected Listner
             return;
         } else {
             user_list = databaseEngine.userList();
-//            if (user_list.isEmpty()) {
-//                adapter.clear();
-//                spinner_user_list.setAdapter(adapter);
-//
-//            } else {
-                int pos = spinner_user_list.getSelectedItemPosition();
+            if (user_list.isEmpty()) {
+                adapter.clear();
+                spinner_user_list.setAdapter(adapter);
+
+            } else {
+                pos = spinner_user_list.getSelectedItemPosition();
                 if (pos >= user_list.size())
                     pos = user_list.size() - 1;
+
+                user_list = databaseEngine.userList();
                 adapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, user_list);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
                 spinner_user_list.setAdapter(adapter);
-                spinner_user_list.setSelection(pos);
                 spinnerUpdateFlag = true;
-//            }
+                spinner_user_list.setSelection(pos);
+//                adapter.notifyDataSetChanged();
+            }
         }
         String username = getSelectedUsername();
         if (username != null) {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString(SettingsActivity.KEY_CURRENT_USERNAME, username);
+            //Save current position for recovery
+            editor.putInt(SettingsActivity.KEY_CURRENT_USERNAME_POS, pos);
             editor.apply();
         } else {
             //TODO: What happens when empty
             username = "Welcome, Please enter username and password for the first time!";
         }
 
-    }
+    }//end updateHomescreenData
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -355,37 +366,6 @@ public class MainActivity extends ActionBarActivity {
         public PlaceholderFragment() {
         }
     }
-
-
-    public Dialog showDeleteDialog(String title, String message,String positive_message, String negative_message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(positive_message, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        String username = spinner_user_list.getSelectedItem().toString();
-                        Boolean deleted = databaseEngine.deleteUser(username);
-                        if ( deleted ){
-                            Toast.makeText(getApplicationContext(),"Successfully deleted user: "+username,Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(getApplicationContext(),"Problem deleting user: "+username,Toast.LENGTH_SHORT).show();
-                        }
-                        //Remove the deleted username from the adapter/spinner
-                        updateHomescreenData();
-                    }
-                })
-                .setNegativeButton(negative_message, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(getApplicationContext(),"Cancelled",Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-        return builder.create();
-
-    }
-
 
 }//end MainActivity class
 /* vim: set tabstop=4:shiftwidth=4:textwidth=79:et */
