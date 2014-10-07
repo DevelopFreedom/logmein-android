@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v4.app.DialogFragment;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -226,6 +225,23 @@ public class ManagerUserServices {
         }
         textbox_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
     }//end of show_password(View)
+
+    private void updateHomeScreenDataOnce() {
+/*
+        ArrayList<String> user_list = databaseEngine.userList();
+        ArrayList<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, user_list);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        spinner_user_list = (Spinner) findViewById(R.id.spinner_user_list);
+        spinner_user_list.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        spinnerUpdateFlag = false;
+        //Recover saved position
+        if (user_list.size() > 0) { //Crashes otherwise at first startup
+            int saved_pos = preferences.getInt(SettingsActivity.KEY_CURRENT_USERNAME_POS, 0);
+            spinner_user_list.setSelection(saved_pos % user_list.size());
+        }
+*/
+    }
 
 }
 
