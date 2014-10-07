@@ -100,13 +100,13 @@ public class MainActivity extends ActionBarActivity {
         });
 
         button_logout = (ImageButton) findViewById(R.id.button_logout);
-        button_web = (ImageButton) findViewById(R.id.button_web);
-//        button_logout.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                logout();
-//            }
-//        });
+        button_logout.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                logout();
+            }
+        });
 
+        button_web = (ImageButton) findViewById(R.id.button_web);
 
         button_del = (Button ) findViewById(R.id.button_del);
         button_del.setOnClickListener(new View.OnClickListener() {
