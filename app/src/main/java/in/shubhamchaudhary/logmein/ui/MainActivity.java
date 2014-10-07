@@ -154,8 +154,10 @@ public class MainActivity extends ActionBarActivity {
         adapter.notifyDataSetChanged();
         spinnerUpdateFlag = false;
         //Recover saved position
-        int saved_pos = preferences.getInt(SettingsActivity.KEY_CURRENT_USERNAME_POS, 0);
-        spinner_user_list.setSelection(saved_pos%user_list.size());
+        if (user_list.size() > 0) { //Crashes otherwise at first startup
+            int saved_pos = preferences.getInt(SettingsActivity.KEY_CURRENT_USERNAME_POS, 0);
+            spinner_user_list.setSelection(saved_pos % user_list.size());
+        }
 
 
         spinner_user_list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
