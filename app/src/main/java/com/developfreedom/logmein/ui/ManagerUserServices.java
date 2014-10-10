@@ -9,6 +9,7 @@ import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -23,27 +24,25 @@ import com.developfreedom.logmein.UserStructure;
  */
 public class ManagerUserServices {
 
-//    MainActivity context;
     Context context;
     DatabaseEngine databaseEngine;
     String username;
     Boolean add_update;
     View v;
-    Button button_update, button_cancel;
     EditText textbox_username = null, textbox_password = null;
     CheckBox cb_show_pwd;
     Boolean updated;
+    String changed_username;
 
     ManagerUserServices(Context context){
         this.context = context;
         databaseEngine = DatabaseEngine.getInstance(this.context);
+        changed_username = "";
     }
 
     public void initialise(LayoutInflater inflater){
         v = inflater.inflate(R.layout.alert_dialog, null);
 
-//        button_update = (Button) v.findViewById(R.id.button_edit_save);
-//        button_cancel = (Button) v.findViewById(R.id.button_edit_cancel);
         textbox_username = (EditText) v.findViewById(R.id.edit_username);
         textbox_password = (EditText) v.findViewById(R.id.edit_password);
         cb_show_pwd = (CheckBox) v.findViewById(R.id.cb_show_password);
@@ -114,7 +113,7 @@ public class ManagerUserServices {
 
     }//end of updateCredentials
 
-    public void update(String un,LayoutInflater inflater){
+    public Dialog update(String un,LayoutInflater inflater){
         this.username = un;
         initialise(inflater);
         textbox_username.setText(un);
@@ -125,13 +124,7 @@ public class ManagerUserServices {
         AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
         builder.setView(v)
                .setTitle("Update user")
-               .setPositiveButton("UPDATE", new DialogInterface.OnClickListener() {
-                   @Override
-                   public void onClick(DialogInterface dialogInterface, int i) {
-//                       add_update = false;
-//                       add_update(textbox_username.getText().toString(), textbox_password.getText().toString());
-                   }
-               })
+               .setPositiveButton("UPDATE",null)
         .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -139,8 +132,8 @@ public class ManagerUserServices {
             }
         });
 
-//        builder.create().show();
         final AlertDialog dialog = builder.create();
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
 
@@ -153,21 +146,16 @@ public class ManagerUserServices {
                 }
             }
         });
+        return dialog;
     }//end of edit
 
-    public void add(LayoutInflater inflater){
+    public Dialog add(LayoutInflater inflater){
         initialise(inflater);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
         builder.setView(v)
                .setTitle("Add User")
-               .setPositiveButton("SAVE",new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-//                add_update = true;
-//                add_update(textbox_username.getText().toString(),textbox_password.getText().toString());
-            }
-        })
+               .setPositiveButton("SAVE", null)
         .setNegativeButton("CANCEL",new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -176,6 +164,7 @@ public class ManagerUserServices {
         });
 
         final AlertDialog dialog = builder.create();
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
 
@@ -188,9 +177,9 @@ public class ManagerUserServices {
                 }
             }
         });
-
+        return dialog;
     }
-    public void delete(String un) {
+    public Dialog delete(String un) {
         this.username = un;
         AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
         builder.setTitle("Delete User")
@@ -213,9 +202,11 @@ public class ManagerUserServices {
                         Toast.makeText(context,"Cancelled",Toast.LENGTH_SHORT).show();
                     }
                 });
-        Dialog dialog = builder.create();
+            Dialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
+
+    return dialog;
     }
 
     public void show_password() {
@@ -225,23 +216,6 @@ public class ManagerUserServices {
         }
         textbox_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
     }//end of show_password(View)
-
-    private void updateHomeScreenDataOnce() {
-/*
-        ArrayList<String> user_list = databaseEngine.userList();
-        ArrayList<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, user_list);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinner_user_list = (Spinner) findViewById(R.id.spinner_user_list);
-        spinner_user_list.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-        spinnerUpdateFlag = false;
-        //Recover saved position
-        if (user_list.size() > 0) { //Crashes otherwise at first startup
-            int saved_pos = preferences.getInt(SettingsActivity.KEY_CURRENT_USERNAME_POS, 0);
-            spinner_user_list.setSelection(saved_pos % user_list.size());
-        }
-*/
-    }
 
 }
 
