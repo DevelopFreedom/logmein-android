@@ -33,10 +33,12 @@ public class ManagerUserServices {
     EditText textbox_username = null, textbox_password = null;
     CheckBox cb_show_pwd;
     Boolean updated;
+    String changed_username;
 
     ManagerUserServices(Context context){
         this.context = context;
         databaseEngine = DatabaseEngine.getInstance(this.context);
+        changed_username = "";
     }
 
     public void initialise(LayoutInflater inflater){
@@ -114,7 +116,7 @@ public class ManagerUserServices {
 
     }//end of updateCredentials
 
-    public void update(String un,LayoutInflater inflater){
+    public Dialog update(String un,LayoutInflater inflater){
         this.username = un;
         initialise(inflater);
         textbox_username.setText(un);
@@ -153,9 +155,10 @@ public class ManagerUserServices {
                 }
             }
         });
+        return dialog;
     }//end of edit
 
-    public void add(LayoutInflater inflater){
+    public Dialog add(LayoutInflater inflater){
         initialise(inflater);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
@@ -188,9 +191,9 @@ public class ManagerUserServices {
                 }
             }
         });
-
+        return dialog;
     }
-    public void delete(String un) {
+    public Dialog delete(String un) {
         this.username = un;
         AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
         builder.setTitle("Delete User")
@@ -216,6 +219,8 @@ public class ManagerUserServices {
         Dialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
+
+    return dialog;
     }
 
     public void show_password() {

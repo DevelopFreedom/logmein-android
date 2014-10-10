@@ -21,6 +21,8 @@
 
 package in.shubhamchaudhary.logmein.ui;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -115,10 +117,8 @@ public class MainActivity extends ActionBarActivity {
                 String username = spinner_user_list.getSelectedItem().toString();
 //                showDeleteDialog("Delete User", "Are you sure you want to delete " + username, "YES", "NO").show();
                 ManagerUserServices managerUserServices = new ManagerUserServices(MainActivity.this);
-                managerUserServices.delete(spinner_user_list.getSelectedItem().toString());
-
-                spinnerUpdateFlag = false;
-                updateHomescreenData();
+                Dialog dialog = managerUserServices.delete(spinner_user_list.getSelectedItem().toString());
+                dialogDismissUpdater(dialog,0);
             }
         });
 
@@ -127,7 +127,8 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 ManagerUserServices managerUserServices = new ManagerUserServices(MainActivity.this);
-                managerUserServices.add(getLayoutInflater());
+                Dialog dialog = managerUserServices.add(getLayoutInflater());
+                dialogDismissUpdater(dialog, spinner_user_list.getCount());
             }
         });
 
@@ -140,7 +141,8 @@ public class MainActivity extends ActionBarActivity {
                 }
                 LayoutInflater inflater = getLayoutInflater();
                 ManagerUserServices managerUserServices = new ManagerUserServices(MainActivity.this);
-                managerUserServices.update(spinner_user_list.getSelectedItem().toString(),inflater);
+                Dialog dialog = managerUserServices.update(spinner_user_list.getSelectedItem().toString(),inflater);
+                dialogDismissUpdater(dialog,spinner_user_list.getSelectedItemPosition());
             }
         });
 
@@ -369,5 +371,17 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    public void dialogDismissUpdater(Dialog dialog, final int pos){
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                spinnerUpdateFlag=false;
+                updateHomescreenData();
+                if(spinner_user_list.getCount() > pos){
+                    spinner_user_list.setSelection(pos);
+                }
+            }
+        });
+    }
 }//end MainActivity class
 /* vim: set tabstop=4:shiftwidth=4:textwidth=79:et */
