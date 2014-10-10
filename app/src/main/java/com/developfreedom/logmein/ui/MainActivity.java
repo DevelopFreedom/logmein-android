@@ -3,6 +3,7 @@
  *
  *   Copyright (c) 2014 Shubham Chaudhary <me@shubhamchaudhary.in>
  *   Copyright (c) 2014 Tanjot Kaur <tanjot28@gmail.com>
+ *   Copyright (c) 2014 Varun Verma <mailvarun93@gmail.com>
  *   Copyright (c) 2014 Vivek Aggarwal <vivekaggarwal92@gmail.com>
  *
  *   LogMeIn is free software: you can redistribute it and/or modify

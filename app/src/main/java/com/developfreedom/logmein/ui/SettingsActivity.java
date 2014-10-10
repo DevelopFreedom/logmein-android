@@ -1,3 +1,22 @@
+/**
+ *   LogMeIn - Automatically log into Panjab University Wifi Network
+ *
+ *   Copyright (c) 2014 Shubham Chaudhary <me@shubhamchaudhary.in>
+ *
+ *   LogMeIn is free software: you can redistribute it and/or modify
+ *   it under the terms of the GNU General Public License as published by
+ *   the Free Software Foundation, either version 3 of the License, or
+ *   (at your option) any later version.
+ *
+ *   LogMeIn is distributed in the hope that it will be useful,
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *   GNU General Public License for more details.
+ *
+ *   You should have received a copy of the GNU General Public License
+ *   along with LogMeIn.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.developfreedom.logmein.ui;
 
 import android.annotation.TargetApi;
@@ -9,9 +28,9 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 
-import java.util.List;
-
 import com.developfreedom.logmein.R;
+
+import java.util.List;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
