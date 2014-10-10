@@ -19,7 +19,7 @@
  *   along with LogMeIn.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package in.shubhamchaudhary.logmein.ui;
+package com.developfreedom.logmein.ui;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -45,10 +45,10 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import in.shubhamchaudhary.logmein.DatabaseEngine;
-import in.shubhamchaudhary.logmein.LoginService;
-import in.shubhamchaudhary.logmein.NetworkEngine;
-import in.shubhamchaudhary.logmein.R;
+import com.developfreedom.logmein.DatabaseEngine;
+import com.developfreedom.logmein.LoginService;
+import com.developfreedom.logmein.NetworkEngine;
+import com.developfreedom.logmein.R;
 
 public class MainActivity extends ActionBarActivity {
     /* Engines */

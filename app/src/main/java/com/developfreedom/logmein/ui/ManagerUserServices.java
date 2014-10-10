@@ -1,4 +1,4 @@
-package in.shubhamchaudhary.logmein.ui;
+package com.developfreedom.logmein.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -14,9 +14,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import in.shubhamchaudhary.logmein.DatabaseEngine;
-import in.shubhamchaudhary.logmein.R;
-import in.shubhamchaudhary.logmein.UserStructure;
+import com.developfreedom.logmein.DatabaseEngine;
+import com.developfreedom.logmein.R;
+import com.developfreedom.logmein.UserStructure;
 
 /**
  * Created by tanjot on 4/10/14.

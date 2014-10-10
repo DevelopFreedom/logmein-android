@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_grey"
-    tools:context="in.shubhamchaudhary.logmein.ui.MainActivity"
+    tools:context="com.developfreedom.logmein.ui.MainActivity"
     tools:ignore="MergeRootFrame">
 
     <LinearLayout

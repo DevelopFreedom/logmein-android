@@ -21,7 +21,7 @@
  *   along with LogMeIn.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package in.shubhamchaudhary.logmein;
+package com.developfreedom.logmein;
 
 import android.content.ContentValues;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package in.shubhamchaudhary.logmein.ui;
+package com.developfreedom.logmein.ui;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -11,7 +11,7 @@ import android.preference.PreferenceFragment;
 
 import java.util.List;
 
-import in.shubhamchaudhary.logmein.R;
+import com.developfreedom.logmein.R;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
