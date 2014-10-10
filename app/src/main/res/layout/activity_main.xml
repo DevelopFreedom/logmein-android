@@ -126,7 +126,7 @@
 
         <ImageButton
             android:id="@+id/button_web"
-            android:layout_width="141dp"
+            android:layout_width="138dp"
             android:layout_height="136dp"
             android:layout_alignTop="@+id/button_logout"
             android:layout_below="@+id/center_wheel"
