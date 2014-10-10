@@ -21,7 +21,7 @@
  *   along with LogMeIn.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package in.shubhamchaudhary.logmein;
+package com.developfreedom.logmein;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -102,6 +102,13 @@ public class DatabaseEngine {
         }
     }
 
+    public boolean isUserListEmpty(){
+        if(userList().isEmpty()){
+            return true;
+        }
+        return false;
+    }
+
     /*
      * return list of all the users in database
      */
@@ -166,7 +173,6 @@ public class DatabaseEngine {
             user = new UserStructure();
             user.setUsername(un);
             user.setPassword(cursor.getString(cursor.getColumnIndex(DatabaseOpenHelper.PASSWORD)));
-
 
             /*
             //String[] columns=new String[]{DatabaseOpenHelper.USERNAME,DatabaseOpenHelper.PASSWORD};

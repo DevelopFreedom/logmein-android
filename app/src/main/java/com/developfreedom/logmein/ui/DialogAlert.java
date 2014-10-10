@@ -1,4 +1,4 @@
-package in.shubhamchaudhary.logmein.ui;
+package com.developfreedom.logmein.ui;
 
 
 import android.app.Activity;
@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import in.shubhamchaudhary.logmein.R;
+import com.developfreedom.logmein.R;
 
 /**
  * Created by tanjot on 19/9/14.

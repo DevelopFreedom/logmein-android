@@ -1,4 +1,4 @@
-package in.shubhamchaudhary.logmein;
+package com.developfreedom.logmein;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

@@ -1,4 +1,4 @@
-package in.shubhamchaudhary.logmein.ui;
+package com.developfreedom.logmein.ui;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -11,7 +11,7 @@ import android.preference.PreferenceFragment;
 
 import java.util.List;
 
-import in.shubhamchaudhary.logmein.R;
+import com.developfreedom.logmein.R;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -35,6 +35,7 @@ public class SettingsActivity extends PreferenceActivity {
     public static final String KEY_PERSISTENCE = "keyPersistentNotification";
     public static final String KEY_STARTUP_LOGIN = "keyStartupLogin";
     public static final String KEY_CURRENT_USERNAME = "keyCurrentUsername";
+    public static final String KEY_CURRENT_USERNAME_POS = "keyCurrentUsernamePos";
     public static final boolean DEFAULT_KEY_PERSISTENCE = true;
     public static final boolean DEFAULT_KEY_STARTUP_LOGIN = false;
     public static final String DEFAULT_KEY_CURRENT_USERNAME = "11uit424";   //XXX: Save some other default

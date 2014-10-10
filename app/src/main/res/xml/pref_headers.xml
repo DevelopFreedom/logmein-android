@@ -3,11 +3,11 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="in.shubhamchaudhary.logmein.ui.SettingsActivity$GeneralPreferenceFragment"
+        android:fragment="com.developfreedom.logmein.ui.SettingsActivity$GeneralPreferenceFragment"
         android:title="@string/pref_header_general" />
 
     <header
-        android:fragment="in.shubhamchaudhary.logmein.ui.SettingsActivity$NotificationPreferenceFragment"
+        android:fragment="com.developfreedom.logmein.ui.SettingsActivity$NotificationPreferenceFragment"
         android:title="@string/pref_header_notifications" />
 
 </preference-headers>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="in.shubhamchaudhary.logmein"
+    package="com.developfreedom.logmein"
     android:installLocation="auto"
-    android:versionCode="53"
-    android:versionName="0.5.3" >
+    android:versionCode="54"
+    android:versionName="0.5.4" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -24,10 +24,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".ui.ManageUser"
-            android:label="@string/title_activity_manage_user" >
         </activity>
 
         <service

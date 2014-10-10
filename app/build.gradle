@@ -5,11 +5,11 @@ android {
     buildToolsVersion "20.0.0"
 
     defaultConfig {
-        applicationId "in.shubhamchaudhary.logmein"
+        applicationId "com.developfreedom.logmein"
         minSdkVersion 9
         targetSdkVersion 19
-        versionCode 53
-        versionName "0.5.3"
+        versionCode 54
+        versionName "0.5.4"
     }
     buildTypes {
         release {

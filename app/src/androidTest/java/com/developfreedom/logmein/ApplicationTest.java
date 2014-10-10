@@ -1,4 +1,4 @@
-package in.shubhamchaudhary.logmein;
+package com.developfreedom.logmein;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

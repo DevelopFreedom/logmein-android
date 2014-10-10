@@ -19,9 +19,8 @@
  *   along with LogMeIn.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package in.shubhamchaudhary.logmein.ui;
+package com.developfreedom.logmein.ui;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -48,10 +47,10 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import in.shubhamchaudhary.logmein.DatabaseEngine;
-import in.shubhamchaudhary.logmein.LoginService;
-import in.shubhamchaudhary.logmein.NetworkEngine;
-import in.shubhamchaudhary.logmein.R;
+import com.developfreedom.logmein.DatabaseEngine;
+import com.developfreedom.logmein.LoginService;
+import com.developfreedom.logmein.NetworkEngine;
+import com.developfreedom.logmein.R;
 
 public class MainActivity extends ActionBarActivity {
     /* Engines */
@@ -100,23 +99,26 @@ public class MainActivity extends ActionBarActivity {
         });
 
         button_logout = (ImageButton) findViewById(R.id.button_logout);
-        button_web = (ImageButton) findViewById(R.id.button_web);
-//        button_logout.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                logout();
-//            }
-//        });
+        button_logout.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                logout();
+            }
+        });
 
+        button_web = (ImageButton) findViewById(R.id.button_web);
 
         button_del = (Button ) findViewById(R.id.button_del);
         button_del.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                if(getSelectedUsername() == null){
+                    Toast.makeText(MainActivity.this,"User List is empty",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 String username = spinner_user_list.getSelectedItem().toString();
 //                showDeleteDialog("Delete User", "Are you sure you want to delete " + username, "YES", "NO").show();
                 ManagerUserServices managerUserServices = new ManagerUserServices(MainActivity.this);
-                managerUserServices.delete(spinner_user_list.getSelectedItem().toString());
-//                spinnerUpdateFlag = false;
-//                updateHomescreenData();
+                Dialog dialog = managerUserServices.delete(spinner_user_list.getSelectedItem().toString());
+                dialogDismissUpdater(dialog,0);
             }
         });
 
@@ -125,16 +127,22 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 ManagerUserServices managerUserServices = new ManagerUserServices(MainActivity.this);
-                managerUserServices.add(getLayoutInflater());
+                Dialog dialog = managerUserServices.add(getLayoutInflater());
+                dialogDismissUpdater(dialog, spinner_user_list.getCount());
             }
         });
 
         button_edit = (Button ) findViewById(R.id.button_edit);
         button_edit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                if(getSelectedUsername() == null){
+                    Toast.makeText(MainActivity.this,"User List is empty",Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 LayoutInflater inflater = getLayoutInflater();
                 ManagerUserServices managerUserServices = new ManagerUserServices(MainActivity.this);
-                managerUserServices.update(spinner_user_list.getSelectedItem().toString(),inflater);
+                Dialog dialog = managerUserServices.update(spinner_user_list.getSelectedItem().toString(),inflater);
+                dialogDismissUpdater(dialog,spinner_user_list.getSelectedItemPosition());
             }
         });
 
@@ -147,6 +155,11 @@ public class MainActivity extends ActionBarActivity {
         spinner_user_list.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         spinnerUpdateFlag = false;
+        //Recover saved position
+        if (user_list.size() > 0) { //Crashes otherwise at first startup
+            int saved_pos = preferences.getInt(SettingsActivity.KEY_CURRENT_USERNAME_POS, 0);
+            spinner_user_list.setSelection(saved_pos % user_list.size());
+        }
 
 
         spinner_user_list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -154,12 +167,16 @@ public class MainActivity extends ActionBarActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long l) {
                 // An item was selected. We can retrieve the selected item using
                 // parent.getItemAtPosition(pos)
+                Log.d("Main","onSelect: calling updateHomescreenData");
+                updateHomescreenData();
                 parent.setSelection(pos);
-
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) { }
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                Log.d("Main","onNothinSelect: calling updateHomescreenData");
+                updateHomescreenData();
+            }
         });
 
         if (savedInstanceState == null) {
@@ -190,7 +207,7 @@ public class MainActivity extends ActionBarActivity {
         if (perfStartupLogin)
             login();
 
-    }
+    }//end onCreate
 
     private void startAnimation() {
         ImageView centerWheel = (ImageView)findViewById(R.id.center_wheel);
@@ -221,36 +238,45 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
-
-
     public void updateHomescreenData() {
+        Log.d("Main","Updating Home Screen"+spinnerUpdateFlag);
+        int pos = spinner_user_list.getSelectedItemPosition();
         if (spinnerUpdateFlag) {
             spinnerUpdateFlag = false; //Avoid recursive loop via onItemSelected Listner
             return;
         } else {
             user_list = databaseEngine.userList();
-            int pos = spinner_user_list.getSelectedItemPosition();
-            if (pos >= user_list.size())
-                pos = user_list.size() - 1;
+            if (user_list.isEmpty()) {
+                adapter.clear();
+                spinner_user_list.setAdapter(adapter);
 
-            adapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, user_list);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-            spinner_user_list.setAdapter(adapter);
-            spinner_user_list.setSelection(pos);
-            spinnerUpdateFlag = true;
+            } else {
+                pos = spinner_user_list.getSelectedItemPosition();
+                if (pos >= user_list.size())
+                    pos = user_list.size() - 1;
+
+                user_list = databaseEngine.userList();
+                adapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, user_list);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                spinner_user_list.setAdapter(adapter);
+                spinnerUpdateFlag = true;
+                spinner_user_list.setSelection(pos);
+//                adapter.notifyDataSetChanged();
+            }
         }
-
         String username = getSelectedUsername();
         if (username != null) {
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString(SettingsActivity.KEY_CURRENT_USERNAME, username);
+            //Save current position for recovery
+            editor.putInt(SettingsActivity.KEY_CURRENT_USERNAME_POS, pos);
             editor.apply();
         } else {
             //TODO: What happens when empty
             username = "Welcome, Please enter username and password for the first time!";
         }
 
-    }
+    }//end updateHomescreenData
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -288,11 +314,6 @@ public class MainActivity extends ActionBarActivity {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
             return true;
-        } else if (id == R.id.action_manage_user) {
-            Intent intent_user_db = new Intent(this, ManageUser.class);
-            String un = ""+spinner_user_list.getSelectedItem();
-            intent_user_db.putExtra("username", un);
-            startActivity(intent_user_db);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -303,6 +324,10 @@ public class MainActivity extends ActionBarActivity {
     }
 
     void login() {
+        if(getSelectedUsername() == null){
+            Toast.makeText(MainActivity.this,"User List is empty",Toast.LENGTH_SHORT).show();
+            return;
+        }
         NetworkEngine.StatusCode status = null;
         Log.d("login", "Insiide Login");
         String username, password;
@@ -346,35 +371,17 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-
-    public Dialog showDeleteDialog(String title, String message,String positive_message, String negative_message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title)
-                .setMessage(message)
-                .setPositiveButton(positive_message, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        String username = spinner_user_list.getSelectedItem().toString();
-                        Boolean deleted = databaseEngine.deleteUser(username);
-                        if ( deleted ){
-                            Toast.makeText(getApplicationContext(),"Successfully deleted user: "+username,Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(getApplicationContext(),"Problem deleting user: "+username,Toast.LENGTH_SHORT).show();
-                        }
-                        //Remove the deleted username from the adapter/spinner
-                        updateHomescreenData();
-                    }
-                })
-                .setNegativeButton(negative_message, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(getApplicationContext(),"Cancelled",Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-        return builder.create();
-
+    public void dialogDismissUpdater(Dialog dialog, final int pos){
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                spinnerUpdateFlag=false;
+                updateHomescreenData();
+                if(spinner_user_list.getCount() > pos){
+                    spinner_user_list.setSelection(pos);
+                }
+            }
+        });
     }
-
 }//end MainActivity class
 /* vim: set tabstop=4:shiftwidth=4:textwidth=79:et */
