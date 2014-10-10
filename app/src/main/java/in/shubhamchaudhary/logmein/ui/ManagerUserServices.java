@@ -9,6 +9,7 @@ import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -56,6 +57,8 @@ public class ManagerUserServices {
                 show_password();
             }
         });
+//        textbox_username.setFocusable(true);
+
     }
 
     public boolean add_update(String un,String pwd){
@@ -143,6 +146,7 @@ public class ManagerUserServices {
 
 //        builder.create().show();
         final AlertDialog dialog = builder.create();
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
 
@@ -179,6 +183,7 @@ public class ManagerUserServices {
         });
 
         final AlertDialog dialog = builder.create();
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
 
@@ -216,7 +221,7 @@ public class ManagerUserServices {
                         Toast.makeText(context,"Cancelled",Toast.LENGTH_SHORT).show();
                     }
                 });
-        Dialog dialog = builder.create();
+            Dialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
 
