@@ -121,7 +121,8 @@
             android:background="@null"
             android:src="@drawable/logout_selector"
             android:textColor="@color/text1"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            android:scaleType="fitXY"/>
 
         <ImageButton
             android:id="@+id/button_web"
@@ -133,7 +134,8 @@
             android:layout_toRightOf="@+id/button_logout"
             android:background="@null"
             android:onClick="launch_browser"
-            android:src="@drawable/web_selector" />
+            android:src="@drawable/web_selector"
+            android:scaleType="fitXY"/>
 
         <ImageView
             android:id="@+id/center_wheel"
