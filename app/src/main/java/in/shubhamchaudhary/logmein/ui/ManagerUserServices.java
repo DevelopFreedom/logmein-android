@@ -24,13 +24,11 @@ import in.shubhamchaudhary.logmein.UserStructure;
  */
 public class ManagerUserServices {
 
-//    MainActivity context;
     Context context;
     DatabaseEngine databaseEngine;
     String username;
     Boolean add_update;
     View v;
-    Button button_update, button_cancel;
     EditText textbox_username = null, textbox_password = null;
     CheckBox cb_show_pwd;
     Boolean updated;
@@ -45,8 +43,6 @@ public class ManagerUserServices {
     public void initialise(LayoutInflater inflater){
         v = inflater.inflate(R.layout.alert_dialog, null);
 
-//        button_update = (Button) v.findViewById(R.id.button_edit_save);
-//        button_cancel = (Button) v.findViewById(R.id.button_edit_cancel);
         textbox_username = (EditText) v.findViewById(R.id.edit_username);
         textbox_password = (EditText) v.findViewById(R.id.edit_password);
         cb_show_pwd = (CheckBox) v.findViewById(R.id.cb_show_password);
@@ -57,8 +53,6 @@ public class ManagerUserServices {
                 show_password();
             }
         });
-//        textbox_username.setFocusable(true);
-
     }
 
     public boolean add_update(String un,String pwd){
@@ -130,13 +124,7 @@ public class ManagerUserServices {
         AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
         builder.setView(v)
                .setTitle("Update user")
-               .setPositiveButton("UPDATE", new DialogInterface.OnClickListener() {
-                   @Override
-                   public void onClick(DialogInterface dialogInterface, int i) {
-//                       add_update = false;
-//                       add_update(textbox_username.getText().toString(), textbox_password.getText().toString());
-                   }
-               })
+               .setPositiveButton("UPDATE",null)
         .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -144,7 +132,6 @@ public class ManagerUserServices {
             }
         });
 
-//        builder.create().show();
         final AlertDialog dialog = builder.create();
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         dialog.setCanceledOnTouchOutside(false);
@@ -168,13 +155,7 @@ public class ManagerUserServices {
         AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
         builder.setView(v)
                .setTitle("Add User")
-               .setPositiveButton("SAVE",new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-//                add_update = true;
-//                add_update(textbox_username.getText().toString(),textbox_password.getText().toString());
-            }
-        })
+               .setPositiveButton("SAVE", null)
         .setNegativeButton("CANCEL",new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -235,23 +216,6 @@ public class ManagerUserServices {
         }
         textbox_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
     }//end of show_password(View)
-
-    private void updateHomeScreenDataOnce() {
-/*
-        ArrayList<String> user_list = databaseEngine.userList();
-        ArrayList<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, user_list);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinner_user_list = (Spinner) findViewById(R.id.spinner_user_list);
-        spinner_user_list.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-        spinnerUpdateFlag = false;
-        //Recover saved position
-        if (user_list.size() > 0) { //Crashes otherwise at first startup
-            int saved_pos = preferences.getInt(SettingsActivity.KEY_CURRENT_USERNAME_POS, 0);
-            spinner_user_list.setSelection(saved_pos % user_list.size());
-        }
-*/
-    }
 
 }
 
