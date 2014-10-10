@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -81,7 +80,7 @@ public class ManagerUserServices {
 
         if(!databaseEngine.existsUser(userStructure.getUsername())){
             if(databaseEngine.insert(userStructure)){
-                Toast.makeText(this.context, userStructure.getUsername() + " entered into your inventory", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this.context, userStructure.getUsername() + " entered", Toast.LENGTH_SHORT).show();
                 return true;
             } else {
                 Toast.makeText(this.context," problem inserting record", Toast.LENGTH_SHORT).show();
