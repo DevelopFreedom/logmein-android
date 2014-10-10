@@ -45,12 +45,12 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
 import com.developfreedom.logmein.DatabaseEngine;
 import com.developfreedom.logmein.LoginService;
 import com.developfreedom.logmein.NetworkEngine;
 import com.developfreedom.logmein.R;
+
+import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity {
     /* Engines */
@@ -232,8 +232,7 @@ public class MainActivity extends ActionBarActivity {
         Animation slideBottom = AnimationUtils.loadAnimation(this,R.anim.slide_in_bottom);
 
 
-        Animation popBehind = AnimationUtils.loadAnimation(this,R.anim.pop_enter_behind);
-        centerWheel.startAnimation(popBehind);
+
 
 
     }
