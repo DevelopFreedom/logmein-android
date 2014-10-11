@@ -26,6 +26,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -42,6 +43,7 @@ public class LoginService extends Service {
      */
     private NotificationManager mNotificationManager;
     private boolean prefNeedPersistence;
+    private SharedPreferences preferences;
     NetworkEngine networkEngine;
     DatabaseEngine databaseEngine;
 
@@ -49,22 +51,20 @@ public class LoginService extends Service {
     public void onCreate() {
         networkEngine = NetworkEngine.getInstance(this);
         databaseEngine = DatabaseEngine.getInstance(this);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+        // Display a notification about us starting.
+        prefNeedPersistence = preferences.getBoolean(SettingsActivity.KEY_PERSISTENCE, SettingsActivity.DEFAULT_KEY_PERSISTENCE);
         mNotificationManager = (NotificationManager) getSystemService(
                 NOTIFICATION_SERVICE);
-        // Display a notification about us starting.
-        Log.i("LoginService", "Login service created");
 
-        prefNeedPersistence = true; //TODO
-        if (prefNeedPersistence) {
-            showPersistentNotification();
-        }
+        showNotificationOrStop();
+        Log.i("LoginService", "Login service created");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("LoginService", "performing onStartCommand");
-        if (prefNeedPersistence)
-            showPersistentNotification();
+        showNotificationOrStop();
         return 1;
     }
 
@@ -86,6 +86,25 @@ public class LoginService extends Service {
     /**
      * Other functions and classes
      */
+
+    /*
+     * Show a notification if possible else stop service
+     */
+    void showNotificationOrStop() {
+        prefNeedPersistence = preferences.getBoolean(SettingsActivity.KEY_PERSISTENCE, SettingsActivity.DEFAULT_KEY_PERSISTENCE);
+        mNotificationManager = (NotificationManager) getSystemService(
+                NOTIFICATION_SERVICE);
+
+        //Only show expanding notification after version 16 i.e Jelly Bean
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            if (prefNeedPersistence) {
+                showPersistentNotification();
+            }
+        } else {
+            //XXX: Stop service only because we can't show notification right
+            stopService(new Intent(this, LoginService.class));
+        }
+    }
 
     /**
      * Show a notification while this service is running.
