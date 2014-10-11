@@ -6,5 +6,6 @@
     android:gravity="center"
     android:singleLine="true"
     android:textColor="@color/grey"
+    android:background="@color/blue"
     android:textSize="8pt" />
 
