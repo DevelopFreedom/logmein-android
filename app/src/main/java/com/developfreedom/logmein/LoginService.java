@@ -123,8 +123,8 @@ public class LoginService extends Service {
                 .setOngoing(true)
                 //.setAutoCancel(true)
                 //.setStyle(new Notification.BigTextStyle().bigText(longText))
-                .addAction(R.drawable.ic_launcher, "Login", contentLoginIntent)
-                .addAction(R.drawable.ic_launcher, "Logout", contentLogoutIntent)
+                .addAction(R.drawable.notif_button_login, "Login", contentLoginIntent)
+                .addAction(R.drawable.notif_button_logout, "Logout", contentLogoutIntent)
                 .build();
         mNotificationManager.notify(0, notif);
     }
