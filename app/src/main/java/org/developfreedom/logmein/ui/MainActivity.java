@@ -257,6 +257,7 @@ public class MainActivity extends ActionBarActivity {
                 user_list = databaseEngine.userList();
                 adapter = new ArrayAdapter<String>(this, org.developfreedom.logmein.R.layout.spinner_layout, user_list);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinner_user_list.setAdapter(adapter);
                 spinnerUpdateFlag = true;
                 spinner_user_list.setSelection(pos);
