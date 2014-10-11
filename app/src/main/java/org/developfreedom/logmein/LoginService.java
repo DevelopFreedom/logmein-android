@@ -18,7 +18,7 @@
  *   You should have received a copy of the GNU General Public License
  *   along with LogMeIn.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.developfreedom.logmein;
+package org.developfreedom.logmein;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -31,8 +31,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.developfreedom.logmein.ui.MainActivity;
-import com.developfreedom.logmein.ui.SettingsActivity;
+import org.developfreedom.logmein.ui.MainActivity;
+import org.developfreedom.logmein.ui.SettingsActivity;
 
 public class LoginService extends Service {
 

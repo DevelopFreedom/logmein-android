@@ -17,7 +17,7 @@
  *   along with LogMeIn.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.developfreedom.logmein.ui;
+package org.developfreedom.logmein.ui;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -27,8 +27,6 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
-
-import com.developfreedom.logmein.R;
 
 import java.util.List;
 
@@ -81,13 +79,13 @@ public class SettingsActivity extends PreferenceActivity {
         // use the older PreferenceActivity APIs.
 
         // Add 'general' preferences.
-        addPreferencesFromResource(R.xml.pref_general);
+        addPreferencesFromResource(org.developfreedom.logmein.R.xml.pref_general);
 
         // Add 'notifications' preferences, and a corresponding header.
         PreferenceCategory fakeHeader = new PreferenceCategory(this);
-        fakeHeader.setTitle(R.string.pref_header_notifications);
+        fakeHeader.setTitle(org.developfreedom.logmein.R.string.pref_header_notifications);
         getPreferenceScreen().addPreference(fakeHeader);
-        addPreferencesFromResource(R.xml.pref_notification);
+        addPreferencesFromResource(org.developfreedom.logmein.R.xml.pref_notification);
 
     }
 
@@ -123,7 +121,7 @@ public class SettingsActivity extends PreferenceActivity {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void onBuildHeaders(List<Header> target) {
         if (!isSimplePreferences(this)) {
-            loadHeadersFromResource(R.xml.pref_headers, target);
+            loadHeadersFromResource(org.developfreedom.logmein.R.xml.pref_headers, target);
         }
     }
 
@@ -136,7 +134,7 @@ public class SettingsActivity extends PreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_general);
+            addPreferencesFromResource(org.developfreedom.logmein.R.xml.pref_general);
         }
     }
 
@@ -149,7 +147,7 @@ public class SettingsActivity extends PreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_notification);
+            addPreferencesFromResource(org.developfreedom.logmein.R.xml.pref_notification);
         }
     }
 }

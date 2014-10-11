@@ -20,7 +20,7 @@
  *   along with LogMeIn.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.developfreedom.logmein.ui;
+package org.developfreedom.logmein.ui;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -46,10 +46,9 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.developfreedom.logmein.DatabaseEngine;
-import com.developfreedom.logmein.LoginService;
-import com.developfreedom.logmein.NetworkEngine;
-import com.developfreedom.logmein.R;
+import org.developfreedom.logmein.DatabaseEngine;
+import org.developfreedom.logmein.LoginService;
+import org.developfreedom.logmein.NetworkEngine;
 
 import java.util.ArrayList;
 
@@ -85,30 +84,30 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(org.developfreedom.logmein.R.layout.activity_main);
 
         networkEngine = NetworkEngine.getInstance(this);
         databaseEngine = DatabaseEngine.getInstance(this);
 
         preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
 
-        button_login = (ImageButton) findViewById(R.id.button_login);
+        button_login = (ImageButton) findViewById(org.developfreedom.logmein.R.id.button_login);
         button_login.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 login();
             }
         });
 
-        button_logout = (ImageButton) findViewById(R.id.button_logout);
+        button_logout = (ImageButton) findViewById(org.developfreedom.logmein.R.id.button_logout);
         button_logout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 logout();
             }
         });
 
-        button_web = (ImageButton) findViewById(R.id.button_web);
+        button_web = (ImageButton) findViewById(org.developfreedom.logmein.R.id.button_web);
 
-        button_del = (Button ) findViewById(R.id.button_del);
+        button_del = (Button ) findViewById(org.developfreedom.logmein.R.id.button_del);
         button_del.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(getSelectedUsername() == null){
@@ -123,7 +122,7 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        button_add = (Button) findViewById(R.id.button_add);
+        button_add = (Button) findViewById(org.developfreedom.logmein.R.id.button_add);
         button_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -133,7 +132,7 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        button_edit = (Button ) findViewById(R.id.button_edit);
+        button_edit = (Button ) findViewById(org.developfreedom.logmein.R.id.button_edit);
         button_edit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(getSelectedUsername() == null){
@@ -150,9 +149,9 @@ public class MainActivity extends ActionBarActivity {
 
 
         user_list = databaseEngine.userList();
-        adapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, user_list);
+        adapter = new ArrayAdapter<String>(this, org.developfreedom.logmein.R.layout.spinner_layout, user_list);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinner_user_list = (Spinner) findViewById(R.id.spinner_user_list);
+        spinner_user_list = (Spinner) findViewById(org.developfreedom.logmein.R.id.spinner_user_list);
         spinner_user_list.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         spinnerUpdateFlag = false;
@@ -182,7 +181,7 @@ public class MainActivity extends ActionBarActivity {
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment()).commit();
+                    .add(org.developfreedom.logmein.R.id.container, new PlaceholderFragment()).commit();
         }
         updateHomescreenData();
 
@@ -211,26 +210,26 @@ public class MainActivity extends ActionBarActivity {
     }//end onCreate
 
     private void startAnimation() {
-        ImageView centerWheel = (ImageView)findViewById(R.id.center_wheel);
-        View infoView = findViewById(R.id.info);
-        Animation rotation = AnimationUtils.loadAnimation(this,R.anim.rotation_start);
+        ImageView centerWheel = (ImageView)findViewById(org.developfreedom.logmein.R.id.center_wheel);
+        View infoView = findViewById(org.developfreedom.logmein.R.id.info);
+        Animation rotation = AnimationUtils.loadAnimation(this, org.developfreedom.logmein.R.anim.rotation_start);
         centerWheel.startAnimation(rotation);
 
 
-        Animation slideLeft = AnimationUtils.loadAnimation(this,R.anim.slide_in_left);
+        Animation slideLeft = AnimationUtils.loadAnimation(this, org.developfreedom.logmein.R.anim.slide_in_left);
         button_logout.startAnimation(slideLeft);
 
 
-        Animation slideRight = AnimationUtils.loadAnimation(this,R.anim.slide_in_right);
+        Animation slideRight = AnimationUtils.loadAnimation(this, org.developfreedom.logmein.R.anim.slide_in_right);
         button_web.startAnimation(slideRight);
 
 
-        Animation slideTop = AnimationUtils.loadAnimation(this,R.anim.slide_in_top);
+        Animation slideTop = AnimationUtils.loadAnimation(this, org.developfreedom.logmein.R.anim.slide_in_top);
         infoView.startAnimation(slideTop);
         button_login.startAnimation(slideTop);
 
 
-        Animation slideBottom = AnimationUtils.loadAnimation(this,R.anim.slide_in_bottom);
+        Animation slideBottom = AnimationUtils.loadAnimation(this, org.developfreedom.logmein.R.anim.slide_in_bottom);
 
 
 
@@ -256,7 +255,7 @@ public class MainActivity extends ActionBarActivity {
                     pos = user_list.size() - 1;
 
                 user_list = databaseEngine.userList();
-                adapter = new ArrayAdapter<String>(this, R.layout.spinner_layout, user_list);
+                adapter = new ArrayAdapter<String>(this, org.developfreedom.logmein.R.layout.spinner_layout, user_list);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
                 spinner_user_list.setAdapter(adapter);
                 spinnerUpdateFlag = true;
@@ -299,7 +298,7 @@ public class MainActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(org.developfreedom.logmein.R.menu.main, menu);
         return true;
     }
 
@@ -309,7 +308,7 @@ public class MainActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == org.developfreedom.logmein.R.id.action_settings) {
             //TODO: Calling manage_user until we have some settings
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);

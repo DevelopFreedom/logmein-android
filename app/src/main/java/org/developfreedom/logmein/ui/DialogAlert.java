@@ -18,7 +18,7 @@
  *   along with LogMeIn.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.developfreedom.logmein.ui;
+package org.developfreedom.logmein.ui;
 
 
 import android.app.Activity;
@@ -34,7 +34,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import com.developfreedom.logmein.R;
+import org.developfreedom.logmein.R;
 
 /**
  * Created by tanjot on 19/9/14.

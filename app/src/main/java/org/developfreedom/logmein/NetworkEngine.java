@@ -19,7 +19,7 @@
  *   along with LogMeIn.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.developfreedom.logmein;
+package org.developfreedom.logmein;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -35,7 +35,7 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 
-import com.developfreedom.logmein.ui.SettingsActivity;
+import org.developfreedom.logmein.ui.SettingsActivity;
 
 public class NetworkEngine {
 
