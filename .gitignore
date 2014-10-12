@@ -43,13 +43,6 @@ Thumbs.db
 .gradle
 build/
 
-# built application files
-*.apk
-*.ap_
-
-# files for the dex VM
-*.dex
-
 # Java class files
 *.class
 
@@ -61,10 +54,6 @@ build/
 bin/
 gen/
 
-# Ignore gradle files
-.gradle/
-build/
-
 # Local configuration file (sdk path, etc)
 local.properties
 
@@ -73,12 +62,6 @@ proguard/
 
 # Eclipse Metadata
 .metadata/
-
-# Mac OS X clutter
-*.DS_Store
-
-# Windows clutter
-Thumbs.db
 
 # Intellij IDEA (see https://intellij-support.jetbrains.com/entries/23393067)
 .idea/workspace.xml
@@ -109,3 +92,6 @@ Thumbs.db
 ehthumbs.db
 Thumbs.db
 
+# Tempory files
+*~
+#*#
