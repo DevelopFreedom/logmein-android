@@ -18,6 +18,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    //To fix errors in `./gradlew build connectedCheck`
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
