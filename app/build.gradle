@@ -10,6 +10,7 @@ android {
         targetSdkVersion 19
         versionCode 60
         versionName "0.6.0"
+        testApplicationId "org.developfreedom.logmein.tests"
     }
     buildTypes {
         release {
