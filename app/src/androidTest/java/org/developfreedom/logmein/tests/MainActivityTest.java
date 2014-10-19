@@ -59,16 +59,18 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
      */
     @SmallTest
     public void testSpinnerRestoreAfterRestart() {
-        Activity firstActivity, secondActivity;
+        Activity testActivity;
         Spinner spinner_user_list;
         Object selectedItem;    //XXX: Object? What is actually returned
-        firstActivity = this.getActivity();
-        spinner_user_list = (Spinner) firstActivity.findViewById(R.id.spinner_user_list);
+        testActivity = this.getActivity();
+        spinner_user_list = (Spinner) testActivity.findViewById(R.id.spinner_user_list);
         selectedItem = spinner_user_list.getSelectedItem();
         //TODO: The spinner list may be empty
-        firstActivity.finish();
-        secondActivity = this.getActivity();
-        spinner_user_list = (Spinner) secondActivity.findViewById(R.id.spinner_user_list);
+//        testActivity.finish();
+        // make activity falling into restart phase:
+        getInstrumentation().callActivityOnRestart(testActivity);
+        testActivity = this.getActivity();
+        spinner_user_list = (Spinner) testActivity.findViewById(R.id.spinner_user_list);
         assertEquals(selectedItem, spinner_user_list.getSelectedItem());
 
     }
