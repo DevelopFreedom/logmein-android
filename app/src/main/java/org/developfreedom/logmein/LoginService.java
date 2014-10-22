@@ -31,6 +31,7 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
+import android.annotation.TargetApi;
 
 import org.developfreedom.logmein.ui.MainActivity;
 import org.developfreedom.logmein.ui.SettingsActivity;
@@ -109,6 +110,7 @@ public class LoginService extends Service {
     /**
      * Show a notification while this service is running.
      */
+    @TargetApi(16)
     private void showPersistentNotification() {
         int API = android.os.Build.VERSION.SDK_INT;//TODO: global
         if (API < 16) return;
