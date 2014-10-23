@@ -32,6 +32,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 import android.annotation.TargetApi;
+import android.content.*;
+import android.net.wifi.*;
 
 import org.developfreedom.logmein.ui.MainActivity;
 import org.developfreedom.logmein.ui.SettingsActivity;
@@ -47,6 +49,22 @@ public class LoginService extends Service {
     private SharedPreferences preferences;
     NetworkEngine networkEngine;
     DatabaseEngine databaseEngine;
+    private final BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+            String SSID =  "\"pu@campus\"";
+            if (!wifi.getConnectionInfo().getSSID().equalsIgnoreCase(SSID)) {
+                try {
+                    mNotificationManager.cancelAll();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+                return;
+            }
+            showNotificationOrStop();
+        }
+    };
 
     @Override
     public void onCreate() {
@@ -57,15 +75,17 @@ public class LoginService extends Service {
         prefNeedPersistence = preferences.getBoolean(SettingsActivity.KEY_PERSISTENCE, SettingsActivity.DEFAULT_KEY_PERSISTENCE);
         mNotificationManager = (NotificationManager) getSystemService(
                 NOTIFICATION_SERVICE);
-
-        showNotificationOrStop();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
+        registerReceiver(receiver, filter);
+//        showNotificationOrStop();
         Log.i("LoginService", "Login service created");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("LoginService", "performing onStartCommand");
-        showNotificationOrStop();
+//        showNotificationOrStop();
         return 1;
     }
 
@@ -92,10 +112,6 @@ public class LoginService extends Service {
      * Show a notification if possible else stop service
      */
     void showNotificationOrStop() {
-        prefNeedPersistence = preferences.getBoolean(SettingsActivity.KEY_PERSISTENCE, SettingsActivity.DEFAULT_KEY_PERSISTENCE);
-        mNotificationManager = (NotificationManager) getSystemService(
-                NOTIFICATION_SERVICE);
-
         //Only show expanding notification after version 16 i.e Jelly Bean
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             if (prefNeedPersistence) {
