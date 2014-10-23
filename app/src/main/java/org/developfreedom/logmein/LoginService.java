@@ -20,20 +20,22 @@
  */
 package org.developfreedom.logmein;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
-import android.annotation.TargetApi;
-import android.content.*;
-import android.net.wifi.*;
 
 import org.developfreedom.logmein.ui.MainActivity;
 import org.developfreedom.logmein.ui.SettingsActivity;
