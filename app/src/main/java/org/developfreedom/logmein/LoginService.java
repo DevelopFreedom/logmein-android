@@ -54,9 +54,7 @@ public class LoginService extends Service {
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-            String SSID =  "\"pu@campus\"";
-            if (!wifi.getConnectionInfo().getSSID().equalsIgnoreCase(SSID)) {
+            if(!isWifiLoginable()) {
                 try {
                     mNotificationManager.cancelAll();
                 }catch(Exception e){
@@ -126,6 +124,15 @@ public class LoginService extends Service {
     }
 
     /**
+     * Check if WiFi needs credentials
+     */
+    public boolean isWifiLoginable() {
+        WifiManager wifi = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
+        String SSID =  "\"pu@campus\"";
+        return wifi.getConnectionInfo().getSSID().equalsIgnoreCase(SSID);
+    }
+
+   /**
      * Show a notification while this service is running.
      */
     @TargetApi(16)
