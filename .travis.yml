@@ -3,8 +3,8 @@ android:
   components:
     # Uncomment the lines below if you want to
     # use the latest revision of Android SDK Tools
-    # - platform-tools
-    # - tools
+    - platform-tools
+    - tools
 
     # The BuildTools version used by your project
     - build-tools-21.0.0
@@ -20,9 +20,16 @@ android:
     # if you need to run emulator(s) during your tests
     - sys-img-armeabi-v7a-android-21
 
+  jdk:
+    # Check Travis JDKs http://docs.travis-ci.com/user/languages/java/#Testing-Against-Multiple-JDKs
+    # Test against one or more JDKs: 'jdk' is combined with 'env' to construct a build matrix.
+    # - openjdk7
+    - oraclejdk7
+
+
 # Emulator Management: Create, Start and Wait
 before_script:
   - echo no | android create avd --force -n test -t android-21 --abi armeabi-v7a
   - emulator -avd test -no-skin -no-audio -no-window &
-  - android-wait-for-emulator
+  - ./android-wait-for-emulator
   - adb shell input keyevent 82 &
