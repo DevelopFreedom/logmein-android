@@ -54,7 +54,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     }
 */
 
-    /*
+    /**
      * Test that the spinner has the same item selected even after restart
      */
     @SmallTest

@@ -37,29 +37,38 @@ import android.widget.EditText;
 import org.developfreedom.logmein.R;
 
 /**
- * Created by tanjot on 19/9/14.
+ * TODO: Class Documentation
  */
 public class DialogAlert extends DialogFragment{
-/*Interface has been used to return response from this dialog to the calling activity
-* The Calling activity implements these functions */
+    /**
+     * Interface has been used to return response from
+     * this dialog to the calling activity.
+     * The Calling activity implements these functions.
+     */
     public interface ReturnDialogMessage{
         public void onClickPositive(String username,String password);
         public void onClickNegative();
     }
     ReturnDialogMessage returnDialogMessage;
 
-
+    //TODO: Mark proper visibilities of variables
     AlertDialog.Builder builder;
     Button button_update, button_cancel;
-    EditText textbox_username = null, textbox_password = null;
+    EditText textbox_username = null;
+    EditText textbox_password = null;
     CheckBox cb_show_pwd;
-    String username="",password="";
+    String username="";
+    String password="";
     View v;
+    /** TODO: Documentation for flag */
     Boolean initialized_flag;
-    /*Default string if no strings are set by user*/
+    /** Default title string if no strings are set by user */
     String title = "Alert!!!";//""+R.string.alert_title;
+    /** Default message string if no strings are set by user */
     String message = "Do you want to proceed";//""+R.string.alert_message;
+    /** Default pmstring if no strings are set by user */
     String positive_message = "YES";//""+R.string.alert_positive_message;
+    /** Default nm string if no strings are set by user */
     String negative_message = "NO";//""+R.string.alert_negative_message;
 
     // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
@@ -77,7 +86,16 @@ public class DialogAlert extends DialogFragment{
         }
     }
 
-   //You can set title,message and positive and negative button strings as per your requirement
+
+    /**
+     * You can set title,message and positive and negative button strings as per your requirement
+     * <p>
+     * TODO: Formal Documentation
+     * @param tit
+     * @param msg
+     * @param pos_msg
+     * @param neg_msg
+     */
     public void setAlertStrings(String tit, String msg,String pos_msg, String neg_msg){
         this.title = tit;
         this.message = msg;
@@ -85,11 +103,19 @@ public class DialogAlert extends DialogFragment{
         this.negative_message = neg_msg;
     }
 
+    /**
+     * TODO: Documentation
+     * @param username
+     * @param password
+     */
     public void fill_textboxes(String username, String password){
         this.username = username;
         this.password = password;
     }//end of fill_textboxes
 
+    /**
+     * TODO: Documentation
+     */
     public void initialize(){
         builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
@@ -150,6 +176,9 @@ public class DialogAlert extends DialogFragment{
 
         }
 
+    /**
+     * TODO: Documentation
+     */
     public void show_password() {
         if (cb_show_pwd.isChecked()) {
             textbox_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());

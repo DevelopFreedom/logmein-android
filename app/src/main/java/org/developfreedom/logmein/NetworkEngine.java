@@ -28,6 +28,8 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.developfreedom.logmein.ui.SettingsActivity;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -35,10 +37,14 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 
-import org.developfreedom.logmein.ui.SettingsActivity;
-
+/**
+ * Network Engine is the main interface used to perform network tasks
+ * like login, logout etc.
+ * <p>
+ */
 public class NetworkEngine {
 
+    /** The url where login request will be posted */
     public String BASE_URL = "http://172.16.4.201/cgi-bin/login";
     private static NetworkEngine instance = null;
     private static int use_count = 0;   //like semaphores
@@ -48,7 +54,13 @@ public class NetworkEngine {
         m_context = context;
     }
 
-    // Singleton method with lazy initialization.
+
+    /**
+     * Singleton method with lazy initialization.
+     * Desired way to create/access the Engine object
+     * @param context Context in which the notification and toasts will be displayed.
+     * @return Reference to singleton object of Engine
+     */
     public static synchronized NetworkEngine getInstance(Context context) {
         if (instance == null) {
             instance = new NetworkEngine(context);
@@ -57,6 +69,14 @@ public class NetworkEngine {
         return instance;
     }
 
+    /**
+     * Start the login task in a background task
+     * @param context to display toasts
+     * @param username the data for username field
+     * @param password the data for password field
+     * @return enum StatusCode explaining the situation
+     * @throws Exception
+     */
     public StatusCode login(final Context context, String username, final String password) throws Exception {
         NetworkTask longRunningTask = new NetworkTask(context) {
             @Override
@@ -75,18 +95,37 @@ public class NetworkEngine {
         return longRunningTask.return_status;
     }
 
+    /**
+     * Start the login task in a background task with default/old context
+     * @param username the data for username field
+     * @param password the data for password field
+     * @return enum StatusCode explaining the situation
+     * @throws Exception
+     */
     public StatusCode login(final String username, final String password) throws Exception {
         NetworkTask longRunningTask = new NetworkTask(m_context);
         longRunningTask.execute("login", username, password);
         return longRunningTask.return_status;
     }
 
+    /**
+     * Perform logout in a background thread
+     * @return
+     * @throws Exception
+     */
     public NetworkEngine.StatusCode logout() throws Exception {
         NetworkTask longRunningTask = new NetworkTask(m_context);
         longRunningTask.execute("logout");
         return longRunningTask.return_status;
     }
 
+    /**
+     * TODO: Documentation
+     * @param username
+     * @param password
+     * @return
+     * @throws Exception
+     */
     private StatusCode login_runner(String username, String password) throws Exception {
         if (username == null || password == null) {
             Log.wtf("Error", "Either username or password is null");
@@ -145,6 +184,11 @@ public class NetworkEngine {
         return returnStatus;
     }
 
+    /**
+     * TODO: Documentation
+     * @return
+     * @throws Exception
+     */
     private NetworkEngine.StatusCode logout_runner() throws Exception {
         System.out.println("Loggin out");
         URL puServerUrl = new URL(BASE_URL+"?cmd=logout");
@@ -177,6 +221,11 @@ public class NetworkEngine {
         return returnStatus;
     }
 
+    /**
+     * TODO: Documentation
+     * @param status
+     * @return
+     */
     public String get_status_text(StatusCode status) {
         String outputText;    //To be shown in User Text Box
         if (status == NetworkEngine.StatusCode.LOGIN_SUCCESS) {
@@ -204,13 +253,19 @@ public class NetworkEngine {
         return outputText;
     }
 
-    //Class Variables
+    /* Class Variables */
+    /**
+     * A collection of various situations that might occur in Engine
+     */
     public enum StatusCode {
         LOGIN_SUCCESS, AUTHENTICATION_FAILED, MULTIPLE_SESSIONS,
         CREDENTIAL_NONE, LOGOUT_SUCCESS, NOT_LOGGED_IN, LOGGED_IN,
         CONNECTION_ERROR,
     }
 
+    /**
+     * @return the username selected in the spinner via preferences
+     */
     public String getSelectedUsername() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(m_context);
         return preferences.getString(SettingsActivity.KEY_CURRENT_USERNAME,SettingsActivity.DEFAULT_KEY_CURRENT_USERNAME);
@@ -220,6 +275,11 @@ public class NetworkEngine {
 */
     }
 
+    /**
+     * NetworkTask is an AsyncTask that can run in background
+     * and is capable of sending login and logout requests without
+     * blocking the main thread.
+     */
     public class NetworkTask extends AsyncTask<String, Void, StatusCode> {
         String username, password;
         StatusCode return_status;

@@ -39,10 +39,11 @@ import org.developfreedom.logmein.R;
 import org.developfreedom.logmein.UserStructure;
 
 /**
- * Created by tanjot on 4/10/14.
+ * TODO: Class Documentation
  */
 public class ManagerUserServices {
 
+    //TODO: Check and mark proper visibilities
     Context context;
     DatabaseEngine databaseEngine;
     String username;
@@ -50,7 +51,9 @@ public class ManagerUserServices {
     View v;
     EditText textbox_username = null, textbox_password = null;
     CheckBox cb_show_pwd;
+    /** TODO: Documentation for updated flag */
     Boolean updated;
+    /** TODO: Documentation for changed_username */
     String changed_username;
 
     ManagerUserServices(Context context){
@@ -59,6 +62,10 @@ public class ManagerUserServices {
         changed_username = "";
     }
 
+    /**
+     * TODO: Documentation
+     * @param inflater
+     */
     public void initialise(LayoutInflater inflater){
         v = inflater.inflate(R.layout.alert_dialog, null);
 
@@ -74,6 +81,12 @@ public class ManagerUserServices {
         });
     }
 
+    /**
+     * TODO: Documentation
+     * @param un
+     * @param pwd
+     * @return
+     */
     public boolean add_update(String un,String pwd){
 
         if( un.trim().isEmpty()){
@@ -96,6 +109,11 @@ public class ManagerUserServices {
         }
     }
 
+    /**
+     * TODO: Documentation
+     * @param userStructure
+     * @return
+     */
     boolean saveCredential(UserStructure userStructure) {
 
         if(!databaseEngine.existsUser(userStructure.getUsername())){
@@ -114,6 +132,11 @@ public class ManagerUserServices {
 
     }//end saveCredential
 
+    /**
+     * TODO: Documentation
+     * @param userStructure
+     * @return
+     */
     public boolean updateCredentials(UserStructure userStructure){
         int i = databaseEngine.updateUser(userStructure, username);
         if (i == 1) {
@@ -132,6 +155,12 @@ public class ManagerUserServices {
 
     }//end of updateCredentials
 
+    /**
+     * TODO: Documentation
+     * @param un
+     * @param inflater
+     * @return
+     */
     public Dialog update(String un,LayoutInflater inflater){
         this.username = un;
         initialise(inflater);
@@ -168,6 +197,11 @@ public class ManagerUserServices {
         return dialog;
     }//end of edit
 
+    /**
+     * TODO: Documentation
+     * @param inflater
+     * @return
+     */
     public Dialog add(LayoutInflater inflater){
         initialise(inflater);
 
@@ -198,6 +232,12 @@ public class ManagerUserServices {
         });
         return dialog;
     }
+
+    /**
+     * TODO: Documentation
+     * @param un
+     * @return
+     */
     public Dialog delete(String un) {
         this.username = un;
         AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
@@ -228,6 +268,9 @@ public class ManagerUserServices {
     return dialog;
     }
 
+    /**
+     * TODO: Documentation
+     */
     public void show_password() {
         if (cb_show_pwd.isChecked()) {
             textbox_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());

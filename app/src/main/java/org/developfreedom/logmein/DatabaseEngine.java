@@ -33,11 +33,17 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+/**
+ * DatabaseEngine is the main interface that must be used to perform
+ * any database related task like adding, deleting, updating users.
+ * <p>
+ * The main motive is to abstract away all the nitty gritty database
+ * stuff for simpler cleaner high level access.
+ */
 public class DatabaseEngine {
     // Singleton method with lazy initialization.
     private static DatabaseEngine instance = null;
 
-    ;
     private static int use_count = 0;   //like semaphores
     Context context;
     SQLiteOpenHelper myDatabaseHelper;
@@ -49,6 +55,12 @@ public class DatabaseEngine {
         this.myDatabaseHelper = new DatabaseOpenHelper(this.context);
     }
 
+    /**
+     * Singleton method with lazy initialization.
+     * Desired way to create/access the Engine object
+     * @param context Context in which the notification and toasts will be displayed.
+     * @return Reference to singleton object of Engine
+     */
     public static synchronized DatabaseEngine getInstance(Context context) {
         if (instance == null) {
             instance = new DatabaseEngine(context);
@@ -57,6 +69,11 @@ public class DatabaseEngine {
         return instance;
     }
 
+    /**
+     * Insert a new user in Database using UserStructure us
+     * @param us
+     * @return
+     */
     public boolean insert(UserStructure us){
         SQLiteDatabase db = myDatabaseHelper.getWritableDatabase();
 
@@ -74,8 +91,14 @@ public class DatabaseEngine {
         return true;
     }
 
-    //TODO: this function looks like shit
+
+    /**
+     * TODO: Documentation
+     * @param username
+     * @param password
+     */
     public void saveToDatabase(String username, String password) {
+        //TODO: this function looks like shit
         try {
             //make a db connect to it add values to it (next task)
             //WTH
@@ -102,6 +125,10 @@ public class DatabaseEngine {
         }
     }
 
+    /**
+     * TODO: Documentation
+     * @return
+     */
     public boolean isUserListEmpty(){
         if(userList().isEmpty()){
             return true;
@@ -109,8 +136,9 @@ public class DatabaseEngine {
         return false;
     }
 
-    /*
-     * return list of all the users in database
+    /**
+     * List of all the users in database
+     * @return ArrayList
      */
     public ArrayList<String> userList() {
         ArrayList<String> user_list = new ArrayList<String>();
@@ -132,8 +160,10 @@ public class DatabaseEngine {
         return user_list;
     }
 
-    /*
-     * delete the user with username as passed
+    /**
+     * Delete the user with id number passed
+     * @param uid
+     * @return
      */
     int deleteUser(int uid) {
         //TODO
@@ -141,8 +171,10 @@ public class DatabaseEngine {
         return -1;
     }
 
-    /*
-     * delete the user with id number passed
+    /**
+     * Delete the user with username as passed
+     * @param username
+     * @return
      */
     public boolean deleteUser(String username) {
         //Delete userid from database
@@ -160,7 +192,11 @@ public class DatabaseEngine {
         return false;
     }
 
-    //TODO: Move to one common function
+    /**
+     * Get the username/password of user with given name un
+     * @param un
+     * @return
+     */
     public UserStructure getUsernamePassword(String un) {
         UserStructure user = null;
         try {
@@ -194,6 +230,11 @@ public class DatabaseEngine {
         return (user);
     }//end of getUsernamePassword(String)
 
+    /**
+     * Check if a given user exists in database
+     * @param username
+     * @return boolean true false
+     */
     public boolean existsUser(String username){
       try{
         ArrayList users = userList();
@@ -210,6 +251,12 @@ public class DatabaseEngine {
       return false;
     }//end of existsUser(String)
 
+    /**
+     * TODO: Documentation
+     * @param user
+     * @param oldname
+     * @return
+     */
     public int updateUser(UserStructure user, String oldname) {
         database = myDatabaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -223,6 +270,10 @@ public class DatabaseEngine {
     }//end of updateUser(UserStructure)
 
     //Class Variables
+
+    /**
+     * A collection of various situations that might occur in Engine
+     */
     public enum StatusCode {
         //TODO: Add more meaning full Status Codes
         DB_EMPTY, DB_DELETE_SUCCESS

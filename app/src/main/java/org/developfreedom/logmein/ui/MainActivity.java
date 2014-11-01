@@ -52,10 +52,16 @@ import org.developfreedom.logmein.NetworkEngine;
 
 import java.util.ArrayList;
 
+/**
+ * The main activity which contains all the UI elements.
+ * <p>
+ * It is based upon the {@link ActionBarActivity}
+ */
 public class MainActivity extends ActionBarActivity {
     /* Engines */
     NetworkEngine networkEngine;
     DatabaseEngine databaseEngine;
+    //TODO: Mark proper visibilities
     ///Class Variables
     Button button_edit;
     Button button_del;
@@ -209,34 +215,35 @@ public class MainActivity extends ActionBarActivity {
 
     }//end onCreate
 
+    /**
+     * Start all the animations
+     */
     private void startAnimation() {
         ImageView centerWheel = (ImageView)findViewById(org.developfreedom.logmein.R.id.center_wheel);
         View infoView = findViewById(org.developfreedom.logmein.R.id.info);
         Animation rotation = AnimationUtils.loadAnimation(this, org.developfreedom.logmein.R.anim.rotation_start);
         centerWheel.startAnimation(rotation);
 
-
         Animation slideLeft = AnimationUtils.loadAnimation(this, org.developfreedom.logmein.R.anim.slide_in_left);
         button_logout.startAnimation(slideLeft);
 
-
         Animation slideRight = AnimationUtils.loadAnimation(this, org.developfreedom.logmein.R.anim.slide_in_right);
         button_web.startAnimation(slideRight);
-
 
         Animation slideTop = AnimationUtils.loadAnimation(this, org.developfreedom.logmein.R.anim.slide_in_top);
         infoView.startAnimation(slideTop);
         button_login.startAnimation(slideTop);
 
-
         Animation slideBottom = AnimationUtils.loadAnimation(this, org.developfreedom.logmein.R.anim.slide_in_bottom);
-
-
-
-
-
     }
 
+    /**
+     * Update the username data in main screen.
+     * <p>
+     * The main need for this is when a particular user is deleted
+     * in a dialog box, then the main screen should reflect that
+     * change.
+     */
     public void updateHomescreenData() {
         Log.d("Main","Updating Home Screen"+spinnerUpdateFlag);
         int pos = spinner_user_list.getSelectedItemPosition();
@@ -291,13 +298,16 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    /**
+     * Get the selected username from the spinner
+     * @return String
+     */
     public String getSelectedUsername() {
         return (String) spinner_user_list.getSelectedItem();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(org.developfreedom.logmein.R.menu.main, menu);
         return true;
@@ -318,11 +328,18 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Show text on home-screen textview
+     * @param text
+     */
     void showText(String text) {
         //int scroll_amount = (int) (outputTextView.getLineCount() * outputTextView.getLineHeight()) - (outputTextView.getBottom() - outputTextView.getTop());
         //outputTextView.scrollTo(0, scroll_amount);
     }
 
+    /**
+     * Perform login task
+     */
     void login() {
         if(getSelectedUsername() == null){
             Toast.makeText(MainActivity.this,"User List is empty",Toast.LENGTH_SHORT).show();
@@ -347,6 +364,9 @@ public class MainActivity extends ActionBarActivity {
         }
     }//end login
 
+    /**
+     * Perform logout task
+     */
     void logout() {
         NetworkEngine.StatusCode status = null;
         Log.d("logout", "Insiede Logout");
@@ -357,6 +377,10 @@ public class MainActivity extends ActionBarActivity {
         }
     }//end logout
 
+    /**
+     * Send an intent to start the default web browser.
+     * @param v
+     */
     public void launch_browser(View v) {
         startActivity(new Intent(Intent.ACTION_VIEW,
                 Uri.parse("http://www.google.com")));
@@ -371,6 +395,11 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    /**
+     * TODO: Documentation
+     * @param dialog
+     * @param pos
+     */
     public void dialogDismissUpdater(Dialog dialog, final int pos){
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override

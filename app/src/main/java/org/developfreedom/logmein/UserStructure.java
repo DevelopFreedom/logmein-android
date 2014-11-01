@@ -24,22 +24,42 @@ package org.developfreedom.logmein;
 
 import java.io.Serializable;
 
+/**
+ * DataStructure used to pass user information safely
+ * b/w functions and classes.
+ */
 public class UserStructure implements Serializable {
     String username;
     String password;
 
+    /**
+     * Get this user's username
+     * @return
+     */
     public String getUsername() {
         return (username);
     }//end of getUsername()
 
+    /**
+     * Set this user's username to un
+     * @param un
+     */
     public void setUsername(String un) {
         username = un;
     }//end of setUsername(String)
 
+    /**
+     * Get this user's password
+     * @return
+     */
     public String getPassword() {
         return (password);
     }//end of getPassword()
 
+    /**
+     * Set this user's password to pwd
+     * @param pwd
+     */
     public void setPassword(String pwd) {
         password = pwd;
     }//end of set_password(String)

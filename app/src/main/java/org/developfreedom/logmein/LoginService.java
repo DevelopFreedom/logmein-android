@@ -40,12 +40,17 @@ import android.widget.Toast;
 import org.developfreedom.logmein.ui.MainActivity;
 import org.developfreedom.logmein.ui.SettingsActivity;
 
+/**
+ * Login Service runs in background to manage various tasks like
+ * handling the backend checks for wifi connection, for notification etc.
+ * <p>
+ * TODO: More Documentation
+ */
 public class LoginService extends Service {
 
+    /** Notification ID used throughout */
     private final int ID = 2603;    //TODO: ID used for showing notification not unique
-    /**
-     * For showing and hiding our notification.
-     */
+    /** For showing and hiding our notification. */
     private NotificationManager mNotificationManager;
     private boolean prefNeedPersistence;
     private SharedPreferences preferences;
@@ -104,11 +109,11 @@ public class LoginService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    /**
+    /*
      * Other functions and classes
      */
 
-    /*
+    /**
      * Show a notification if possible else stop service
      */
     void showNotificationOrStop() {
@@ -125,6 +130,7 @@ public class LoginService extends Service {
 
     /**
      * Check if WiFi needs credentials
+     * @return true if credentials needed
      */
     public boolean isWifiLoginable() {
         WifiManager wifi = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
@@ -175,6 +181,9 @@ public class LoginService extends Service {
         mNotificationManager.notify(0, notif);
     }
 
+    /**
+     * TODO: Documentation
+     */
     void login() {
         NetworkEngine.StatusCode status = null;
         Log.d("Service", "Insiide Login");
@@ -197,6 +206,9 @@ public class LoginService extends Service {
         }
     }//end login
 
+    /**
+     * TODO: Documentation
+     */
     void logout() {
         NetworkEngine.StatusCode status = null;
         Log.d("Service", "Insiede Logout");
