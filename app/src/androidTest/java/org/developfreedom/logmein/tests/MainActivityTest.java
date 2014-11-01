@@ -24,7 +24,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     ImageButton button_logout;
 
     public MainActivityTest() {
-        super("org.developfreedom.logmein.ui", MainActivity.class);
+        super(MainActivity.class);
     }
 
     @Override
@@ -69,7 +69,9 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 //        testActivity.finish();
         // make activity falling into restart phase:
         getInstrumentation().callActivityOnRestart(testActivity);
-        testActivity = this.getActivity();
+
+        testActivity.finish(); // old activity instance is destroyed and shut down.
+        testActivity = getActivity(); // new activity instance is launched and created.
         spinner_user_list = (Spinner) testActivity.findViewById(R.id.spinner_user_list);
         assertEquals(selectedItem, spinner_user_list.getSelectedItem());
 
