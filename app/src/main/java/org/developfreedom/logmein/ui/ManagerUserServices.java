@@ -165,8 +165,8 @@ public class ManagerUserServices {
         this.username = un;
         initialise(inflater);
         textbox_username.setText(un);
-        UserStructure us = databaseEngine.getUsernamePassword(un);
-        textbox_password.setText(us.getPassword());
+        final UserStructure us = databaseEngine.getUsernamePassword(un);
+        textbox_password.setHint("(unchanged)");
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
@@ -189,7 +189,15 @@ public class ManagerUserServices {
             @Override
             public void onClick(View view) {
                 add_update = false;
-                if(add_update(textbox_username.getText().toString(),textbox_password.getText().toString())){
+                if(textbox_password.getText().toString().isEmpty()){
+                    if(textbox_username.getText().toString() != us.getUsername()){
+                        if(add_update(textbox_username.getText().toString(), us.getPassword())){
+                            dialog.dismiss();
+                        }
+                    }else{
+                        dialog.dismiss();
+                    }
+                }else if(add_update(textbox_username.getText().toString(),textbox_password.getText().toString())){
                     dialog.dismiss();
                 }
             }
