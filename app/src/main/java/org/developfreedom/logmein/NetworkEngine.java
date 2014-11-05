@@ -34,8 +34,18 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
 /**
  * Network Engine is the main interface used to perform network tasks
@@ -46,6 +56,8 @@ public class NetworkEngine {
 
     /** The url where login request will be posted */
     public String BASE_URL = "http://172.16.4.201/cgi-bin/login";
+    public String mUsernameField = "username";
+    public String mPasswordField = "password";
     private static NetworkEngine instance = null;
     private static int use_count = 0;   //like semaphores
     Context m_context;
@@ -132,7 +144,7 @@ public class NetworkEngine {
             return StatusCode.CREDENTIAL_NONE;
         }
         //System.out.println("Loggin in with "+username+password);
-        String urlParameters = "user=" + username + "&password=" + password; // "param1=a&param2=b&param3=c";
+        String urlParameters = mUsernameField + "=" + username + "&" + mPasswordField + "=" + password; // "param1=a&param2=b&param3=c";
 
         String request = BASE_URL;
         URL puServerUrl = new URL(request);
@@ -159,9 +171,8 @@ public class NetworkEngine {
         StatusCode returnStatus = null;
 
         String lineBuffer;
-        BufferedReader htmlBuffer = null; //FIXME Null pointer exceptions eminent, May the forth be with you!!!
         try {
-            htmlBuffer = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
+            BufferedReader htmlBuffer = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
             while (((lineBuffer = htmlBuffer.readLine()) != null) && returnStatus == null) {
                 if (lineBuffer.contains("External Welcome Page")) {
                     Log.d("NetworkEngine", "External Welcome Match");
@@ -291,11 +302,15 @@ public class NetworkEngine {
 
         @Override
         protected StatusCode doInBackground(String... input_strings) {
+
             String operation = input_strings[0];
             try {
                 if (operation.equals("login")) {
                     username = input_strings[1];
                     password = input_strings[2];
+                    BASE_URL = extractBaseUrl();
+                    Log.d("NetworkEngine", "Base URL : " + BASE_URL);
+                    extractParameters(BASE_URL);
                     return_status = login_runner(username, password);
                 } else if (operation.equals("logout")) {
                     return_status = logout_runner();
@@ -313,6 +328,95 @@ public class NetworkEngine {
                     get_status_text(status),
                     Toast.LENGTH_SHORT
             ).show();
+        }
+
+        /**
+         * Extracts the login URL of the network
+         * @return String containing the login URL of that network
+         */
+        private String extractBaseUrl() throws IOException {
+            String googleUrl = "http://www.google.com";
+            String tryUrl = googleUrl;
+            HashMap content;
+            content = httpRequest(tryUrl);
+            while(content != null && (Integer)content.get("responseCode") != 200){
+                tryUrl = content.get("location").toString();
+                content = httpRequest(tryUrl);
+            }
+            if(content == null){
+                return null;
+            }
+            //Got 200! Now check if it has redirection js or not!!![local server page]
+            String pattern = "/http:\\/\\/[(\\d+\\.)]+(?:(?![\"']).)*/g";
+            Pattern r = Pattern.compile(pattern);
+            Matcher m = r.matcher(content.get("html").toString());
+            if(m.find()){
+                return m.group(0);
+            }else{
+                return tryUrl; //No url type http://123.123.123.123/something?=/anythingTill" found
+            }
+        }
+
+        /**
+         * Extract the first two input type field from form
+         * @param url
+         * @throws IOException
+         */
+        private void extractParameters(String url) throws IOException{
+            HashMap content;
+            content = httpRequest(url);
+            String pattern = "<form((.+)+(\\s)+)+?<\\/form>";
+            Pattern r = Pattern.compile(pattern);
+            Matcher m = r.matcher(content.get("html").toString());
+            if(!m.find()){
+                Log.d("NetworkEngine", "Form not found!!");
+                return;
+            }
+            Log.i("NetworkEngine","Form found successfully!!");
+            String form;
+            form = m.group(0);
+            Document doc = Jsoup.parse(form);
+            Elements fields = doc.getElementsByTag("input");
+            Log.d("NetworkEngine", "No. of input fields = " + fields.size());
+            if(fields.size() < 2){
+                return;
+            }
+            mUsernameField = fields.get(0).attr("name");
+            mPasswordField = fields.get(1).attr("name");
+            Log.d("NetworkEngine", "Username Field: " + mUsernameField + "Password Field: " + mPasswordField);
+        }
+
+        /**
+         * Sends the http request to the specified url and checks whether we are being redirected or not
+         * @param url : URL to send http Request
+         * @return hashmap containing response code and source code of that page if no redirection
+         * @return else hashmap with response code and URL which we are redirected to
+         * @throws IOException
+         */
+        public HashMap httpRequest (String url) throws IOException{
+            URL urlObj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) urlObj.openConnection();
+            con.setInstanceFollowRedirects(false);
+            con.connect();
+
+            HashMap hm = new HashMap();
+            int responseCode = con.getResponseCode();
+            if (responseCode == 200) {
+                InputStream is = con.getInputStream();
+                BufferedReader bf = new BufferedReader(new InputStreamReader(is));
+                String line, source="";
+                while ((line = bf.readLine()) != null) {
+                    source += line + "\n";
+                }
+                hm.put("responseCode", responseCode);
+                hm.put("html",source);
+                return hm;
+            }else if (responseCode == 301 || responseCode == 302) {
+                hm.put("responseCode", responseCode);
+                hm.put("location", con.getHeaderField("Location"));
+                return hm;
+            }
+            return null;
         }
     }
 }
