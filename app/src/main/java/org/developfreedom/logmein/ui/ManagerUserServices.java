@@ -39,41 +39,33 @@ import org.developfreedom.logmein.R;
 import org.developfreedom.logmein.UserStructure;
 
 /**
- * TODO: Class Documentation
+ * Provides services for managing the user information in database
  */
 public class ManagerUserServices {
 
-    //TODO: Check and mark proper visibilities
-    Context context;
-    DatabaseEngine databaseEngine;
-    String username;
-    Boolean add_update;
-    View v;
-    EditText textbox_username = null, textbox_password = null;
-    CheckBox cb_show_pwd;
-    /** TODO: Documentation for updated flag */
-    Boolean updated;
-    /** TODO: Documentation for changed_username */
-    String changed_username;
+    private Context mContext;
+    private DatabaseEngine mDatabaseEngine;
+    private String mUsername;
+    private Boolean flagAddUpdate;
+    private View mView;
+    private EditText mTextboxUsername = null, mTextboxPassword = null;
+    private CheckBox mChbShowPwd;
 
     ManagerUserServices(Context context){
-        this.context = context;
-        databaseEngine = DatabaseEngine.getInstance(this.context);
-        changed_username = "";
+        this.mContext = context;
+        mDatabaseEngine = DatabaseEngine.getInstance(this.mContext);
     }
 
     /**
-     * TODO: Documentation
+     * Method to initialize field values for the dialog layout
      * @param inflater
      */
-    public void initialise(LayoutInflater inflater){
-        v = inflater.inflate(R.layout.alert_dialog, null);
-
-        textbox_username = (EditText) v.findViewById(R.id.edit_username);
-        textbox_password = (EditText) v.findViewById(R.id.edit_password);
-        cb_show_pwd = (CheckBox) v.findViewById(R.id.cb_show_password);
-
-        cb_show_pwd.setOnClickListener(new View.OnClickListener() {
+    private void initialize(LayoutInflater inflater){
+        mView = inflater.inflate(R.layout.alert_dialog, null);
+        mTextboxUsername = (EditText) mView.findViewById(R.id.edit_username);
+        mTextboxPassword = (EditText) mView.findViewById(R.id.edit_password);
+        mChbShowPwd = (CheckBox) mView.findViewById(R.id.cb_show_password);
+        mChbShowPwd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 show_password();
@@ -82,19 +74,19 @@ public class ManagerUserServices {
     }
 
     /**
-     * TODO: Documentation
+     * Performs tasks similar for both add and update methods
      * @param un
      * @param pwd
      * @return
      */
-    public boolean add_update(String un,String pwd){
+    private boolean add_update(String un,String pwd){
 
         if( un.trim().isEmpty()){
-            Toast.makeText(this.context,"Username cannot be an empty string",Toast.LENGTH_LONG).show();
+            Toast.makeText(this.mContext,"Username cannot be an empty string",Toast.LENGTH_LONG).show();
             return false;
         }
         if( pwd.trim().isEmpty()){
-            Toast.makeText(this.context,"Password cannot be an empty string",Toast.LENGTH_LONG).show();
+            Toast.makeText(this.mContext,"Password cannot be an empty string",Toast.LENGTH_LONG).show();
             return false;
         }
 
@@ -102,7 +94,7 @@ public class ManagerUserServices {
         userStructure.setUsername(un);
         userStructure.setPassword(pwd);
 
-        if(add_update){
+        if(flagAddUpdate){
             return saveCredential(userStructure);
         }else{
             return updateCredentials(userStructure);
@@ -110,45 +102,45 @@ public class ManagerUserServices {
     }
 
     /**
-     * TODO: Documentation
-     * @param userStructure
-     * @return
+     * Add user information to database
+     * @param userStructure contains the information to be added to database
+     * @return whether userStructure was added to the database or not
      */
-    boolean saveCredential(UserStructure userStructure) {
+    private boolean saveCredential(UserStructure userStructure) {
 
-        if(!databaseEngine.existsUser(userStructure.getUsername())){
-            if(databaseEngine.insert(userStructure)){
-                Toast.makeText(this.context, userStructure.getUsername() + " entered", Toast.LENGTH_SHORT).show();
+        if(!mDatabaseEngine.existsUser(userStructure.getUsername())){
+            if(mDatabaseEngine.insert(userStructure)){
+                Toast.makeText(this.mContext, userStructure.getUsername() + " entered", Toast.LENGTH_SHORT).show();
                 return true;
             } else {
-                Toast.makeText(this.context," problem inserting record", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this.mContext," problem inserting record", Toast.LENGTH_SHORT).show();
                 return false;
             }
 
         } else{
-            Toast.makeText(this.context,"Username already exists", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.mContext,"Username already exists", Toast.LENGTH_SHORT).show();
             return false;
         }
 
     }//end saveCredential
 
     /**
-     * TODO: Documentation
-     * @param userStructure
-     * @return
+     * Updates the information which corresponds to mUsername in database to information in userStructure
+     * @param userStructure contains the information to be added to database
+     * @return whether userStructure was added to the database or not
      */
-    public boolean updateCredentials(UserStructure userStructure){
-        int i = databaseEngine.updateUser(userStructure, username);
+    private boolean updateCredentials(UserStructure userStructure){
+        int i = mDatabaseEngine.updateUser(userStructure, mUsername);
         if (i == 1) {
             Log.e("Updated", "Updated user");
-            Toast.makeText(this.context, "Updated account", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.mContext, "Updated account", Toast.LENGTH_SHORT).show();
             return true;
         } else if (i == 0) {
-            Toast.makeText(this.context, "Problem in updating account", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.mContext, "Problem in updating account", Toast.LENGTH_SHORT).show();
             Log.e("Updated", "Error updating");
             return false;
         } else {
-            Toast.makeText(this.context, "Updated more than 1 records", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this.mContext, "Updated more than 1 records", Toast.LENGTH_SHORT).show();
             Log.e("Updated", "Updated more than 1 records");
             return true;
         }
@@ -156,27 +148,27 @@ public class ManagerUserServices {
     }//end of updateCredentials
 
     /**
-     * TODO: Documentation
-     * @param un
-     * @param inflater
-     * @return
+     * Displays dialog box and manages updation of information
+     * @param un username whose information is to be updated
+     * @param inflater to instantiate layout
+     * @return object of Dialog created
      */
     public Dialog update(String un,LayoutInflater inflater){
-        this.username = un;
-        initialise(inflater);
-        textbox_username.setText(un);
-        final UserStructure us = databaseEngine.getUsernamePassword(un);
-        textbox_password.setHint("(unchanged)");
+        this.mUsername = un;
+        initialize(inflater);
+        mTextboxUsername.setText(un);
+        final UserStructure us = mDatabaseEngine.getUsernamePassword(un);
+        mTextboxPassword.setHint("(unchanged)");
 
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
-        builder.setView(v)
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.mContext);
+        builder.setView(mView)
                .setTitle("Update user")
                .setPositiveButton("UPDATE",null)
         .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(context, "Activity cancelled", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Activity cancelled", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -188,16 +180,16 @@ public class ManagerUserServices {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                add_update = false;
-                if(textbox_password.getText().toString().isEmpty()){
-                    if(textbox_username.getText().toString() != us.getUsername()){
-                        if(add_update(textbox_username.getText().toString(), us.getPassword())){
+                flagAddUpdate = false;
+                if(mTextboxPassword.getText().toString().isEmpty()){
+                    if(mTextboxUsername.getText().toString() != us.getUsername()){
+                        if(add_update(mTextboxUsername.getText().toString(), us.getPassword())){
                             dialog.dismiss();
                         }
                     }else{
                         dialog.dismiss();
                     }
-                }else if(add_update(textbox_username.getText().toString(),textbox_password.getText().toString())){
+                }else if(add_update(mTextboxUsername.getText().toString(), mTextboxPassword.getText().toString())){
                     dialog.dismiss();
                 }
             }
@@ -206,21 +198,21 @@ public class ManagerUserServices {
     }//end of edit
 
     /**
-     * TODO: Documentation
-     * @param inflater
-     * @return
+     * Displays dialog box and manages insertion of information in database
+     * @param inflater to instantiate layout
+     * @return object of Dialog created
      */
     public Dialog add(LayoutInflater inflater){
-        initialise(inflater);
+        initialize(inflater);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
-        builder.setView(v)
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.mContext);
+        builder.setView(mView)
                .setTitle("Add User")
                .setPositiveButton("SAVE", null)
         .setNegativeButton("CANCEL",new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(context,"Activity cancelled",Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext,"Activity cancelled",Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -232,8 +224,8 @@ public class ManagerUserServices {
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                add_update = true;
-                if(add_update(textbox_username.getText().toString(),textbox_password.getText().toString())){
+                flagAddUpdate = true;
+                if(add_update(mTextboxUsername.getText().toString(), mTextboxPassword.getText().toString())){
                     dialog.dismiss();
                 }
             }
@@ -242,31 +234,29 @@ public class ManagerUserServices {
     }
 
     /**
-     * TODO: Documentation
-     * @param un
-     * @return
+     * Displays dialog box asking confirmation to delete information
+     * @param un is the username to be deleted
+     * @return object of Dialog created
      */
     public Dialog delete(String un) {
-        this.username = un;
-        AlertDialog.Builder builder = new AlertDialog.Builder(this.context);
+        this.mUsername = un;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this.mContext);
         builder.setTitle("Delete User")
-                .setMessage("Are you sure you want to delete " + username)
+                .setMessage("Are you sure you want to delete " + mUsername)
                 .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        //String username = spinner_user_list.getSelectedItem().toString();
-                        updated = databaseEngine.deleteUser(username);
-                        if ( updated ){
-                            Toast.makeText(context, "Successfully deleted user: " + username, Toast.LENGTH_SHORT).show();
+                        if ( mDatabaseEngine.deleteUser(mUsername) ){
+                            Toast.makeText(mContext, "Successfully deleted user: " + mUsername, Toast.LENGTH_SHORT).show();
                         }else{
-                            Toast.makeText(context,"Problem deleting user: "+username,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext,"Problem deleting user: "+ mUsername,Toast.LENGTH_SHORT).show();
                         }
                     }
                 })
                 .setNegativeButton("NO", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(context,"Cancelled",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext,"Cancelled",Toast.LENGTH_SHORT).show();
                     }
                 });
             Dialog dialog = builder.create();
@@ -277,14 +267,14 @@ public class ManagerUserServices {
     }
 
     /**
-     * TODO: Documentation
+     * Takes care if checked/unchecked box for showing/not showing password
      */
-    public void show_password() {
-        if (cb_show_pwd.isChecked()) {
-            textbox_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+    private void show_password() {
+        if (mChbShowPwd.isChecked()) {
+            mTextboxPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
             return;
         }
-        textbox_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        mTextboxPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
     }//end of show_password(View)
 
 }
