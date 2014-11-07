@@ -243,12 +243,12 @@ public class NetworkEngine {
         } else if (status == NetworkEngine.StatusCode.LOGOUT_SUCCESS) {
             outputText = "Logout Successful";
         } else if (status == NetworkEngine.StatusCode.NOT_LOGGED_IN) {
-            outputText = "You're not logged in " + getSelectedUsername();
+            outputText = "You're not logged in";
         } else if (status == null) {
             Log.d("NetworkEngine", "StatusCode was null in login");
-            outputText = "null";
+            outputText = "Unable to perform the operation";
         } else {
-            outputText = "Unknown Login status";
+            outputText = "Unknown operation status";
         }
         return outputText;
     }
