@@ -120,10 +120,11 @@ public class NetworkEngine {
     }
 
     /**
-     * TODO: Documentation
+     * TODO: check documentation
+     * Attempts to login into the network using credentials provided as parameters
      * @param username
      * @param password
-     * @return
+     * @return status of login attempt
      * @throws Exception
      */
     private StatusCode login_runner(String username, String password) throws Exception {
@@ -131,7 +132,6 @@ public class NetworkEngine {
             Log.wtf("Error", "Either username or password is null");
             return StatusCode.CREDENTIAL_NONE;
         }
-        //System.out.println("Loggin in with "+username+password);
         String urlParameters = "user=" + username + "&password=" + password; // "param1=a&param2=b&param3=c";
 
         String request = BASE_URL;
@@ -185,7 +185,8 @@ public class NetworkEngine {
     }
 
     /**
-     * TODO: Documentation
+     * TODO: check documentation
+     * Attempt logout request to network
      * @return
      * @throws Exception
      */
@@ -222,9 +223,10 @@ public class NetworkEngine {
     }
 
     /**
-     * TODO: Documentation
+     * TODO: check documentation
+     * Sets network status at current time in a string
      * @param status
-     * @return
+     * @return status string
      */
     public String get_status_text(StatusCode status) {
         String outputText;    //To be shown in User Text Box
