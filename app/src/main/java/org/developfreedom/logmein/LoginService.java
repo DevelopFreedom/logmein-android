@@ -119,7 +119,8 @@ public class LoginService extends Service {
      * Show a notification if possible else stop service
      */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    void showNotificationOrStop() {
+    //TODO: check visibility
+    protected void showNotificationOrStop() {
         //Only show expanding notification after version 16 i.e Jelly Bean
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             if(prefUseNotifications)
@@ -184,9 +185,10 @@ public class LoginService extends Service {
     }
 
     /**
-     * TODO: Documentation
+     * Uses the username saved in SharedPreferences and it' corresponding password
+     * from database to login. For each login attempt result is stored as 'status'
      */
-    void login() {
+    public void login() {
         NetworkEngine.StatusCode status = null;
         Log.d("Service", "Insiide Login");
         String username, password;
@@ -209,9 +211,9 @@ public class LoginService extends Service {
     }//end login
 
     /**
-     * TODO: Documentation
+     * Attempts to logout from the current logged in network
      */
-    void logout() {
+    public void logout() {
         NetworkEngine.StatusCode status = null;
         Log.d("Service", "Insiede Logout");
         try {
