@@ -256,7 +256,7 @@ public class ManagerUserServices {
                 .setNegativeButton("NO", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(mContext,"Cancelled",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext,"Activity cancelled",Toast.LENGTH_SHORT).show();
                     }
                 });
             Dialog dialog = builder.create();

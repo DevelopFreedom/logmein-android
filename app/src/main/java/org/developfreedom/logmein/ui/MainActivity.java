@@ -61,24 +61,23 @@ public class MainActivity extends ActionBarActivity {
     /* Engines */
     NetworkEngine networkEngine;
     DatabaseEngine databaseEngine;
-    //TODO: Mark proper visibilities
-    ///Class Variables
-    Button button_edit;
-    Button button_del;
-    Button button_add;
-    ImageButton button_login, button_logout,button_web;
-    Spinner spinner_user_list;
-    ArrayList<String> user_list;
-    ArrayAdapter adapter;
-    boolean spinnerUpdateFlag;
-    SharedPreferences preferences;
+    //Class Variables
+    private Button mButtonEdit;
+    private Button mButtonDel;
+    private Button mButtonAdd;
+    private ImageButton mButtonLogin, mButtonLogout, mButtonWeb;
+    private Spinner mSpinnerUserList;
+    private ArrayList<String> mUserList;
+    private ArrayAdapter mAdapter;
+    private boolean mSpinnerUpdateFlag;
+    private SharedPreferences mPreferences;
 
     @Override
     protected void onResume() {
         // Make sure that when we return from manage use activity, the username is right
         updateHomescreenData();
         startAnimation();
-        if (!preferences.getBoolean(SettingsActivity.KEY_PERSISTENCE,SettingsActivity.DEFAULT_KEY_PERSISTENCE)) {
+        if (!mPreferences.getBoolean(SettingsActivity.KEY_PERSISTENCE,SettingsActivity.DEFAULT_KEY_PERSISTENCE)) {
             stopService(new Intent(this, LoginService.class));
         } else {
             //XXX: Start only if not running
@@ -95,92 +94,91 @@ public class MainActivity extends ActionBarActivity {
         networkEngine = NetworkEngine.getInstance(this);
         databaseEngine = DatabaseEngine.getInstance(this);
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
 
-        button_login = (ImageButton) findViewById(org.developfreedom.logmein.R.id.button_login);
-        button_login.setOnClickListener(new View.OnClickListener() {
+        mButtonLogin = (ImageButton) findViewById(org.developfreedom.logmein.R.id.button_login);
+        mButtonLogin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 login();
             }
         });
 
-        button_logout = (ImageButton) findViewById(org.developfreedom.logmein.R.id.button_logout);
-        button_logout.setOnClickListener(new View.OnClickListener() {
+        mButtonLogout = (ImageButton) findViewById(org.developfreedom.logmein.R.id.button_logout);
+        mButtonLogout.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 logout();
             }
         });
 
-        button_web = (ImageButton) findViewById(org.developfreedom.logmein.R.id.button_web);
+        mButtonWeb = (ImageButton) findViewById(org.developfreedom.logmein.R.id.button_web);
 
-        button_del = (Button ) findViewById(org.developfreedom.logmein.R.id.button_del);
-        button_del.setOnClickListener(new View.OnClickListener() {
+        mButtonDel = (Button ) findViewById(org.developfreedom.logmein.R.id.button_del);
+        mButtonDel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(getSelectedUsername() == null){
-                    Toast.makeText(MainActivity.this,"User List is empty",Toast.LENGTH_SHORT).show();
+                if (getSelectedUsername() == null) {
+                    Toast.makeText(MainActivity.this, "User List is empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                String username = spinner_user_list.getSelectedItem().toString();
-//                showDeleteDialog("Delete User", "Are you sure you want to delete " + username, "YES", "NO").show();
+                String username = mSpinnerUserList.getSelectedItem().toString();
                 ManagerUserServices managerUserServices = new ManagerUserServices(MainActivity.this);
-                Dialog dialog = managerUserServices.delete(spinner_user_list.getSelectedItem().toString());
-                dialogDismissUpdater(dialog,0);
+                Dialog dialog = managerUserServices.delete(mSpinnerUserList.getSelectedItem().toString());
+                dialogDismissUpdater(dialog, 0);
             }
         });
 
-        button_add = (Button) findViewById(org.developfreedom.logmein.R.id.button_add);
-        button_add.setOnClickListener(new View.OnClickListener() {
+        mButtonAdd = (Button) findViewById(org.developfreedom.logmein.R.id.button_add);
+        mButtonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ManagerUserServices managerUserServices = new ManagerUserServices(MainActivity.this);
                 Dialog dialog = managerUserServices.add(getLayoutInflater());
-                dialogDismissUpdater(dialog, spinner_user_list.getCount());
+                dialogDismissUpdater(dialog, mSpinnerUserList.getCount());
             }
         });
 
-        button_edit = (Button ) findViewById(org.developfreedom.logmein.R.id.button_edit);
-        button_edit.setOnClickListener(new View.OnClickListener() {
+        mButtonEdit = (Button ) findViewById(org.developfreedom.logmein.R.id.button_edit);
+        mButtonEdit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(getSelectedUsername() == null){
-                    Toast.makeText(MainActivity.this,"User List is empty",Toast.LENGTH_SHORT).show();
+                if (getSelectedUsername() == null) {
+                    Toast.makeText(MainActivity.this, "User List is empty", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 LayoutInflater inflater = getLayoutInflater();
                 ManagerUserServices managerUserServices = new ManagerUserServices(MainActivity.this);
-                Dialog dialog = managerUserServices.update(spinner_user_list.getSelectedItem().toString(),inflater);
-                dialogDismissUpdater(dialog,spinner_user_list.getSelectedItemPosition());
+                Dialog dialog = managerUserServices.update(mSpinnerUserList.getSelectedItem().toString(), inflater);
+                dialogDismissUpdater(dialog, mSpinnerUserList.getSelectedItemPosition());
             }
         });
 
 
 
-        user_list = databaseEngine.userList();
-        adapter = new ArrayAdapter<String>(this, org.developfreedom.logmein.R.layout.spinner_layout, user_list);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spinner_user_list = (Spinner) findViewById(org.developfreedom.logmein.R.id.spinner_user_list);
-        spinner_user_list.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-        spinnerUpdateFlag = false;
+        mUserList = databaseEngine.userList();
+        mAdapter = new ArrayAdapter<String>(this, org.developfreedom.logmein.R.layout.spinner_layout, mUserList);
+        mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+        mSpinnerUserList = (Spinner) findViewById(org.developfreedom.logmein.R.id.spinner_user_list);
+        mSpinnerUserList.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+        mSpinnerUpdateFlag = false;
         //Recover saved position
-        if (user_list.size() > 0) { //Crashes otherwise at first startup
-            int saved_pos = preferences.getInt(SettingsActivity.KEY_CURRENT_USERNAME_POS, 0);
-            spinner_user_list.setSelection(saved_pos % user_list.size());
+        if (mUserList.size() > 0) { //Crashes otherwise at first startup
+            int saved_pos = mPreferences.getInt(SettingsActivity.KEY_CURRENT_USERNAME_POS, 0);
+            mSpinnerUserList.setSelection(saved_pos % mUserList.size());
         }
 
 
-        spinner_user_list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mSpinnerUserList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long l) {
                 // An item was selected. We can retrieve the selected item using
                 // parent.getItemAtPosition(pos)
-                Log.d("Main","onSelect: calling updateHomescreenData");
+                Log.d("Main", "onSelect: calling updateHomescreenData");
                 updateHomescreenData();
                 parent.setSelection(pos);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                Log.d("Main","onNothinSelect: calling updateHomescreenData");
+                Log.d("Main", "onNothinSelect: calling updateHomescreenData");
                 updateHomescreenData();
             }
         });
@@ -205,8 +203,8 @@ public class MainActivity extends ActionBarActivity {
             finish();
         }
 
-        boolean prefNeedPersistence = preferences.getBoolean(SettingsActivity.KEY_PERSISTENCE, SettingsActivity.DEFAULT_KEY_PERSISTENCE);
-        boolean perfStartupLogin = preferences.getBoolean(SettingsActivity.KEY_STARTUP_LOGIN,SettingsActivity.DEFAULT_KEY_STARTUP_LOGIN);
+        boolean prefNeedPersistence = mPreferences.getBoolean(SettingsActivity.KEY_PERSISTENCE, SettingsActivity.DEFAULT_KEY_PERSISTENCE);
+        boolean perfStartupLogin = mPreferences.getBoolean(SettingsActivity.KEY_STARTUP_LOGIN,SettingsActivity.DEFAULT_KEY_STARTUP_LOGIN);
         if (prefNeedPersistence) {
             startService(new Intent(this, LoginService.class));
         }
@@ -225,14 +223,14 @@ public class MainActivity extends ActionBarActivity {
         centerWheel.startAnimation(rotation);
 
         Animation slideLeft = AnimationUtils.loadAnimation(this, org.developfreedom.logmein.R.anim.slide_in_left);
-        button_logout.startAnimation(slideLeft);
+        mButtonLogout.startAnimation(slideLeft);
 
         Animation slideRight = AnimationUtils.loadAnimation(this, org.developfreedom.logmein.R.anim.slide_in_right);
-        button_web.startAnimation(slideRight);
+        mButtonWeb.startAnimation(slideRight);
 
         Animation slideTop = AnimationUtils.loadAnimation(this, org.developfreedom.logmein.R.anim.slide_in_top);
         infoView.startAnimation(slideTop);
-        button_login.startAnimation(slideTop);
+        mButtonLogin.startAnimation(slideTop);
 
         Animation slideBottom = AnimationUtils.loadAnimation(this, org.developfreedom.logmein.R.anim.slide_in_bottom);
     }
@@ -245,35 +243,34 @@ public class MainActivity extends ActionBarActivity {
      * change.
      */
     public void updateHomescreenData() {
-        Log.d("Main","Updating Home Screen"+spinnerUpdateFlag);
-        int pos = spinner_user_list.getSelectedItemPosition();
-        if (spinnerUpdateFlag) {
-            spinnerUpdateFlag = false; //Avoid recursive loop via onItemSelected Listner
+        Log.d("Main","Updating Home Screen"+ mSpinnerUpdateFlag);
+        int pos = mSpinnerUserList.getSelectedItemPosition();
+        if (mSpinnerUpdateFlag) {
+            mSpinnerUpdateFlag = false; //Avoid recursive loop via onItemSelected Listner
             return;
         } else {
-            user_list = databaseEngine.userList();
-            if (user_list.isEmpty()) {
-                adapter.clear();
-                spinner_user_list.setAdapter(adapter);
+            mUserList = databaseEngine.userList();
+            if (mUserList.isEmpty()) {
+                mAdapter.clear();
+                mSpinnerUserList.setAdapter(mAdapter);
 
             } else {
-                pos = spinner_user_list.getSelectedItemPosition();
-                if (pos >= user_list.size())
-                    pos = user_list.size() - 1;
+                pos = mSpinnerUserList.getSelectedItemPosition();
+                if (pos >= mUserList.size())
+                    pos = mUserList.size() - 1;
 
-                user_list = databaseEngine.userList();
-                adapter = new ArrayAdapter<String>(this, org.developfreedom.logmein.R.layout.spinner_layout, user_list);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinner_user_list.setAdapter(adapter);
-                spinnerUpdateFlag = true;
-                spinner_user_list.setSelection(pos);
-//                adapter.notifyDataSetChanged();
+                mUserList = databaseEngine.userList();
+                mAdapter = new ArrayAdapter<String>(this, org.developfreedom.logmein.R.layout.spinner_layout, mUserList);
+                mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                mSpinnerUserList.setAdapter(mAdapter);
+                mSpinnerUpdateFlag = true;
+                mSpinnerUserList.setSelection(pos);
             }
         }
         String username = getSelectedUsername();
         if (username != null) {
-            SharedPreferences.Editor editor = preferences.edit();
+            SharedPreferences.Editor editor = mPreferences.edit();
             editor.putString(SettingsActivity.KEY_CURRENT_USERNAME, username);
             //Save current position for recovery
             editor.putInt(SettingsActivity.KEY_CURRENT_USERNAME_POS, pos);
@@ -303,7 +300,7 @@ public class MainActivity extends ActionBarActivity {
      * @return String
      */
     public String getSelectedUsername() {
-        return (String) spinner_user_list.getSelectedItem();
+        return (String) mSpinnerUserList.getSelectedItem();
     }
 
     @Override
@@ -396,18 +393,18 @@ public class MainActivity extends ActionBarActivity {
     }
 
     /**
-     * TODO: Documentation
-     * @param dialog
-     * @param pos
+     * Updates the spinner selection to proper index
+     * @param dialog to detect onDismiss of dialog
+     * @param pos is the position of spinner to be selected
      */
     public void dialogDismissUpdater(Dialog dialog, final int pos){
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
-                spinnerUpdateFlag=false;
+                mSpinnerUpdateFlag =false;
                 updateHomescreenData();
-                if(spinner_user_list.getCount() > pos){
-                    spinner_user_list.setSelection(pos);
+                if(mSpinnerUserList.getCount() > pos){
+                    mSpinnerUserList.setSelection(pos);
                 }
             }
         });
