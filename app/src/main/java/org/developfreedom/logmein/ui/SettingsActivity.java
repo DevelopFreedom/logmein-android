@@ -28,6 +28,8 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 
+import org.developfreedom.logmein.R;
+
 import java.util.List;
 
 /**
@@ -81,7 +83,10 @@ public class SettingsActivity extends PreferenceActivity {
         // use the older PreferenceActivity APIs.
 
         // Add 'general' preferences.
-        addPreferencesFromResource(org.developfreedom.logmein.R.xml.pref_general);
+        PreferenceCategory fakeHeaderGen = new PreferenceCategory(this);
+        fakeHeaderGen.setTitle(R.string.pref_header_general);
+        getPreferenceScreen().addPreference(fakeHeaderGen);
+        addPreferencesFromResource(R.xml.pref_general);
 
         // Add 'notifications' preferences, and a corresponding header.
         PreferenceCategory fakeHeader = new PreferenceCategory(this);
