@@ -141,43 +141,46 @@ public class NetworkEngine {
         puServerConnection.setDoOutput(true);
 
         //FIXME: Handle protocol exception
-        OutputStream stream = null; //XXX Wrong
+        StatusCode returnStatus = null;
+        //TODO: use try-with-resources
         try {
-            stream = puServerConnection.getOutputStream();
+            OutputStream stream = puServerConnection.getOutputStream();
+            //Output
+            OutputStreamWriter writer = new OutputStreamWriter(stream);
+            writer.write(urlParameters);
+            writer.flush();
+
+            String lineBuffer;
+            try {
+                BufferedReader htmlBuffer = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
+                try {
+                    while (((lineBuffer = htmlBuffer.readLine()) != null) && returnStatus == null) {
+                        if (lineBuffer.contains("External Welcome Page")) {
+                            Log.d("NetworkEngine", "External Welcome Match");
+                            returnStatus = StatusCode.LOGIN_SUCCESS;
+                        } else if (lineBuffer.contains("Authentication failed")) {
+                            returnStatus = StatusCode.AUTHENTICATION_FAILED;
+                        } else if (lineBuffer.contains("Only one user login session is allowed")) {
+                            returnStatus = StatusCode.MULTIPLE_SESSIONS;
+                        } else {
+                            Log.i("html", lineBuffer);
+                        }
+                    }
+                }finally {
+                    htmlBuffer.close();
+                }
+            }
+            catch (java.net.ProtocolException e) {
+                returnStatus = StatusCode.LOGGED_IN;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }finally {
+                writer.close();
+            }
         } catch (java.net.ConnectException e) {
             e.printStackTrace();
             Log.d("NetworkEngine", "Connection Exception");
             return StatusCode.CONNECTION_ERROR;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        //Output
-        OutputStreamWriter writer = new OutputStreamWriter(stream);
-        writer.write(urlParameters);
-        writer.flush();
-        StatusCode returnStatus = null;
-
-        String lineBuffer;
-        BufferedReader htmlBuffer = null; //FIXME Null pointer exceptions eminent, May the forth be with you!!!
-        try {
-            htmlBuffer = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
-            while (((lineBuffer = htmlBuffer.readLine()) != null) && returnStatus == null) {
-                if (lineBuffer.contains("External Welcome Page")) {
-                    Log.d("NetworkEngine", "External Welcome Match");
-                    returnStatus = StatusCode.LOGIN_SUCCESS;
-                } else if (lineBuffer.contains("Authentication failed")) {
-                    returnStatus = StatusCode.AUTHENTICATION_FAILED;
-                } else if (lineBuffer.contains("Only one user login session is allowed")) {
-                    returnStatus = StatusCode.MULTIPLE_SESSIONS;
-                } else {
-                    Log.i("html", lineBuffer);
-                }
-            }
-            writer.close();
-            htmlBuffer.close();
-        } catch (java.net.ProtocolException e) {
-            returnStatus = StatusCode.LOGGED_IN;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -195,10 +198,26 @@ public class NetworkEngine {
         URL puServerUrl = new URL(BASE_URL+"?cmd=logout");
         URLConnection puServerConnection = puServerUrl.openConnection();
 
-        //Get inputStream and show output
-        BufferedReader htmlBuffer = null;   //XXX
+        StatusCode returnStatus = null;
+        //TODO: use try-with-resources
         try {
-            htmlBuffer = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
+            //Get inputStream and show output
+            BufferedReader htmlBuffer = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
+            try {
+                //TODO parse output
+                String lineBuffer;
+                while ((lineBuffer = htmlBuffer.readLine()) != null && returnStatus == null) {
+
+                    if (lineBuffer.contains("Logout")) {
+                        returnStatus = StatusCode.LOGOUT_SUCCESS;
+                    } else if (lineBuffer.contains("User not logged in")) {
+                        returnStatus = StatusCode.NOT_LOGGED_IN;
+                    }
+                    Log.w("html", lineBuffer);
+                }
+            }finally {
+                htmlBuffer.close();
+            }
         } catch (java.net.ConnectException e) {
             e.printStackTrace();
             Log.d("NetworkEngine", "Connection Exception");
@@ -206,19 +225,6 @@ public class NetworkEngine {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //TODO parse output
-        String lineBuffer;
-        StatusCode returnStatus = null;
-        while ((lineBuffer = htmlBuffer.readLine()) != null && returnStatus == null) {
-
-            if (lineBuffer.contains("Logout")) {
-                returnStatus = StatusCode.LOGOUT_SUCCESS;
-            } else if (lineBuffer.contains("User not logged in")) {
-                returnStatus = StatusCode.NOT_LOGGED_IN;
-            }
-            Log.w("html", lineBuffer);
-        }
-        htmlBuffer.close();
         return returnStatus;
     }
 
