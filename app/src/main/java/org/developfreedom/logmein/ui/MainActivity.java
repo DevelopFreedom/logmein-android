@@ -77,7 +77,7 @@ public class MainActivity extends ActionBarActivity {
         // Make sure that when we return from manage use activity, the username is right
         updateHomescreenData();
         startAnimation();
-        if (!mPreferences.getBoolean(SettingsActivity.KEY_PERSISTENCE,SettingsActivity.DEFAULT_KEY_PERSISTENCE)) {
+        if (!mPreferences.getBoolean(SettingsActivity.KEY_USE_NOTIF,SettingsActivity.DEFAULT_KEY_USE_NOTIFICATION)) {
             stopService(new Intent(this, LoginService.class));
         } else {
             //XXX: Start only if not running
@@ -203,9 +203,9 @@ public class MainActivity extends ActionBarActivity {
             finish();
         }
 
-        boolean prefNeedPersistence = mPreferences.getBoolean(SettingsActivity.KEY_PERSISTENCE, SettingsActivity.DEFAULT_KEY_PERSISTENCE);
+        boolean prefUseNotifications = mPreferences.getBoolean(SettingsActivity.KEY_USE_NOTIF, SettingsActivity.DEFAULT_KEY_USE_NOTIFICATION);
         boolean perfStartupLogin = mPreferences.getBoolean(SettingsActivity.KEY_STARTUP_LOGIN,SettingsActivity.DEFAULT_KEY_STARTUP_LOGIN);
-        if (prefNeedPersistence) {
+        if (prefUseNotifications) {
             startService(new Intent(this, LoginService.class));
         }
         if (perfStartupLogin)

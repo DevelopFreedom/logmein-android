@@ -52,6 +52,7 @@ public class LoginService extends Service {
     private final int ID = 2603;    //TODO: ID used for showing notification not unique
     /** For showing and hiding our notification. */
     private NotificationManager mNotificationManager;
+    private boolean prefUseNotifications;
     private boolean prefNeedPersistence;
     private SharedPreferences preferences;
     NetworkEngine networkEngine;
@@ -77,7 +78,8 @@ public class LoginService extends Service {
         databaseEngine = DatabaseEngine.getInstance(this);
         preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
         // Display a notification about us starting.
-        prefNeedPersistence = preferences.getBoolean(SettingsActivity.KEY_PERSISTENCE, SettingsActivity.DEFAULT_KEY_PERSISTENCE);
+        prefUseNotifications = preferences.getBoolean(SettingsActivity.KEY_USE_NOTIF, SettingsActivity.DEFAULT_KEY_USE_NOTIFICATION);
+        prefNeedPersistence = preferences.getBoolean(SettingsActivity.KEY_NOTIF_PERSISTENCE, SettingsActivity.DEFAULT_KEY_NOTIF_PERSISTENCE);
         mNotificationManager = (NotificationManager) getSystemService(
                 NOTIFICATION_SERVICE);
         IntentFilter filter = new IntentFilter();
@@ -116,12 +118,12 @@ public class LoginService extends Service {
     /**
      * Show a notification if possible else stop service
      */
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     void showNotificationOrStop() {
         //Only show expanding notification after version 16 i.e Jelly Bean
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            if (prefNeedPersistence) {
+            if(prefUseNotifications)
                 showPersistentNotification();
-            }
         } else {
             //XXX: Stop service only because we can't show notification right
             stopService(new Intent(this, LoginService.class));
@@ -172,7 +174,7 @@ public class LoginService extends Service {
                 .setContentText("Click below to login/logout")
                 .setSmallIcon(R.drawable.notif_ic_main)
                 .setContentIntent(contentLaunchIntent)
-                .setOngoing(true)
+                .setOngoing(prefNeedPersistence)
                 //.setAutoCancel(true)
                 //.setStyle(new Notification.BigTextStyle().bigText(longText))
                 .addAction(R.drawable.notif_button_login, "Login", contentLoginIntent)

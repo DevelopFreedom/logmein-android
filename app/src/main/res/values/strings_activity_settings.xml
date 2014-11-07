@@ -5,9 +5,11 @@
 
     <string name="pref_header_general"></string>
     <string name="pref_header_notifications">Notifications</string>
-    <string name="pref_title_persistent_notification">Show Persistent Notification</string>
-    <string name="pref_summary_persistent_notification">Show a sticky notification for quick login &amp; logout</string>
+    <string name="pref_title_use_notif">Use Notification</string>
+    <string name="pref_summary_use_notif">Show a notification for quick login &amp; logout</string>
+    <string name="pref_title_persistent_notification">Persistent Notification</string>
+    <string name="pref_summary_persistent_notification">Make the notification sticky</string>
 
     <string name="pref_startup">Login at startup</string>
-    <string name="pref_startup_summ">If you tick this, whenever you open this app you\'ll be logged in</string>
+    <string name="pref_startup_summ">If you tick this, whenever you open this app, one login request will be sent in advance</string>
 </resources>
