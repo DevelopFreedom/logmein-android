@@ -45,7 +45,7 @@ import java.net.URLConnection;
 public class NetworkEngine {
 
     /** The url where login request will be posted */
-    public String BASE_URL = "http://172.16.4.201/cgi-bin/login";
+    public String BASE_URL = "https://securelogin.arubanetworks.com/cgi-bin/login";
     private static NetworkEngine instance = null;
     private static int use_count = 0;   //like semaphores
     Context m_context;
@@ -134,7 +134,7 @@ public class NetworkEngine {
         }
         String urlParameters = "user=" + username + "&password=" + password; // "param1=a&param2=b&param3=c";
 
-        String request = BASE_URL;
+        String request = BASE_URL + "?cmd=login";
         URL puServerUrl = new URL(request);
 
         URLConnection puServerConnection = puServerUrl.openConnection();
