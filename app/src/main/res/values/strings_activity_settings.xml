@@ -10,6 +10,6 @@
     <string name="pref_title_persistent_notification">Persistent Notification</string>
     <string name="pref_summary_persistent_notification">Make the notification sticky</string>
 
-    <string name="pref_startup">Login at startup</string>
-    <string name="pref_startup_summ">If you tick this, whenever you open this app, one login request will be sent in advance</string>
+    <string name="pref_wifi_startup">Login on WiFi connection</string>
+    <string name="pref_wifi_startup_summ">Send one login request in advance, whenever the WiFi is connected</string>
 </resources>

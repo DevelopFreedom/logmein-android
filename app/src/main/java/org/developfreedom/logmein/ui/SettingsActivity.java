@@ -53,12 +53,12 @@ public class SettingsActivity extends PreferenceActivity {
     private static final boolean ALWAYS_SIMPLE_PREFS = false;
     public static final String KEY_USE_NOTIF = "keyUseNotif";
     public static final String KEY_NOTIF_PERSISTENCE = "keyNotifPersistence";
-    public static final String KEY_STARTUP_LOGIN = "keyStartupLogin";
+    public static final String KEY_WIFI_STARTUP_LOGIN = "keyWifiStartupLogin";
     public static final String KEY_CURRENT_USERNAME = "keyCurrentUsername";
     public static final String KEY_CURRENT_USERNAME_POS = "keyCurrentUsernamePos";
     public static final boolean DEFAULT_KEY_USE_NOTIFICATION = true;
     public static final boolean DEFAULT_KEY_NOTIF_PERSISTENCE = false;
-    public static final boolean DEFAULT_KEY_STARTUP_LOGIN = false;
+    public static final boolean DEFAULT_KEY_WIFI_STARTUP_LOGIN = true;
     public static final String DEFAULT_KEY_CURRENT_USERNAME = "default_user";
 
 

@@ -72,6 +72,10 @@ public class LoginService extends Service {
                 return;
             }
             showNotificationOrStop();
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            boolean perfWifiStartupLogin = preferences.getBoolean(SettingsActivity.KEY_WIFI_STARTUP_LOGIN, SettingsActivity.DEFAULT_KEY_WIFI_STARTUP_LOGIN);
+            if (perfWifiStartupLogin)
+                login();
         }
     };
 
