@@ -82,7 +82,7 @@ public class LoginService extends Service {
                 /* Using this to show notif as soon as possible, else can be merged above */
                 if (isWifiLoginable()) {
                     // Show notification
-                    showNotificationOrStop();
+                    showNotification();
                 } else {
                     // End notification since WiFi is not loginable
                     try {
@@ -118,7 +118,7 @@ public class LoginService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("LoginService", "performing onStartCommand");
-//        showNotificationOrStop();
+//        showNotification();
         return 1;
     }
 
@@ -140,22 +140,6 @@ public class LoginService extends Service {
     /*
      * Other functions and classes
      */
-
-    /**
-     * Show a notification if possible else stop service
-     */
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    //TODO: check visibility
-    protected void showNotificationOrStop() {
-        //Only show expanding notification after version 16 i.e Jelly Bean
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            if(prefUseNotifications)
-                showPersistentNotification();
-        } else {
-            //XXX: Stop service only because we can't show notification right
-            stopService(new Intent(this, LoginService.class));
-        }
-    }
 
     /**
      * Check if WiFi needs credentials
@@ -182,10 +166,12 @@ public class LoginService extends Service {
    /**
      * Show a notification while this service is running.
      */
-    @TargetApi(16)
-    private void showPersistentNotification() {
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    private void showNotification() {
+        if(!prefUseNotifications) return;
         int API = android.os.Build.VERSION.SDK_INT;//TODO: global
-        if (API < 16) return;
+        if (API < Build.VERSION_CODES.JELLY_BEAN) return;
+
         final int NOTIFICATION_ID = ID; // TODO: Random id again
         final String notification_title = "Lazy Music";  //TODO: Get from R.string
         final CharSequence notification_text = "Lazy Music at your Service";
