@@ -30,6 +30,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -57,25 +58,40 @@ public class LoginService extends Service {
     private NotificationManager mNotificationManager;
     private boolean prefUseNotifications;
     private boolean prefNeedPersistence;
+    private boolean perfWifiStartupLogin;
     private SharedPreferences preferences;
     NetworkEngine networkEngine;
     DatabaseEngine databaseEngine;
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(!isWifiLoginable()) {
-                try {
-                    mNotificationManager.cancelAll();
-                }catch(Exception e){
-                    e.printStackTrace();
+            final String action = intent.getAction();
+
+            if (WifiManager.NETWORK_STATE_CHANGED_ACTION.equals(action)) {
+                /* We're connected properly */
+                NetworkInfo nwInfo = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
+                //This implies the WiFi connection is through
+                if(NetworkInfo.State.CONNECTED.equals(nwInfo.getState())){
+                    // Send login request
+                    if (perfWifiStartupLogin
+                            && isWifiLoginable()) {
+                        login();
+                    }
                 }
-                return;
+            } else if (WifiManager.SUPPLICANT_STATE_CHANGED_ACTION.equals(action)) {
+                /* Using this to show notif as soon as possible, else can be merged above */
+                if (isWifiLoginable()) {
+                    // Show notification
+                    showNotificationOrStop();
+                } else {
+                    // End notification since WiFi is not loginable
+                    try {
+                        mNotificationManager.cancelAll();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-            showNotificationOrStop();
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-            boolean perfWifiStartupLogin = preferences.getBoolean(SettingsActivity.KEY_WIFI_STARTUP_LOGIN, SettingsActivity.DEFAULT_KEY_WIFI_STARTUP_LOGIN);
-            if (perfWifiStartupLogin)
-                login();
         }
     };
 
@@ -87,12 +103,15 @@ public class LoginService extends Service {
         // Display a notification about us starting.
         prefUseNotifications = preferences.getBoolean(SettingsActivity.KEY_USE_NOTIF, SettingsActivity.DEFAULT_KEY_USE_NOTIFICATION);
         prefNeedPersistence = preferences.getBoolean(SettingsActivity.KEY_NOTIF_PERSISTENCE, SettingsActivity.DEFAULT_KEY_NOTIF_PERSISTENCE);
+        perfWifiStartupLogin = preferences.getBoolean(SettingsActivity.KEY_WIFI_STARTUP_LOGIN, SettingsActivity.DEFAULT_KEY_WIFI_STARTUP_LOGIN);
         mNotificationManager = (NotificationManager) getSystemService(
                 NOTIFICATION_SERVICE);
+
         IntentFilter filter = new IntentFilter();
         filter.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
+        filter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
+        filter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
         registerReceiver(receiver, filter);
-//        showNotificationOrStop();
         Log.i("LoginService", "Login service created");
     }
 
