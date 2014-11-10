@@ -30,6 +30,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.IBinder;
@@ -136,9 +137,16 @@ public class LoginService extends Service {
      * @return true if credentials needed
      */
     public boolean isWifiLoginable() {
+        final String desired_ssid =  "\"pu@campus\"";
         WifiManager wifi = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
-        String SSID =  "\"pu@campus\"";
-        return wifi.getConnectionInfo().getSSID().equalsIgnoreCase(SSID);
+        if (wifi != null) {
+            WifiInfo wifiInfo = wifi.getConnectionInfo();
+            if (wifiInfo != null) {
+                String ssid = wifiInfo.getSSID();
+                return desired_ssid.equalsIgnoreCase(ssid);
+            }
+        }
+        return false;
     }
 
    /**
