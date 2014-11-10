@@ -41,6 +41,8 @@ import android.widget.Toast;
 import org.developfreedom.logmein.ui.MainActivity;
 import org.developfreedom.logmein.ui.SettingsActivity;
 
+import java.util.ArrayList;
+
 /**
  * Login Service runs in background to manage various tasks like
  * handling the backend checks for wifi connection, for notification etc.
@@ -137,13 +139,18 @@ public class LoginService extends Service {
      * @return true if credentials needed
      */
     public boolean isWifiLoginable() {
-        final String desired_ssid =  "\"pu@campus\"";
+        final ArrayList<String> desired_ssid_list = new ArrayList<String>();
+        desired_ssid_list.add("pu@campus");
+        desired_ssid_list.add("\"pu@campus\"");
         WifiManager wifi = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
         if (wifi != null) {
             WifiInfo wifiInfo = wifi.getConnectionInfo();
             if (wifiInfo != null) {
                 String ssid = wifiInfo.getSSID();
-                return desired_ssid.equalsIgnoreCase(ssid);
+                for(String desired_ssid: desired_ssid_list) {
+                    if (desired_ssid.equalsIgnoreCase(ssid))
+                        return true;
+                }
             }
         }
         return false;
