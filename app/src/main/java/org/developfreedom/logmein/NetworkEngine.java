@@ -40,11 +40,13 @@ import java.net.URLConnection;
 /**
  * Network Engine is the main interface used to perform network tasks
  * like login, logout etc.
- * <p>
+ * <p/>
  */
 public class NetworkEngine {
 
-    /** The url where login request will be posted */
+    /**
+     * The url where login request will be posted
+     */
     public String BASE_URL = "https://securelogin.arubanetworks.com/cgi-bin/login";
     private static NetworkEngine instance = null;
     private static int use_count = 0;   //like semaphores
@@ -58,6 +60,7 @@ public class NetworkEngine {
     /**
      * Singleton method with lazy initialization.
      * Desired way to create/access the Engine object
+     *
      * @param context Context in which the notification and toasts will be displayed.
      * @return Reference to singleton object of Engine
      */
@@ -71,7 +74,8 @@ public class NetworkEngine {
 
     /**
      * Start the login task in a background task
-     * @param context to display toasts
+     *
+     * @param context  to display toasts
      * @param username the data for username field
      * @param password the data for password field
      * @return enum StatusCode explaining the situation
@@ -97,6 +101,7 @@ public class NetworkEngine {
 
     /**
      * Start the login task in a background task with default/old context
+     *
      * @param username the data for username field
      * @param password the data for password field
      * @return enum StatusCode explaining the situation
@@ -110,6 +115,7 @@ public class NetworkEngine {
 
     /**
      * Perform logout in a background thread
+     *
      * @return
      * @throws Exception
      */
@@ -122,6 +128,7 @@ public class NetworkEngine {
     /**
      * TODO: check documentation
      * Attempts to login into the network using credentials provided as parameters
+     *
      * @param username
      * @param password
      * @return status of login attempt
@@ -142,40 +149,31 @@ public class NetworkEngine {
 
         //FIXME: Handle protocol exception
         StatusCode returnStatus = null;
-        //TODO: use try-with-resources
-        try {
-            OutputStream stream = puServerConnection.getOutputStream();
-            //Output
-            OutputStreamWriter writer = new OutputStreamWriter(stream);
+        try (OutputStream stream = puServerConnection.getOutputStream();
+             OutputStreamWriter writer = new OutputStreamWriter(stream);
+        ) {
             writer.write(urlParameters);
             writer.flush();
 
             String lineBuffer;
-            try {
-                BufferedReader htmlBuffer = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
-                try {
-                    while (((lineBuffer = htmlBuffer.readLine()) != null) && returnStatus == null) {
-                        if (lineBuffer.contains("External Welcome Page")) {
-                            Log.d("NetworkEngine", "External Welcome Match");
-                            returnStatus = StatusCode.LOGIN_SUCCESS;
-                        } else if (lineBuffer.contains("Authentication failed")) {
-                            returnStatus = StatusCode.AUTHENTICATION_FAILED;
-                        } else if (lineBuffer.contains("Only one user login session is allowed")) {
-                            returnStatus = StatusCode.MULTIPLE_SESSIONS;
-                        } else {
-                            Log.i("html", lineBuffer);
-                        }
+            try (BufferedReader htmlBuffer = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
+            ) {
+                while (((lineBuffer = htmlBuffer.readLine()) != null) && returnStatus == null) {
+                    if (lineBuffer.contains("External Welcome Page")) {
+                        Log.d("NetworkEngine", "External Welcome Match");
+                        returnStatus = StatusCode.LOGIN_SUCCESS;
+                    } else if (lineBuffer.contains("Authentication failed")) {
+                        returnStatus = StatusCode.AUTHENTICATION_FAILED;
+                    } else if (lineBuffer.contains("Only one user login session is allowed")) {
+                        returnStatus = StatusCode.MULTIPLE_SESSIONS;
+                    } else {
+                        Log.i("html", lineBuffer);
                     }
-                }finally {
-                    htmlBuffer.close();
                 }
-            }
-            catch (java.net.ProtocolException e) {
+            } catch (java.net.ProtocolException e) {
                 returnStatus = StatusCode.LOGGED_IN;
             } catch (Exception e) {
                 e.printStackTrace();
-            }finally {
-                writer.close();
             }
         } catch (java.net.ConnectException e) {
             e.printStackTrace();
@@ -190,33 +188,29 @@ public class NetworkEngine {
     /**
      * TODO: check documentation
      * Attempt logout request to network
+     *
      * @return
      * @throws Exception
      */
     private NetworkEngine.StatusCode logout_runner() throws Exception {
         System.out.println("Loggin out");
-        URL puServerUrl = new URL(BASE_URL+"?cmd=logout");
+        URL puServerUrl = new URL(BASE_URL + "?cmd=logout");
         URLConnection puServerConnection = puServerUrl.openConnection();
 
         StatusCode returnStatus = null;
-        //TODO: use try-with-resources
-        try {
+        try (BufferedReader htmlBuffer = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
+        ) {
             //Get inputStream and show output
-            BufferedReader htmlBuffer = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
-            try {
-                //TODO parse output
-                String lineBuffer;
-                while ((lineBuffer = htmlBuffer.readLine()) != null && returnStatus == null) {
+            //TODO parse output
+            String lineBuffer;
+            while ((lineBuffer = htmlBuffer.readLine()) != null && returnStatus == null) {
 
-                    if (lineBuffer.contains("Logout")) {
-                        returnStatus = StatusCode.LOGOUT_SUCCESS;
-                    } else if (lineBuffer.contains("User not logged in")) {
-                        returnStatus = StatusCode.NOT_LOGGED_IN;
-                    }
-                    Log.w("html", lineBuffer);
+                if (lineBuffer.contains("Logout")) {
+                    returnStatus = StatusCode.LOGOUT_SUCCESS;
+                } else if (lineBuffer.contains("User not logged in")) {
+                    returnStatus = StatusCode.NOT_LOGGED_IN;
                 }
-            }finally {
-                htmlBuffer.close();
+                Log.w("html", lineBuffer);
             }
         } catch (java.net.ConnectException e) {
             e.printStackTrace();
@@ -231,6 +225,7 @@ public class NetworkEngine {
     /**
      * TODO: check documentation
      * Sets network status at current time in a string
+     *
      * @param status
      * @return status string
      */
@@ -262,6 +257,7 @@ public class NetworkEngine {
     }
 
     /* Class Variables */
+
     /**
      * A collection of various situations that might occur in Engine
      */
@@ -276,7 +272,7 @@ public class NetworkEngine {
      */
     public String getSelectedUsername() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(m_context);
-        return preferences.getString(SettingsActivity.KEY_CURRENT_USERNAME,SettingsActivity.DEFAULT_KEY_CURRENT_USERNAME);
+        return preferences.getString(SettingsActivity.KEY_CURRENT_USERNAME, SettingsActivity.DEFAULT_KEY_CURRENT_USERNAME);
 /*
         View rootView = ((Activity)m_context).getWindow().getDecorView().findViewById(android.R.id.content);
         return (String) ((Spinner)rootView.findViewById(R.id.spinner_user_list)).getSelectedItem();
