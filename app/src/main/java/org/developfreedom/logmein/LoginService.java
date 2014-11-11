@@ -71,7 +71,8 @@ public class LoginService extends Service {
                 /* We're connected properly */
                 NetworkInfo nwInfo = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
                 //This implies the WiFi connection is through
-                if(NetworkInfo.State.CONNECTED.equals(nwInfo.getState())){
+                if(nwInfo != null
+                        && NetworkInfo.State.CONNECTED.equals(nwInfo.getState())){
                     // Send login request
                     if (perfWifiStartupLogin
                             && isWifiLoginable()) {
@@ -220,17 +221,21 @@ public class LoginService extends Service {
         //username = getSelectedUsername();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
         username = preferences.getString(SettingsActivity.KEY_CURRENT_USERNAME,SettingsActivity.DEFAULT_KEY_CURRENT_USERNAME);
-        password = databaseEngine.getUsernamePassword(username).getPassword();
+        UserStructure user = databaseEngine.getUsernamePassword(username);
+        if (user != null) {
+            password = user.getPassword();
 
-        if(password.isEmpty()){
-            Toast.makeText(this, "Password not saved for " + username, Toast.LENGTH_SHORT).show();
-            return;
-        }
+            if (password == null
+                    || password.isEmpty()) {
+                Toast.makeText(this, "Password not saved for " + username, Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-        try {
-            status = networkEngine.login(username, password);
-        } catch (Exception e) {
-            e.printStackTrace();
+            try {
+                status = networkEngine.login(username, password);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }//end login
 
