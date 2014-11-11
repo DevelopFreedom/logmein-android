@@ -378,9 +378,9 @@ public class NetworkEngine {
             for(Element form : forms){
                 Elements fields = form.getElementsByTag("input");
                 for(Element field : fields){
-                    if(field.toString().contains("user")){
+                    if(field.toString().toLowerCase().contains("user")){
                         mUsernameField = field.attr("name");
-                    }else if(field.toString().contains("pass")){
+                    }else if(field.toString().toLowerCase().contains("pass")){
                         mPasswordField = field.attr("name");
                     }
                 }
