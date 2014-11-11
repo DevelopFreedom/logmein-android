@@ -45,6 +45,7 @@ import java.util.regex.Pattern;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 /**
@@ -336,6 +337,7 @@ public class NetworkEngine {
          * @return String containing the login URL of that network
          */
         private String extractBaseUrl() throws IOException {
+            Log.i("NetworkEngine", "Inside extractBaseUrl");
             String googleUrl = "http://www.google.com";
             String tryUrl = googleUrl;
             HashMap content;
@@ -364,26 +366,25 @@ public class NetworkEngine {
          * @throws IOException
          */
         private void extractParameters(String url) throws IOException{
+            Log.i("NetworkEngine", "Inside extractParameters");
             HashMap content;
             content = httpRequest(url);
-            String pattern = "<form((.+)+(\\s)+)+?<\\/form>";
-            Pattern r = Pattern.compile(pattern);
-            Matcher m = r.matcher(content.get("html").toString());
-            if(!m.find()){
-                Log.d("NetworkEngine", "Form not found!!");
-                return;
+            String pageSource = content.get("html").toString();
+            Document s = Jsoup.parse(pageSource);
+            Elements forms  = s.getElementsByTag("form");
+            if(forms.size() == 0){
+                Log.i("NetworkEngine", "Form Not found!");
             }
-            Log.i("NetworkEngine","Form found successfully!!");
-            String form;
-            form = m.group(0);
-            Document doc = Jsoup.parse(form);
-            Elements fields = doc.getElementsByTag("input");
-            Log.d("NetworkEngine", "No. of input fields = " + fields.size());
-            if(fields.size() < 2){
-                return;
+            for(Element form : forms){
+                Elements fields = form.getElementsByTag("input");
+                for(Element field : fields){
+                    if(field.toString().contains("user")){
+                        mUsernameField = field.attr("name");
+                    }else if(field.toString().contains("pass")){
+                        mPasswordField = field.attr("name");
+                    }
+                }
             }
-            mUsernameField = fields.get(0).attr("name");
-            mPasswordField = fields.get(1).attr("name");
             Log.d("NetworkEngine", "Username Field: " + mUsernameField + "\nPassword Field: " + mPasswordField);
         }
 
