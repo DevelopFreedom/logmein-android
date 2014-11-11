@@ -56,6 +56,7 @@ public class NetworkEngine {
 
     /** The url where login request will be posted */
     public String BASE_URL = "http://172.16.4.201/cgi-bin/login";
+    public String LOGOUT_URL = "http://172.16.4.201/cgi-bin/login?cmd=logout";
     public String mUsernameField = "username";
     public String mPasswordField = "password";
     private static NetworkEngine instance = null;
@@ -202,7 +203,7 @@ public class NetworkEngine {
      */
     private NetworkEngine.StatusCode logout_runner() throws Exception {
         System.out.println("Loggin out");
-        URL puServerUrl = new URL(BASE_URL+"?cmd=logout");
+        URL puServerUrl = new URL(LOGOUT_URL);
         URLConnection puServerConnection = puServerUrl.openConnection();
 
         //Get inputStream and show output
@@ -383,7 +384,7 @@ public class NetworkEngine {
             }
             mUsernameField = fields.get(0).attr("name");
             mPasswordField = fields.get(1).attr("name");
-            Log.d("NetworkEngine", "Username Field: " + mUsernameField + "Password Field: " + mPasswordField);
+            Log.d("NetworkEngine", "Username Field: " + mUsernameField + "\nPassword Field: " + mPasswordField);
         }
 
         /**
