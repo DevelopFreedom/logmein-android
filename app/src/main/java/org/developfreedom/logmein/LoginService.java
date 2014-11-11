@@ -197,7 +197,7 @@ public class LoginService extends Service {
 
         Notification notif  = new Notification.Builder(this)
                 .setContentTitle("LogMeIn")
-                .setContentText("Click below to login/logout")
+                .setContentText("Expand to login/logout")
                 .setSmallIcon(R.drawable.notif_ic_main)
                 .setContentIntent(contentLaunchIntent)
                 .setOngoing(prefNeedPersistence)
