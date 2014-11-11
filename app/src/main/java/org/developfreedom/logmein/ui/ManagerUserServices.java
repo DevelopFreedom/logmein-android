@@ -24,6 +24,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
@@ -94,11 +96,14 @@ public class ManagerUserServices {
         userStructure.setUsername(un);
         userStructure.setPassword(pwd);
 
+        boolean status = false;
         if(flagAddUpdate){
-            return saveCredential(userStructure);
+            status = saveCredential(userStructure);
+
         }else{
-            return updateCredentials(userStructure);
+            status = updateCredentials(userStructure);
         }
+        return status;
     }
 
     /**
@@ -180,9 +185,17 @@ public class ManagerUserServices {
             @Override
             public void onClick(View view) {
                 flagAddUpdate = false;
-                if(mTextboxPassword.getText().toString().isEmpty()){
-                    if(mTextboxUsername.getText().toString() != us.getUsername()){
-                        if(add_update(mTextboxUsername.getText().toString(), us.getPassword())){
+                String tb_username = mTextboxUsername.getText().toString();
+                String tb_password = mTextboxPassword.getText().toString();
+                if(tb_password.isEmpty()){
+                    if(tb_username != us.getUsername()){
+                        if(add_update(tb_username, us.getPassword())){
+                            //Save new username to preference for service
+                            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putString(SettingsActivity.KEY_CURRENT_USERNAME, tb_username);
+                            //XXX: Should we save current position for recovery
+                            editor.apply();
                             dialog.dismiss();
                         }
                     }else{
@@ -223,7 +236,15 @@ public class ManagerUserServices {
             @Override
             public void onClick(View view) {
                 flagAddUpdate = true;
-                if(add_update(mTextboxUsername.getText().toString(), mTextboxPassword.getText().toString())){
+                String tb_username = mTextboxUsername.getText().toString();
+                String tb_password = mTextboxPassword.getText().toString();
+                if(add_update(tb_username, tb_password)){
+                    //Save new username to preference for service
+                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString(SettingsActivity.KEY_CURRENT_USERNAME, tb_username);
+                    //XXX: Should we save current position for recovery
+                    editor.apply();
                     dialog.dismiss();
                 }
             }
@@ -246,6 +267,7 @@ public class ManagerUserServices {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if ( mDatabaseEngine.deleteUser(mUsername) ){
                             Toast.makeText(mContext, "Successfully deleted user: " + mUsername, Toast.LENGTH_SHORT).show();
+                            //XXX: Save the new username in Preferences here
                         }else{
                             Toast.makeText(mContext,"Problem deleting user: "+ mUsername,Toast.LENGTH_SHORT).show();
                         }
