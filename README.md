@@ -1,6 +1,6 @@
 LogMeIn Android App
 ===================
-[![Build Status](https://travis-ci.org/DevelopFreedom/logmein-android.svg?branch=chaudhary)](https://travis-ci.org/DevelopFreedom/logmein-android)
+[![Build Status](https://travis-ci.org/DevelopFreedom/logmein-android.svg)](https://travis-ci.org/DevelopFreedom/logmein-android)
 
 This app will help you automatically login to University networks with your Android operation system.
 

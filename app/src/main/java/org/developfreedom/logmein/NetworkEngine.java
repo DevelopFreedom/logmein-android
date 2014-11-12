@@ -56,8 +56,8 @@ import org.jsoup.select.Elements;
 public class NetworkEngine {
 
     /** The url where login request will be posted */
-    public String BASE_URL = "http://172.16.4.201/cgi-bin/login";
-    public String LOGOUT_URL = "http://172.16.4.201/cgi-bin/login?cmd=logout";
+    public String BASE_URL = "https://securelogin.arubanetworks.com/cgi-bin/login";
+    public String LOGOUT_URL = "https://securelogin.arubanetworks.com/cgi-bin/login?cmd=logout";
     public String mUsernameField = "username";
     public String mPasswordField = "password";
     private static NetworkEngine instance = null;
@@ -134,10 +134,11 @@ public class NetworkEngine {
     }
 
     /**
-     * TODO: Documentation
+     * TODO: check documentation
+     * Attempts to login into the network using credentials provided as parameters
      * @param username
      * @param password
-     * @return
+     * @return status of login attempt
      * @throws Exception
      */
     private StatusCode login_runner(String username, String password) throws Exception {
@@ -148,16 +149,49 @@ public class NetworkEngine {
         //System.out.println("Loggin in with "+username+password);
         String urlParameters = mUsernameField + "=" + username + "&" + mPasswordField + "=" + password; // "param1=a&param2=b&param3=c";
 
-        String request = BASE_URL;
+        String request = BASE_URL + "?cmd=login";
         URL puServerUrl = new URL(request);
 
         URLConnection puServerConnection = puServerUrl.openConnection();
         puServerConnection.setDoOutput(true);
 
         //FIXME: Handle protocol exception
-        OutputStream stream = null; //XXX Wrong
+        StatusCode returnStatus = null;
+        //TODO: use try-with-resources
         try {
-            stream = puServerConnection.getOutputStream();
+            OutputStream stream = puServerConnection.getOutputStream();
+            //Output
+            OutputStreamWriter writer = new OutputStreamWriter(stream);
+            writer.write(urlParameters);
+            writer.flush();
+
+            String lineBuffer;
+            try {
+                BufferedReader htmlBuffer = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
+                try {
+                    while (((lineBuffer = htmlBuffer.readLine()) != null) && returnStatus == null) {
+                        if (lineBuffer.contains("External Welcome Page")) {
+                            Log.d("NetworkEngine", "External Welcome Match");
+                            returnStatus = StatusCode.LOGIN_SUCCESS;
+                        } else if (lineBuffer.contains("Authentication failed")) {
+                            returnStatus = StatusCode.AUTHENTICATION_FAILED;
+                        } else if (lineBuffer.contains("Only one user login session is allowed")) {
+                            returnStatus = StatusCode.MULTIPLE_SESSIONS;
+                        } else {
+                            Log.i("html", lineBuffer);
+                        }
+                    }
+                }finally {
+                    htmlBuffer.close();
+                }
+            }
+            catch (java.net.ProtocolException e) {
+                returnStatus = StatusCode.LOGGED_IN;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }finally {
+                writer.close();
+            }
         } catch (java.net.ConnectException e) {
             e.printStackTrace();
             Log.d("NetworkEngine", "Connection Exception");
@@ -165,40 +199,12 @@ public class NetworkEngine {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        //Output
-        OutputStreamWriter writer = new OutputStreamWriter(stream);
-        writer.write(urlParameters);
-        writer.flush();
-        StatusCode returnStatus = null;
-
-        String lineBuffer;
-        try {
-            BufferedReader htmlBuffer = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
-            while (((lineBuffer = htmlBuffer.readLine()) != null) && returnStatus == null) {
-                if (lineBuffer.contains("External Welcome Page")) {
-                    Log.d("NetworkEngine", "External Welcome Match");
-                    returnStatus = StatusCode.LOGIN_SUCCESS;
-                } else if (lineBuffer.contains("Authentication failed")) {
-                    returnStatus = StatusCode.AUTHENTICATION_FAILED;
-                } else if (lineBuffer.contains("Only one user login session is allowed")) {
-                    returnStatus = StatusCode.MULTIPLE_SESSIONS;
-                } else {
-                    Log.i("html", lineBuffer);
-                }
-            }
-            writer.close();
-            htmlBuffer.close();
-        } catch (java.net.ProtocolException e) {
-            returnStatus = StatusCode.LOGGED_IN;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return returnStatus;
     }
 
     /**
-     * TODO: Documentation
+     * TODO: check documentation
+     * Attempt logout request to network
      * @return
      * @throws Exception
      */
@@ -207,10 +213,26 @@ public class NetworkEngine {
         URL puServerUrl = new URL(LOGOUT_URL);
         URLConnection puServerConnection = puServerUrl.openConnection();
 
-        //Get inputStream and show output
-        BufferedReader htmlBuffer = null;   //XXX
+        StatusCode returnStatus = null;
+        //TODO: use try-with-resources
         try {
-            htmlBuffer = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
+            //Get inputStream and show output
+            BufferedReader htmlBuffer = new BufferedReader(new InputStreamReader(puServerConnection.getInputStream()));
+            try {
+                //TODO parse output
+                String lineBuffer;
+                while ((lineBuffer = htmlBuffer.readLine()) != null && returnStatus == null) {
+
+                    if (lineBuffer.contains("Logout")) {
+                        returnStatus = StatusCode.LOGOUT_SUCCESS;
+                    } else if (lineBuffer.contains("User not logged in")) {
+                        returnStatus = StatusCode.NOT_LOGGED_IN;
+                    }
+                    Log.w("html", lineBuffer);
+                }
+            }finally {
+                htmlBuffer.close();
+            }
         } catch (java.net.ConnectException e) {
             e.printStackTrace();
             Log.d("NetworkEngine", "Connection Exception");
@@ -218,26 +240,14 @@ public class NetworkEngine {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //TODO parse output
-        String lineBuffer;
-        StatusCode returnStatus = null;
-        while ((lineBuffer = htmlBuffer.readLine()) != null && returnStatus == null) {
-
-            if (lineBuffer.contains("Logout")) {
-                returnStatus = StatusCode.LOGOUT_SUCCESS;
-            } else if (lineBuffer.contains("User not logged in")) {
-                returnStatus = StatusCode.NOT_LOGGED_IN;
-            }
-            Log.w("html", lineBuffer);
-        }
-        htmlBuffer.close();
         return returnStatus;
     }
 
     /**
-     * TODO: Documentation
+     * TODO: check documentation
+     * Sets network status at current time in a string
      * @param status
-     * @return
+     * @return status string
      */
     public String get_status_text(StatusCode status) {
         String outputText;    //To be shown in User Text Box
@@ -256,12 +266,12 @@ public class NetworkEngine {
         } else if (status == NetworkEngine.StatusCode.LOGOUT_SUCCESS) {
             outputText = "Logout Successful";
         } else if (status == NetworkEngine.StatusCode.NOT_LOGGED_IN) {
-            outputText = "You're not logged in " + getSelectedUsername();
+            outputText = "You're not logged in";
         } else if (status == null) {
             Log.d("NetworkEngine", "StatusCode was null in login");
-            outputText = "null";
+            outputText = "Unable to perform the operation";
         } else {
-            outputText = "Unknown Login status";
+            outputText = "Unknown operation status";
         }
         return outputText;
     }
