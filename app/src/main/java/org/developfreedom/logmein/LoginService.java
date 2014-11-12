@@ -21,6 +21,7 @@
 package org.developfreedom.logmein;
 
 import android.annotation.TargetApi;
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -30,15 +31,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.net.wifi.WifiManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.developfreedom.logmein.ui.MainActivity;
 import org.developfreedom.logmein.ui.SettingsActivity;
+
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Login Service runs in background to manage various tasks like
@@ -51,23 +57,24 @@ public class LoginService extends Service {
     /** Notification ID used throughout */
     private final int ID = 2603;    //TODO: ID used for showing notification not unique
     /** For showing and hiding our notification. */
-    private NotificationManager mNotificationManager;
+    public static NotificationManager mNotificationManager;
     private boolean prefNeedPersistence;
     private SharedPreferences preferences;
     NetworkEngine networkEngine;
     DatabaseEngine databaseEngine;
+    Boolean isLoggedIn;
+    Ping m_ping = new Ping();
+    private AlarmManager alarmMgr;
+    private PendingIntent alarmIntent;
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(!isWifiLoginable()) {
-                try {
-                    mNotificationManager.cancelAll();
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-                return;
+            try {
+                m_ping.cancel(true);
+                m_ping.execute();
+            }catch (Exception e){
+                e.printStackTrace();
             }
-            showNotificationOrStop();
         }
     };
 
@@ -81,10 +88,13 @@ public class LoginService extends Service {
         mNotificationManager = (NotificationManager) getSystemService(
                 NOTIFICATION_SERVICE);
         IntentFilter filter = new IntentFilter();
-        filter.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
+        filter.addAction("org.developfreedom.ping");
         registerReceiver(receiver, filter);
-//        showNotificationOrStop();
+        alarmIntent = PendingIntent.getBroadcast(this, 0, new Intent("org.developfreedom.ping"), 0);
+        alarmMgr = (AlarmManager)(this.getSystemService( Context.ALARM_SERVICE ));
         Log.i("LoginService", "Login service created");
+        alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime(), 300000, alarmIntent);
+        m_ping.execute();
     }
 
     @Override
@@ -129,16 +139,6 @@ public class LoginService extends Service {
     }
 
     /**
-     * Check if WiFi needs credentials
-     * @return true if credentials needed
-     */
-    public boolean isWifiLoginable() {
-        WifiManager wifi = (WifiManager) this.getSystemService(Context.WIFI_SERVICE);
-        String SSID =  "\"pu@campus\"";
-        return wifi.getConnectionInfo().getSSID().equalsIgnoreCase(SSID);
-    }
-
-   /**
      * Show a notification while this service is running.
      */
     @TargetApi(16)
@@ -173,50 +173,35 @@ public class LoginService extends Service {
                 .setSmallIcon(R.drawable.notif_ic_main)
                 .setContentIntent(contentLaunchIntent)
                 .setOngoing(true)
-                //.setAutoCancel(true)
-                //.setStyle(new Notification.BigTextStyle().bigText(longText))
                 .addAction(R.drawable.notif_button_login, "Login", contentLoginIntent)
                 .addAction(R.drawable.notif_button_logout, "Logout", contentLogoutIntent)
                 .build();
         mNotificationManager.notify(0, notif);
     }
 
-    /**
-     * TODO: Documentation
-     */
-    void login() {
-        NetworkEngine.StatusCode status = null;
-        Log.d("Service", "Insiide Login");
-        String username, password;
-        // Use username/password from textbox if both filled
-        //username = getSelectedUsername();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
-        username = preferences.getString(SettingsActivity.KEY_CURRENT_USERNAME,SettingsActivity.DEFAULT_KEY_CURRENT_USERNAME);
-        password = databaseEngine.getUsernamePassword(username).getPassword();
+    public class Ping extends AsyncTask<String, Void, Boolean> {
 
-        if(password.isEmpty()){
-            Toast.makeText(this, "Password not saved for " + username, Toast.LENGTH_SHORT).show();
-            return;
-        }
+        @Override
+        protected Boolean doInBackground(String... input_strings) {
+            try {
+                URL url = new URL("http://google.com");
+                HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+                Log.d("LoginService","URL host : " + url.getHost() + "&& URL Connection Host : " + urlConnection.getURL().getHost());
 
-        try {
-            status = networkEngine.login(username, password);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }//end login
+                if (!urlConnection.getURL().getHost().contains("google")) {
+                    Log.d("LoginService", "User not Logged In");
+                    showNotificationOrStop();
+                }else{
+                    mNotificationManager.cancelAll();
+                    Log.d("LoginService", "User Already Logged In");
+                }
 
-    /**
-     * TODO: Documentation
-     */
-    void logout() {
-        NetworkEngine.StatusCode status = null;
-        Log.d("Service", "Insiede Logout");
-        try {
-            status = networkEngine.logout();
-        } catch (Exception e) {
-            e.printStackTrace();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return isLoggedIn;
         }
-    }//end logout
+    }
 
 }//end class LoginService
