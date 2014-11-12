@@ -55,7 +55,7 @@ public class ManagerUserServices {
     Boolean updated;
     /** TODO: Documentation for changed_username */
     String changed_username;
-
+    Toast m_currentToast;
     ManagerUserServices(Context context){
         this.context = context;
         databaseEngine = DatabaseEngine.getInstance(this.context);
@@ -90,11 +90,11 @@ public class ManagerUserServices {
     public boolean add_update(String un,String pwd){
 
         if( un.trim().isEmpty()){
-            Toast.makeText(this.context,"Username cannot be an empty string",Toast.LENGTH_LONG).show();
+            showToast("Username cannot be an empty string", Toast.LENGTH_LONG);
             return false;
         }
         if( pwd.trim().isEmpty()){
-            Toast.makeText(this.context,"Password cannot be an empty string",Toast.LENGTH_LONG).show();
+            showToast("Password cannot be an empty string", Toast.LENGTH_LONG);
             return false;
         }
 
@@ -108,7 +108,14 @@ public class ManagerUserServices {
             return updateCredentials(userStructure);
         }
     }
-
+    void showToast(String text, int period)
+    {
+        if(m_currentToast != null) {
+            m_currentToast.cancel();
+        }
+        m_currentToast = Toast.makeText(this.context, text, period);
+        m_currentToast.show();
+    }
     /**
      * TODO: Documentation
      * @param userStructure
@@ -118,15 +125,15 @@ public class ManagerUserServices {
 
         if(!databaseEngine.existsUser(userStructure.getUsername())){
             if(databaseEngine.insert(userStructure)){
-                Toast.makeText(this.context, userStructure.getUsername() + " entered", Toast.LENGTH_SHORT).show();
+                showToast(userStructure.getUsername() + " entered", Toast.LENGTH_SHORT);
                 return true;
             } else {
-                Toast.makeText(this.context," problem inserting record", Toast.LENGTH_SHORT).show();
+                showToast(" problem inserting record", Toast.LENGTH_SHORT);
                 return false;
             }
 
         } else{
-            Toast.makeText(this.context,"Username already exists", Toast.LENGTH_SHORT).show();
+            showToast("Username already exists", Toast.LENGTH_SHORT);
             return false;
         }
 
@@ -141,14 +148,14 @@ public class ManagerUserServices {
         int i = databaseEngine.updateUser(userStructure, username);
         if (i == 1) {
             Log.e("Updated", "Updated user");
-            Toast.makeText(this.context, "Updated account", Toast.LENGTH_SHORT).show();
+            showToast("Updated account", Toast.LENGTH_SHORT);
             return true;
         } else if (i == 0) {
-            Toast.makeText(this.context, "Problem in updating account", Toast.LENGTH_SHORT).show();
+            showToast("Problem in updating account", Toast.LENGTH_SHORT);
             Log.e("Updated", "Error updating");
             return false;
         } else {
-            Toast.makeText(this.context, "Updated more than 1 records", Toast.LENGTH_SHORT).show();
+            showToast("Updated more than 1 records", Toast.LENGTH_SHORT);
             Log.e("Updated", "Updated more than 1 records");
             return true;
         }
@@ -176,7 +183,7 @@ public class ManagerUserServices {
         .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(context, "Activity cancelled", Toast.LENGTH_SHORT).show();
+                showToast("Activity cancelled", Toast.LENGTH_SHORT);
             }
         });
 
@@ -220,7 +227,7 @@ public class ManagerUserServices {
         .setNegativeButton("CANCEL",new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(context,"Activity cancelled",Toast.LENGTH_SHORT).show();
+                showToast("Activity cancelled",Toast.LENGTH_SHORT);
             }
         });
 
@@ -257,16 +264,16 @@ public class ManagerUserServices {
                         //String username = spinner_user_list.getSelectedItem().toString();
                         updated = databaseEngine.deleteUser(username);
                         if ( updated ){
-                            Toast.makeText(context, "Successfully deleted user: " + username, Toast.LENGTH_SHORT).show();
+                            showToast("Successfully deleted user: " + username, Toast.LENGTH_SHORT);
                         }else{
-                            Toast.makeText(context,"Problem deleting user: "+username,Toast.LENGTH_SHORT).show();
+                            showToast("Problem deleting user: " + username, Toast.LENGTH_SHORT);
                         }
                     }
                 })
                 .setNegativeButton("NO", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Toast.makeText(context,"Cancelled",Toast.LENGTH_SHORT).show();
+                        showToast("Cancelled", Toast.LENGTH_SHORT);
                     }
                 });
             Dialog dialog = builder.create();
