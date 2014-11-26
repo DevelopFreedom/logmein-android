@@ -18,3 +18,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 [playstore-app]: https://play.google.com/store/apps/details?id=org.developfreedom.logmein
 [fdroid-app]: https://f-droid.org/repository/browse/?fdid=org.developfreedom.logmein
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/DevelopFreedom/logmein-android/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
