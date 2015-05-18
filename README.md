@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/DevelopFreedom/logmein-android.png?label=ready&title=Ready)](https://waffle.io/DevelopFreedom/logmein-android)
 LogMeIn Android App
 ===================
 [![Build Status](https://travis-ci.org/DevelopFreedom/logmein-android.svg)](https://travis-ci.org/DevelopFreedom/logmein-android)
