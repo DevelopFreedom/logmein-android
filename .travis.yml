@@ -26,8 +26,9 @@ android:
     # - openjdk7
     - oraclejdk7
 
+sudo: false
 
-script: ./gradlew clean test
+script: ./gradlew assemble
 
 after_failure:
   # Customize this line, 'app' is the specific app module name of this project. Shows log.
